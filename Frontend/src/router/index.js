@@ -5,25 +5,27 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "Mainpage",
-    component: () => import("../views/Mainpage.vue")
+    // name: "Mainpage",
+    // component: () => import("../views/Mainpage.vue")
+    name: "Login",
+    component: () => import("../views/Login.vue"),
   },
   {
     path: "/login",
     name: "Login",
-    component: () => import("../views/Login.vue")
+    component: () => import("../views/Login.vue"),
   },
   {
     path: "/register",
     name: "Register",
-    component: () => import("../views/Register.vue")
-  }
+    component: () => import("../views/Register.vue"),
+  },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
 
 export default router;

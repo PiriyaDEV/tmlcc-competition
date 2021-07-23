@@ -8,15 +8,23 @@
           <h1 class="header">ข้อมูลผู้ใช้</h1>
           <div class="inline-input">
             <h2>บัญชีผู้ใช้ :</h2>
-            <input type="text" autocomplete="off" />
+            <input type="text" autocomplete="off" v-model="user.username" />
           </div>
           <div class="inline-input">
             <h2>รหัสผ่าน :</h2>
-            <input type="password" autocomplete="new-password" />
+            <input
+              type="password"
+              autocomplete="new-password"
+              v-model="user.password"
+            />
           </div>
           <div class="inline-input">
             <h2>ยืนยันรหัสผ่าน :</h2>
-            <input type="password" autocomplete="new-password" />
+            <input
+              type="password"
+              autocomplete="new-password"
+              v-model="confirmPassword"
+            />
           </div>
         </div>
 
@@ -24,24 +32,32 @@
           <h1 class="header">ประวัติ</h1>
           <div class="inline-input">
             <h2>ชื่อ-สกุล :</h2>
-            <input type="text" />
-            <input type="text" />
+            <input type="text" v-model="user.firstname" />
+            <input type="text" v-model="user.lastname" />
           </div>
           <div class="inline-input">
             <h2>สังกัด :</h2>
-            <input type="text" />
+            <input type="text" v-model="user.organization" />
           </div>
           <div class="inline-input">
             <h2>ระดับการศึกษาสูงสุด :</h2>
-            <select id="study-status" name="study-status">
+            <select
+              id="education-status"
+              name="education-status"
+              v-model="user.education"
+            >
               <option value="undergrad">กำลังศึกษา</option>
               <option value="grad">จบการศึกษา</option>
             </select>
-            <input type="text" placeholder="โปรดระบุ" />
+            <input
+              type="text"
+              placeholder="โปรดระบุ"
+              v-model="user.institute"
+            />
           </div>
           <div class="inline-input">
             <h2>ที่อยู่ :</h2>
-            <input type="text" />
+            <input type="text" v-model="user.address" />
           </div>
         </div>
 
@@ -49,11 +65,11 @@
           <h1 class="header">การติดต่อ</h1>
           <div class="inline-input">
             <h2>อีเมล :</h2>
-            <input type="text" />
+            <input type="text" v-model="user.email" />
           </div>
           <div class="inline-input">
             <h2>เบอร์โทรศัพท์ :</h2>
-            <input type="text" />
+            <input type="text" v-model="user.phone" />
           </div>
         </div>
 
@@ -61,11 +77,15 @@
           <h1 class="header">ความสนใจ</h1>
           <div id="opportunity-box" class="inline-input">
             <h2 id="opportunity">ความสนใจถ้าหากมีโอกาสเข้าทำงาน :</h2>
-            <input type="checkbox" for="opportunity" />
+            <input
+              type="checkbox"
+              for="opportunity"
+              v-model="user.offer_trainee"
+            />
           </div>
           <div class="inline-input">
             <h2>ผลงานที่เคยทำมา :</h2>
-            <input type="text" />
+            <input type="text" v-model="user.works" />
           </div>
         </div>
 
@@ -75,7 +95,7 @@
             <h2>Programing :</h2>
             <div
               class="add-input inline-input"
-              v-for="(input, i) in programing "
+              v-for="(input, i) in programing"
               :key="i"
             >
               <select id="skill-level" name="skill-level">
@@ -83,7 +103,11 @@
                 <option value="intermediate">พอใช้</option>
                 <option value="influent">ดีเยี่ยม</option>
               </select>
-              <input type="text" v-model="programing[i].name" placeholder="ระบุภาษา" />
+              <input
+                type="text"
+                v-model="programing[i].name"
+                placeholder="ระบุภาษา"
+              />
               <span class="add-btn">
                 <button
                   @click="removePrograming(i)"
@@ -91,7 +115,10 @@
                 >
                   ลบ
                 </button>
-                <button @click="addPrograming()" v-show="i == programing.length - 1">
+                <button
+                  @click="addPrograming()"
+                  v-show="i == programing.length - 1"
+                >
                   เพิ่ม
                 </button>
               </span>
@@ -109,7 +136,11 @@
                 <option value="intermediate">พอใช้</option>
                 <option value="influent">ดีเยี่ยม</option>
               </select>
-              <input type="text" v-model="chemistry[i].name" placeholder="ระบุภาษา" />
+              <input
+                type="text"
+                v-model="chemistry[i].name"
+                placeholder="ระบุเรื่องที่เชี่ยวชาญ"
+              />
               <span class="add-btn">
                 <button
                   @click="removeChemistry(i)"
@@ -117,7 +148,10 @@
                 >
                   ลบ
                 </button>
-                <button @click="addChemistry()" v-show="i == chemistry.length - 1">
+                <button
+                  @click="addChemistry()"
+                  v-show="i == chemistry.length - 1"
+                >
                   เพิ่ม
                 </button>
               </span>
@@ -133,7 +167,7 @@
         </div>
 
         <div class="register-btn section">
-          <button>สมัครสมาชิก</button>
+          <button @click="registerClick()">สมัครสมาชิก</button>
         </div>
         <h3 class="ps-register">
           สมัครสมาชิกแล้ว?
@@ -145,9 +179,14 @@
 </template>
 
 <script>
+import User from "@/models/user.model";
+import AuthService from "@/services/auth.service";
+
 export default {
   data() {
     return {
+      user: new User(""),
+      confirmPassword: "",
       programing: [
         {
           name: "",
@@ -161,6 +200,17 @@ export default {
     };
   },
   methods: {
+    registerClick() {
+      AuthService.register(this.user)
+        .then((res) => {
+          if (res.data) {
+            alert(res.data);
+          }
+        })
+        .catch((err) => {
+          alert("err: " + err);
+        });
+    },
     loginClick() {
       this.$router.push("/login");
     },
@@ -185,7 +235,6 @@ export default {
   margin-top: 70px;
   margin-bottom: 40px;
 }
-
 
 /* งานจริงลบตรงนี้ออกจะชิดขอบ */
 #register-container {
@@ -224,8 +273,8 @@ export default {
   margin-right: 10px;
 }
 
-#skill-level{
-    width:100px;
+#skill-level {
+  width: 100px;
 }
 
 .inline-input > input,
