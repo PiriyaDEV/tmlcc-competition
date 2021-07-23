@@ -3,6 +3,23 @@
     <div id="register-container" class="page-container">
       <div>
         <h1 class="title">สมัครสมาชิก</h1>
+
+        <div class="register-input">
+          <h1 class="header">ข้อมูลผู้ใช้</h1>
+          <div class="inline-input">
+            <h2>บัญชีผู้ใช้ :</h2>
+            <input type="text" autocomplete="off" />
+          </div>
+          <div class="inline-input">
+            <h2>รหัสผ่าน :</h2>
+            <input type="password" autocomplete="new-password" />
+          </div>
+          <div class="inline-input">
+            <h2>ยืนยันรหัสผ่าน :</h2>
+            <input type="password" autocomplete="new-password" />
+          </div>
+        </div>
+
         <div class="register-input">
           <h1 class="header">ประวัติ</h1>
           <div class="inline-input">
@@ -44,7 +61,7 @@
           <h1 class="header">ความสนใจ</h1>
           <div id="opportunity-box" class="inline-input">
             <h2 id="opportunity">ความสนใจถ้าหากมีโอกาสเข้าทำงาน :</h2>
-            <input type="checkbox" for="opportunity"/>
+            <input type="checkbox" for="opportunity" />
           </div>
           <div class="inline-input">
             <h2>ผลงานที่เคยทำมา :</h2>
@@ -56,21 +73,64 @@
           <h1 class="header">คิดว่าตัวเองมีทักษะ</h1>
           <div class="inline-input">
             <h2>Programing :</h2>
-            <input type="text" />
+            <div
+              class="add-input inline-input"
+              v-for="(input, i) in programing "
+              :key="i"
+            >
+              <select id="skill-level" name="skill-level">
+                <option value="beginner">เบื้องต้น</option>
+                <option value="intermediate">พอใช้</option>
+                <option value="influent">ดีเยี่ยม</option>
+              </select>
+              <input type="text" v-model="programing[i].name" placeholder="ระบุภาษา" />
+              <span class="add-btn">
+                <button
+                  @click="removePrograming(i)"
+                  v-show="i || (!i && programing.length > 1)"
+                >
+                  ลบ
+                </button>
+                <button @click="addPrograming()" v-show="i == programing.length - 1">
+                  เพิ่ม
+                </button>
+              </span>
+            </div>
           </div>
           <div class="inline-input">
             <h2>Chemistry :</h2>
-            <input type="text" />
+            <div
+              class="add-input inline-input"
+              v-for="(input, i) in chemistry"
+              :key="i"
+            >
+              <select id="skill-level" name="skill-level">
+                <option value="beginner">เบื้องต้น</option>
+                <option value="intermediate">พอใช้</option>
+                <option value="influent">ดีเยี่ยม</option>
+              </select>
+              <input type="text" v-model="chemistry[i].name" placeholder="ระบุภาษา" />
+              <span class="add-btn">
+                <button
+                  @click="removeChemistry(i)"
+                  v-show="i || (!i && chemistry.length > 1)"
+                >
+                  ลบ
+                </button>
+                <button @click="addChemistry()" v-show="i == chemistry.length - 1">
+                  เพิ่ม
+                </button>
+              </span>
+            </div>
           </div>
         </div>
 
         <div class="register-input">
           <div id="opportunity-box" class="inline-input">
             <h2 id="opportunity">ยินยอมรับเงื่อนไขการแข่งขัน :</h2>
-            <input type="checkbox" for="opportunity"/>
+            <input type="checkbox" for="opportunity" />
           </div>
         </div>
-
 
         <div class="register-btn section">
           <button>สมัครสมาชิก</button>
@@ -86,9 +146,35 @@
 
 <script>
 export default {
+  data() {
+    return {
+      programing: [
+        {
+          name: "",
+        },
+      ],
+      chemistry: [
+        {
+          name: "",
+        },
+      ],
+    };
+  },
   methods: {
     loginClick() {
       this.$router.push("/login");
+    },
+    addPrograming() {
+      this.programing.push({ name: "" });
+    },
+    removePrograming(index) {
+      this.programing.splice(index, 1);
+    },
+    addChemistry() {
+      this.chemistry.push({ name: "" });
+    },
+    removeChemistry(index) {
+      this.chemistry.splice(index, 1);
     },
   },
 };
@@ -100,10 +186,16 @@ export default {
   margin-bottom: 40px;
 }
 
+
+/* งานจริงลบตรงนี้ออกจะชิดขอบ */
 #register-container {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.add-input {
+  margin-bottom: 10px;
 }
 
 .title {
@@ -122,6 +214,20 @@ export default {
   color: #3a65ab;
 }
 
+.add-btn > button {
+  font-size: 1.5em;
+  padding: 5px 10px;
+  border: none;
+  background-color: #3a65ab;
+  color: white;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
+#skill-level{
+    width:100px;
+}
+
 .inline-input > input,
 select {
   height: 20px;
@@ -136,13 +242,13 @@ select {
   font-weight: 500;
 }
 
-#opportunity-box{
-    display: flex;
-    align-items: center;
+#opportunity-box {
+  display: flex;
+  align-items: center;
 }
 
-#opportunity-box > input{
-    width: 50px !important;
+#opportunity-box > input {
+  width: 50px !important;
 }
 
 .register-input > .inline-input {
