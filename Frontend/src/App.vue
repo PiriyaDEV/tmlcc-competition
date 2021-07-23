@@ -1,32 +1,111 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <router-view />
   </div>
 </template>
 
+<script>
+export default {};
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+@import url("https://use.typekit.net/zqk6rjr.css");
+body,
+html,
+input,
+textarea,
+button {
+  padding: 0;
+  margin: 0;
+  font-family: "Atten-Round-New";
+  font-size: 8px;
+  overflow-x: hidden;
 }
-
-#nav {
-  padding: 30px;
+.section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
 }
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.page-container {
+  width: 1440px;
+  max-width: 1440px;
+  padding: 0;
 }
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+.navbar-container {
+  width: 1440px;
+  max-width: 1440px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+  padding: 0;
+}
+@media screen and (max-width: 1920px) {
+  .page-container,
+  .navbar-container {
+    width: 1280px;
+    max-width: 1280px;
+  }
+}
+@media screen and (max-width: 1650px) {
+}
+@media screen and (max-width: 1440px) {
+  .page-container,
+  .navbar-container {
+    width: 1024px;
+    max-width: 1024px;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .page-container,
+  .navbar-container {
+    width: 960px;
+    max-width: 960px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .page-container,
+  .navbar-container {
+    width: 720px;
+    max-width: 720px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .page-container,
+  .navbar-container {
+    width: 720px;
+    max-width: 720px;
+  }
+}
+@media screen and (max-width: 600px) {
+}
+@media screen and (max-width: 414px) {
+  .page-container,
+  .navbar-container {
+    width: 374px;
+    max-width: 374px;
+  }
+}
+@media screen and (max-width: 375px) {
+  .page-container,
+  .navbar-container {
+    width: 355px;
+    max-width: 355px;
+  }
+}
+@media screen and (max-width: 360px) {
+  .page-container,
+  .navbar-container {
+    width: 335px;
+    max-width: 335px;
+  }
 }
 </style>
