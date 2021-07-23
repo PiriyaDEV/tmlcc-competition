@@ -16,7 +16,10 @@
         <div class="login-btn section">
           <button>เข้าสู่ระบบ</button>
         </div>
-        <h3 class="ps-register">สมัครสมาชิก? <span class="orange-click" @click="registerClick()">กดที่นี่</span></h3>
+        <h3 class="ps-register">
+          สมัครสมาชิก?
+          <span class="orange-click" @click="registerClick()">กดที่นี่</span>
+        </h3>
       </div>
     </div>
   </div>
@@ -87,9 +90,9 @@ export default {
   font-weight: 300;
 }
 
-.orange-click{
-    color: #3a65ab;
-    text-decoration: underline;
-    cursor: pointer;
+.orange-click {
+  color: #3a65ab;
+  text-decoration: underline;
+  cursor: pointer;
 }
 </style>
