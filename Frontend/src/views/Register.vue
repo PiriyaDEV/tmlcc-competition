@@ -160,14 +160,14 @@
         </div>
 
         <div class="register-input">
-          <div id="opportunity-box" class="inline-input">
-            <h2 id="opportunity">ยินยอมรับเงื่อนไขการแข่งขัน :</h2>
-            <input type="checkbox" for="opportunity" />
+          <div id="agree-box" class="inline-input">
+            <h2 id="agreebox">ยินยอมรับเงื่อนไขการแข่งขัน :</h2>
+            <input type="checkbox" for="agreebox" v-model="AgreeCheck" />
           </div>
         </div>
 
         <div class="register-btn section">
-          <button @click="registerClick()">สมัครสมาชิก</button>
+          <button @click="register()">สมัครสมาชิก</button>
         </div>
         <h3 class="ps-register">
           สมัครสมาชิกแล้ว?
@@ -200,16 +200,21 @@ export default {
     };
   },
   methods: {
-    registerClick() {
-      AuthService.register(this.user)
-        .then((res) => {
-          if (res.data) {
-            alert(res.data);
-          }
-        })
-        .catch((err) => {
-          alert("err: " + err);
-        });
+    register() {
+      if (this.AgreeCheck == true) {
+        AuthService.register(this.user)
+          .then((res) => {
+            if (res.data) {
+              alert("สมัครสมาชิกเรียบร้อย");
+              this.$router.push("/login");
+            }
+          })
+          .catch((err) => {
+            alert("err: " + err);
+          });
+      } else {
+        alert("กรุณายินยอมรับเงื่อนไขการแข่งขัน");
+      }
     },
     loginClick() {
       this.$router.push("/login");
@@ -291,12 +296,14 @@ select {
   font-weight: 500;
 }
 
-#opportunity-box {
+#opportunity-box,
+#agree-box {
   display: flex;
   align-items: center;
 }
 
-#opportunity-box > input {
+#opportunity-box > input,
+#agree-box > input {
   width: 50px !important;
 }
 

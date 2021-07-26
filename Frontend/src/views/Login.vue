@@ -6,15 +6,19 @@
         <div id="login-input">
           <div class="inline-input section">
             <h2>บัญชีผู้ใช้ :</h2>
-            <input type="text" />
+            <input type="text" v-model="user.username" />
           </div>
           <div class="inline-input section">
             <h2>รหัสผ่าน :</h2>
-            <input type="text" />
+            <input
+              type="password"
+              autocomplete="new-password"
+              v-model="user.password"
+            />
           </div>
         </div>
         <div class="login-btn section">
-          <button>เข้าสู่ระบบ</button>
+          <button @click="login()">เข้าสู่ระบบ</button>
         </div>
         <h3 class="ps-register">
           สมัครสมาชิก?
@@ -26,10 +30,32 @@
 </template>
 
 <script>
+import AuthService from "@/services/auth.service";
+
 export default {
+  data() {
+    return {
+      user: { username: "", password: "" },
+    };
+  },
   methods: {
     registerClick() {
       this.$router.push("/register");
+    },
+    login() {
+      AuthService.login(this.user)
+        .then((res) => {
+          if (res.data.username) {
+            alert("เข้าสู่ระบบเรียบร้อย");
+          } else if (res.data.message == "User not found!") {
+            alert("ไม่พบผู้ใช้งาน");
+          } else if (res.data.message == "Invalid Password!") {
+            alert("รหัสผ่านไม่ถูกต้อง");
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        });
     },
   },
 };
