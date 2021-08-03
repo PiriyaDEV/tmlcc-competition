@@ -2,68 +2,68 @@
   <div id="login" class="section">
     <div id="login-container" class="page-container">
       <div>
-        <h1 class="title">เข้าสู่ระบบ</h1>
-        <div id="login-input">
-          <div class="inline-input section">
-            <h2>บัญชีผู้ใช้ :</h2>
-            <input type="text" v-model="user.username" />
-          </div>
-          <div class="inline-input section">
-            <h2>รหัสผ่าน :</h2>
+        <div class="center">
+          <img id="tmlcc-logo" src="../assets/TMLCC_Logo.png" alt="" />
+        </div>
+        <h1 class="header-c">เข้าสู่ระบบ</h1>
+
+        <div id="login-box">
+          <div>
+            <h1 class="text-normal">E-mail</h1>
             <input
-              type="password"
-              autocomplete="new-password"
-              v-model="user.password"
+              class="input-box text-normal"
+              type="text"
+              placeholder="E-mail ที่ใช้ในการสมัคร"
             />
           </div>
+          <div>
+            <h1 class="text-normal">Password</h1>
+            <input
+              class="input-box text-normal"
+              type="password"
+              placeholder="กรอก Password"
+            />
+          </div>
+
+          <h1 class="text-normal purple-text forgot-pass">ลืมรหัสผ่าน</h1>
+
+          <div class="center">
+            <button class="btn-color">เข้าสู่ระบบ</button>
+          </div>
+
+          <hr class="bar-color" />
+
+          <div class="login-below-text">
+            <h1 class="text-normal gray-text">หรือ หากยังไม่ได้สมัคร</h1>
+            <h1 class="text-normal purple-text">ลงทะเบียนเข้าร่วมการแข่งขัน</h1>
+          </div>
         </div>
-        <div class="login-btn section">
-          <button @click="login()">เข้าสู่ระบบ</button>
-        </div>
-        <h3 class="ps-register">
-          สมัครสมาชิก?
-          <span class="orange-click" @click="registerClick()">กดที่นี่</span>
-        </h3>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import AuthService from "@/services/auth.service";
-
-export default {
-  data() {
-    return {
-      user: { username: "", password: "" },
-    };
-  },
-  methods: {
-    registerClick() {
-      this.$router.push("/register");
-    },
-    login() {
-      AuthService.login(this.user)
-        .then((res) => {
-          if (res.data.username) {
-            alert("เข้าสู่ระบบเรียบร้อย");
-          } else if (res.data.message == "User not found!") {
-            alert("ไม่พบผู้ใช้งาน");
-          } else if (res.data.message == "Invalid Password!") {
-            alert("รหัสผ่านไม่ถูกต้อง");
-          }
-        })
-        .catch((err) => {
-          alert(err);
-        });
-    },
-  },
-};
+export default {};
 </script>
 
 <style scoped>
 #login {
-  height: 100vh;
+  /* min-height: 100vh; */
+  padding: 47px 0px 249px 0px;
+  background-color: #e5e5e5;
+}
+
+#tmlcc-logo {
+  margin: 0px 0px 18px 0px;
+  width: 407px;
+}
+
+#login-box {
+  margin-top: 30px;
+  background-color: #ffffff;
+  border-radius: 30px;
+  padding: 28px 64px;
 }
 
 #login-container {
@@ -72,53 +72,27 @@ export default {
   align-items: center;
 }
 
-.title {
-  margin-top: 0px;
-  text-align: center;
-  font-size: 3em;
-  font-weight: 700;
-}
-
-.inline-input > input {
-  height: 20px;
+.forgot-pass {
   margin-left: 15px;
-  font-size: 1.75em;
-  font-weight: 500;
-  width: 300px;
-}
-
-.inline-input > h2 {
-  font-size: 1.75em;
-  font-weight: 500;
-}
-
-#login-input > .inline-input {
-  margin-top: 20px;
-}
-
-.login-btn > button {
-  margin-top: 20px;
-  width: 100%;
-  font-size: 1.75em;
-  font-weight: 300;
-  background-color: #3a65ab;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 5px 15px;
+  margin-top: 0px;
   cursor: pointer;
 }
 
-.ps-register {
-  margin-top: 25px;
+.input-box {
+  width: 407px;
+}
+
+.btn-color {
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+
+.bar-color {
+  width: 120px;
+}
+
+.login-below-text{
+  margin-top: 15px;
   text-align: center;
-  font-size: 1.5em;
-  font-weight: 300;
-}
-
-.orange-click {
-  color: #3a65ab;
-  text-decoration: underline;
-  cursor: pointer;
 }
 </style>
