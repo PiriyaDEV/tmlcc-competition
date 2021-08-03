@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const User = require("../models/user.model");
-const authConfig = require("../config/auth.config");
+
+const User = require("./../models/user.model");
+const authConfig = require("./../config/auth.config");
 
 exports.register = (req, res) => {
   if (!req.body) {
@@ -17,27 +18,28 @@ exports.register = (req, res) => {
   user.created_at = new Date().getTime();
   user.updated_at = new Date().getTime();
 
-  User.create(user, (err, user) => {
+  User.create(user, (err, result) => {
     if (err) {
       return res.status(500).send({
-        message: err.message,
+        message:
+          err.message || "Some error occurred while creating the new user!",
       });
     }
 
     let token = jwt.sign(
       {
-        username: user.username,
-        role: user.role,
+        username: result.username,
+        role: result.role,
       },
-      authConfig.secret,
+      authConfig.secretKey,
       { expiresIn: 86400 }
     );
 
     res.cookie("user", token, { httpOnly: true, maxAge: 900000 });
 
     return res.status(200).send({
-      username: user.username,
-      role: user.role,
+      username: result.username,
+      role: result.role,
       token: token,
     });
   });
@@ -52,40 +54,40 @@ exports.login = (req, res) => {
 
   let user = req.body;
 
-  User.findByUsername(user, (err, data) => {
+  User.findByUsername(user, (err, result) => {
     if (err) {
       return res.status(500).send({
-        message: err.message,
+        message: err.message || "Some error occurred while finding the user!",
       });
     }
 
-    if (data.message == "not_found") {
+    if (!result.isFound) {
       return res.status(200).send({
         message: "User not found!",
       });
+    }
+
+    if (bcrypt.compareSync(user.password, result.password)) {
+      let token = jwt.sign(
+        {
+          username: result.username,
+          role: result.role,
+        },
+        authConfig.secretKey,
+        { expiresIn: 86400 }
+      );
+
+      res.cookie("user", token, { httpOnly: true, maxAge: 900000 });
+
+      return res.status(200).send({
+        username: result.username,
+        role: result.role,
+        token: token,
+      });
     } else {
-      if (bcrypt.compareSync(user.password, data.password)) {
-        let token = jwt.sign(
-          {
-            username: data.username,
-            role: data.role,
-          },
-          authConfig.secret,
-          { expiresIn: 86400 }
-        );
-
-        res.cookie("user", token, { httpOnly: true, maxAge: 900000 });
-
-        return res.status(200).send({
-          username: data.username,
-          role: data.role,
-          token: token,
-        });
-      } else {
-        return res.status(200).send({
-          message: "Invalid Password!",
-        });
-      }
+      return res.status(200).send({
+        message: "Invalid password!",
+      });
     }
   });
 };

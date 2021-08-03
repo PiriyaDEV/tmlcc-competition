@@ -1,4 +1,4 @@
-const sql = require("../database/db.connection");
+const sql = require("./../database/db.connection");
 
 const User = function (user) {
   this.username = user.username;
@@ -15,38 +15,41 @@ const User = function (user) {
   this.works = user.works;
 };
 
-User.create = (newUser, result) => {
-  sql.query("INSERT INTO User SET ?", newUser, (err, res) => {
+User.create = (user, result) => {
+  sql.query("INSERT INTO User SET ?", user, (err, res) => {
     if (err) {
       console.log("Error: ", err);
       result(err, null);
       return;
     }
 
-    console.log("Created user: ", { id: res.insertId, ...newUser });
-    result(null, { ...newUser });
+    console.log("Result: ", { id: res.insertId, ...user });
+    result(null, user);
+    return;
   });
 };
 
 User.findByUsername = (user, result) => {
-  sql.query(`SELECT * FROM User WHERE username = "${user.username}"`, (err, res) => {
-    if (err) {
-      console.log("Error: ", err);
-      result(err, null);
-      return;
-    }
+  sql.query(
+    `SELECT * FROM User WHERE username = '${user.username}'`,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
 
-    if (res.length) {
+      if (!res.length) {
+        console.log("Result: not found");
+        result(null, { isFound: false });
+        return;
+      }
+
       console.log("Result: ", res[0]);
-      result(null, res[0]);
+      result(null, { isFound: true, ...res[0] });
       return;
     }
-    else {
-      console.log("Result: not_found");
-      result(null, { message: "not_found" });
-      return;
-    }
-  });
+  );
 };
 
 module.exports = User;
