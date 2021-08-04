@@ -1,22 +1,42 @@
 const sql = require("./../database/db.connection");
 
 const User = function (user) {
-  this.username = user.username;
-  this.password = user.password;
-  this.firstname = user.firstname;
-  this.lastname = user.lastname;
+  this.user_id = user.user_id;
   this.email = user.email;
+  this.displayName = user.displayName;
+  this.password = user.password;
+  this.titleName = user.titleName;
+  this.firstName = user.firstName;
+  this.lastName = user.lastName;
   this.phone = user.phone;
-  this.address = user.address;
-  this.organization = user.organization;
-  this.institute = user.institute;
   this.education = user.education;
-  this.offer_trainee = user.offer_trainee;
+  this.institution = user.institution;
+  this.organization = user.organization;
+  this.address = user.address;
+  this.country = user.country;
   this.works = user.works;
+  this.isWorkInterest = user.isWorkInterest;
+  this.interestField = user.interestField;
+  this.hasProgSkill = user.hasProgSkill;
+  this.progSkillLevel = user.progSkillLevel;
+  this.progSkillList = user.progSkillList;
+  this.hasChemSkill = user.hasChemSkill;
+  this.chemSkillLevel = user.chemSkillLevel;
+  this.chemSkillList = user.chemSkillList;
+  this.hasMachineLSkill = user.hasMachineLSkill;
+  this.machineLSkillLevel = user.machineLSkillLevel;
+  this.machineLSkillList = user.machineLSkillList;
+  this.hasOtherSkill = user.hasOtherSkill;
+  this.otherSkillList = user.otherSkillList;
+  this.hasTeam = user.hasTeam;
+  this.role = user.role;
+  this.lastLogin = user.lastLogin;
+  this.created_at = user.created_at;
+  this.updated_at = user.updated_at;
 };
 
 User.create = (user, result) => {
-  sql.query("INSERT INTO User SET ?", user, (err, res) => {
+  sql.query("INSERT INTO Users SET ?", user, (err, res) => {
     if (err) {
       console.log("Error: ", err);
       result(err, null);
@@ -29,9 +49,10 @@ User.create = (user, result) => {
   });
 };
 
-User.findByUsername = (user, result) => {
+User.update = (user, result) => {
   sql.query(
-    `SELECT * FROM User WHERE username = '${user.username}'`,
+    `UPDATE Users SET ? WHERE user_id = '${user.user_id}'`,
+    user,
     (err, res) => {
       if (err) {
         console.log("Error: ", err);
@@ -39,17 +60,45 @@ User.findByUsername = (user, result) => {
         return;
       }
 
-      if (!res.length) {
-        console.log("Result: not found");
-        result(null, { isFound: false });
-        return;
-      }
-
-      console.log("Result: ", res[0]);
-      result(null, { isFound: true, ...res[0] });
+      console.log("Result: user updated");
+      result(null, user);
       return;
     }
   );
+};
+
+User.getCount = (result) => {
+  sql.query("SELECT COUNT(*) AS count FROM Users", (err, res) => {
+    if (err) {
+      console.log("Error: ", err);
+      result(err, null);
+      return;
+    }
+
+    console.log(`Result: ${res[0].count} user(s)`);
+    result(null, res[0].count);
+    return;
+  });
+};
+
+User.findByEmail = (user, result) => {
+  sql.query(`SELECT * FROM Users WHERE email = '${user.email}'`, (err, res) => {
+    if (err) {
+      console.log("Error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (!res.length) {
+      console.log("Result: user not found");
+      result(null, { isFound: false });
+      return;
+    }
+
+    console.log("Result: ", res[0]);
+    result(null, { isFound: true, ...res[0] });
+    return;
+  });
 };
 
 module.exports = User;

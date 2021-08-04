@@ -19,12 +19,21 @@ connection.connect((err) => {
     `Successfully connected to ${dbConfig.DB} database on port ${dbConfig.PORT}.`
   );
 
-  connection.query(fs.readFileSync("./app/database/tables.sql").toString()),
-    (err, res) => {
-      if (err) throw err;
+  // connection.query(fs.readFileSync("./app/database/tables.sql").toString()),
+  //   (err, res) => {
+  //     if (err) throw err;
 
-      console.log("Successfully created tables in the database.");
-    };
+  //     console.log("Successfully created tables in the database.");
+  //   };
+
+  // connection.query(
+  //   fs.readFileSync("./app/database/foreign.keys.sql").toString()
+  // ),
+  //   (err, res) => {
+  //     if (err) throw err;
+
+  //     console.log("Successfully linked foreign keys in the database.");
+  //   };
 });
 
 module.exports = connection;

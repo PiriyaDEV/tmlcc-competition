@@ -11,36 +11,57 @@ exports.register = (req, res) => {
     });
   }
 
-  let user = req.body;
-
-  user.password = bcrypt.hashSync(user.password, 8);
-  user.role = "user";
-  user.created_at = new Date().getTime();
-  user.updated_at = new Date().getTime();
-
-  User.create(user, (err, result) => {
+  User.getCount((err, count) => {
     if (err) {
       return res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the new user!",
+          err.message ||
+          "Some error occurred while getting the number of users!",
       });
     }
 
-    let token = jwt.sign(
-      {
-        username: result.username,
+    count++;
+    count = count.toString();
+
+    let user = req.body;
+
+    user.user;
+    user.user_id = "US" + count.padStart(6, "0");
+    user.email = user.email.toLowerCase();
+    user.password = bcrypt.hashSync(user.password, 8);
+    user.role = "user";
+    user.lastLogin = new Date().getTime();
+    user.created_at = new Date().getTime();
+    user.updated_at = new Date().getTime();
+
+    User.create(user, (err, result) => {
+      if (err) {
+        return res.status(500).send({
+          message:
+            err.message || "Some error occurred while creating the new user!",
+        });
+      }
+
+      let token = jwt.sign(
+        {
+          user_id: result.user_id,
+          displayName: result.displayName,
+          role: result.role,
+          lastLogin: result.lastLogin,
+        },
+        authConfig.secretKey,
+        { expiresIn: 86400 }
+      );
+
+      res.cookie("user", token, { httpOnly: true, maxAge: 900000 });
+
+      return res.status(200).send({
+        user_id: result.user_id,
+        displayName: result.displayName,
         role: result.role,
-      },
-      authConfig.secretKey,
-      { expiresIn: 86400 }
-    );
-
-    res.cookie("user", token, { httpOnly: true, maxAge: 900000 });
-
-    return res.status(200).send({
-      username: result.username,
-      role: result.role,
-      token: token,
+        lastLogin: result.lastLogin,
+        token: token,
+      });
     });
   });
 };
@@ -54,7 +75,9 @@ exports.login = (req, res) => {
 
   let user = req.body;
 
-  User.findByUsername(user, (err, result) => {
+  user.email = user.email.toLowerCase();
+
+  User.findByEmail(user, (err, result) => {
     if (err) {
       return res.status(500).send({
         message: err.message || "Some error occurred while finding the user!",
@@ -62,30 +85,46 @@ exports.login = (req, res) => {
     }
 
     if (!result.isFound) {
-      return res.status(200).send({
+      return res.status(401).send({
         message: "User not found!",
       });
     }
 
     if (bcrypt.compareSync(user.password, result.password)) {
-      let token = jwt.sign(
-        {
-          username: result.username,
-          role: result.role,
-        },
-        authConfig.secretKey,
-        { expiresIn: 86400 }
+      User.update(
+        { user_id: result.user_id, lastLogin: new Date().getTime() },
+        (err, update_result) => {
+          if (err) {
+            return res.status(500).send({
+              message:
+                err.message || "Some error occurred while updating user data!",
+            });
+          }
+
+          let token = jwt.sign(
+            {
+              user_id: result.user_id,
+              displayName: result.displayName,
+              role: result.role,
+              lastLogin: update_result.lastLogin,
+            },
+            authConfig.secretKey,
+            { expiresIn: 86400 }
+          );
+
+          res.cookie("user", token, { httpOnly: true, maxAge: 900000 });
+
+          return res.status(200).send({
+            user_id: result.user_id,
+            displayName: result.displayName,
+            role: result.role,
+            lastLogin: update_result.lastLogin,
+            token: token,
+          });
+        }
       );
-
-      res.cookie("user", token, { httpOnly: true, maxAge: 900000 });
-
-      return res.status(200).send({
-        username: result.username,
-        role: result.role,
-        token: token,
-      });
     } else {
-      return res.status(200).send({
+      return res.status(401).send({
         message: "Invalid password!",
       });
     }
