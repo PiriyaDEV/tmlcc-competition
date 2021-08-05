@@ -1,35 +1,37 @@
-import axios from "axios";
+import http from "./../http-common";
 import authHeader from "./auth-header";
-const PORT = require("../config/port.config").PORT;
-
-const URL = `${PORT}/api/auth/`;
 
 class AuthService {
   async register(user) {
-    const res = await axios.post(URL + "register", user, {
+    return await http.post("/auth/register", user, {
       headers: authHeader(),
+    }).then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return error.response;
     });
-
-    if (res.data.token) {
-      localStorage.setItem("user", res.data.token, { expires: 1 });
-      return res;
-    }
   }
 
   async login(user) {
-    const res = await axios.post(URL + "login", user, {
-      headers: authHeader(),
-    });
-
-    if (res.data.token) {
-      localStorage.setItem("user", res.data.token, { expires: 1 });
-    }
-
-    return res;
+    return await http
+      .post("/auth/login", user, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        if (response.data.token) {
+          localStorage.setItem("accessToken", response.data.token, { expires: 1 });
+          localStorage.setItem("currentUser", JSON.stringify(response.data), { expires: 1 });
+        }
+        return response;
+      })
+      .catch((error) => {
+        return error.response;
+      });
   }
 
   async logout() {
-    localStorage.removeItem("user");
+    localStorage.removeItem("accessToken");
   }
 }
 
