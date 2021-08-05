@@ -1,6 +1,7 @@
 const fs = require("fs");
 const mysql = require("mysql");
-const dbConfig = require("../config/db.config");
+
+const dbConfig = require("./../config/db.config");
 
 const connection = mysql.createConnection({
   host: dbConfig.HOST,
@@ -11,23 +12,28 @@ const connection = mysql.createConnection({
   multipleStatements: dbConfig.multipleStatements,
 });
 
-connection.connect((error) => {
-  if (error) throw error;
+connection.connect((err) => {
+  if (err) throw err;
 
   console.log(
     `Successfully connected to ${dbConfig.DB} database on port ${dbConfig.PORT}.`
   );
 
-  const tables = fs.readFileSync("./app/database/tables.sql").toString();
-  connection.query(tables),
-    (err, res) => {
-      if (err) {
-        console.log("Error: ", err);
-        return;
-      }
+  // connection.query(fs.readFileSync("./app/database/tables.sql").toString()),
+  //   (err, res) => {
+  //     if (err) throw err;
 
-      console.log("Successfully created tables in database.");
-    };
+  //     console.log("Successfully created tables in the database.");
+  //   };
+
+  // connection.query(
+  //   fs.readFileSync("./app/database/foreign.keys.sql").toString()
+  // ),
+  //   (err, res) => {
+  //     if (err) throw err;
+
+  //     console.log("Successfully linked foreign keys in the database.");
+  //   };
 });
 
 module.exports = connection;
