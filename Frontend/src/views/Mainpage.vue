@@ -6,7 +6,7 @@
         <div>
           <Home />
           <Information />
-          <NavigationBar id="navigation-bar-fixed" />
+          <NavigationBar :page="`mainpage`" id="navigation-bar-fixed" />
         </div>
       </div>
     </div>
@@ -15,11 +15,11 @@
 </template>
 
 <script>
-import Navbar from "../components/Navbar.vue";
+import Navbar from "../components/Menu/Navbar.vue";
 import Home from "../components/Mainpage/Home.vue";
 import Information from "../components/Mainpage/Information.vue";
-import Footer from "../components/Footer.vue";
-import NavigationBar from "../components/NavigationBar.vue";
+import Footer from "../components/Mainpage/Footer.vue";
+import NavigationBar from "../components/Menu/NavigationBar.vue";
 export default {
   components: {
     Navbar,

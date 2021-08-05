@@ -10,11 +10,22 @@
           <h1 class="header-c">สมัครเข้าร่วมการแข่งขัน</h1>
 
           <div>
-            <AgreementBox v-show="box == `agreement`" @pageReturn="pageReturn" />
+            <AgreementBox
+              v-show="box == `agreement`"
+              @pageReturn="pageReturn"
+            />
 
-            <ApplicantBox v-show="box == `applicant`" :user="user" @pageReturn="pageReturn" />
+            <ApplicantBox
+              v-show="box == `applicant`"
+              :user="user"
+              @pageReturn="pageReturn"
+            />
 
-            <SystemInfo v-show="box == `info`" :user="user" @pageReturn="pageReturn" />
+            <SystemInfo
+              v-show="box == `info`"
+              :user="user"
+              @pageReturn="pageReturn"
+            />
 
             <!-- <ApplicantBox /> -->
           </div>
@@ -25,7 +36,7 @@
 </template>
 
 <script>
-import Navbar from "../components/Navbar.vue";
+import Navbar from "../components/Menu/Navbar.vue";
 import AgreementBox from "../components/Register/AgreementBox.vue";
 import ApplicantBox from "../components/Register/ApplicantBox.vue";
 import SystemInfo from "../components/Register/SystemInfo.vue";
@@ -35,14 +46,14 @@ export default {
   data() {
     return {
       box: "agreement",
-      navbarPage: "register",
+      navbarPage: "register1",
       user: new User({
         titleName: "นาย",
         education: "มัธยมศึกษา",
         hasProgSkill: false,
         hasChemSkill: false,
         hasMachineLSkill: false,
-        hasOtherSkill: false
+        hasOtherSkill: false,
       }),
     };
   },
@@ -55,10 +66,9 @@ export default {
   methods: {
     pageReturn(value) {
       this.box = value;
-      if(value !== "agreement") {
-        this.navbarPage = "login";
-      }
-      else  this.navbarPage = "register";
+      if (value != "agreement") {
+        this.navbarPage = "register2";
+      } else this.navbarPage = "register1";
     },
   },
 };
@@ -82,7 +92,7 @@ export default {
   align-items: center;
 }
 
-#register-container > div{
+#register-container > div {
   width: 100%;
 }
 

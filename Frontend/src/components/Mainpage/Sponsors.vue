@@ -46,6 +46,10 @@ export default {};
   padding: 0px 20px;
 }
 
+#sponsors > div > img {
+  cursor: pointer;
+}
+
 /* sponsors logo */
 #kmutt-logo {
   width: 172px;

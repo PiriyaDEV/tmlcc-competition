@@ -21,6 +21,12 @@
             <h1 class="text-normal">ไม่มี</h1>
           </div>
         </div>
+        <p
+          v-if="isInvalid.hasTeam"
+          class="text-normal orange-text error-message"
+        >
+          * โปรดระบุคำตอบ
+        </p>
 
         <div id="note">
           <h1 class="text-normal purple-text">หมายเหตุ :</h1>
@@ -47,71 +53,166 @@
 
         <div>
           <h1 class="text-normal">Display Name : สำหรับแสดงผลในระบบ</h1>
-          <input v-model="user.displayName" class="input-box text-normal" type="text" autocomplete="off" />
+          <input
+            v-model="user.displayName"
+            :class="cssDisplayName"
+            type="text"
+            autocomplete="off"
+          />
         </div>
+        <p
+          v-if="isInvalid.displayName"
+          class="text-normal orange-text error-message"
+        >
+          * โปรดระบุชื่อผู้ใช้งาน
+        </p>
 
         <div>
           <h1 class="text-normal">Password</h1>
           <input
             v-model="user.password"
-            class="input-box text-normal"
+            :class="cssPassword"
             type="password"
             autocomplete="new-password"
           />
         </div>
+        <p
+          v-if="isInvalid.password"
+          class="text-normal orange-text error-message"
+        >
+          * โปรดตั้งรหัสผ่าน
+        </p>
 
         <div>
           <h1 class="text-normal">Re-enter Password</h1>
           <input
             v-model="confirmPassword"
-            class="input-box text-normal"
+            :class="cssConfirmPassword"
             type="password"
             autocomplete="new-password"
           />
         </div>
+        <p
+          v-if="isInvalid.confirmPassword"
+          class="text-normal orange-text error-message"
+        >
+          * โปรดยืนยันรหัสผ่าน
+        </p>
       </div>
     </div>
 
     <hr class="bar-color" />
 
     <div class="center">
-      <button @click="register()" class="btn-white">ยืนยันข้อมูล</button>
+      <button @click="register()" :class="cssBtn">ยืนยันข้อมูล</button>
     </div>
   </div>
 </template>
 
 <script>
 import AuthService from "../../services/auth.service";
+import User from "../../models/user.model";
 
 export default {
   props: ["user"],
   data() {
     return {
-      confirmPassword: ""
-    }
+      isFormFilled: false,
+      confirmPassword: "",
+      isInvalid: {
+        ...new User(false),
+        confirmPassword: false,
+      },
+    };
+  },
+  computed: {
+    cssBtn() {
+      return this.checkForm() ? "btn-white" : "btn-grey";
+    },
+    cssDisplayName() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.isInvalid.displayName) {
+        return error;
+      }
+      return complete;
+    },
+    cssPassword() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.isInvalid.password) {
+        return error;
+      }
+      return complete;
+    },
+    cssConfirmPassword() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.isInvalid.confirmPassword) {
+        return error;
+      }
+      return complete;
+    },
   },
   watch: {
-    'user.hasTeam': function() {
-      if(this.user.hasTeam == "true") {
+    "user.hasTeam": function () {
+      if (this.user.hasTeam == "true") {
         this.user.hasTeam = true;
-      }
-      if (this.user.hasTeam == "false") {
+      } else if (this.user.hasTeam == "false") {
         this.user.hasTeam = false;
       }
-    }
+    },
   },
   methods: {
     applicantClick() {
       this.$emit("pageReturn", "applicant");
     },
     register() {
-      AuthService.register(this.user).then((res) => {  
-        if (res.status == 200) {
-          console.log("Register success!");
-        } else {
-          console.log("Something wrong!");
-        }
-      });
+      if (this.validateForm()) {
+        AuthService.register(this.user).then((res) => {
+          if (res.status == 200) {
+            console.log("Register success!");
+            this.$router.push("/login");
+          } else {
+            console.log("Something wrong!");
+          }
+        });
+      }
+    },
+    checkForm() {
+      let check =
+        this.user.hasTeam == null
+          ? false
+          : !this.user.displayName
+          ? false
+          : !this.user.password
+          ? false
+          : !this.confirmPassword
+          ? false
+          : true;
+
+      return check;
+    },
+    validateForm() {
+      this.isFormFilled = true;
+      if (this.user.hasTeam == null) {
+        this.isInvalid.hasTeam = true;
+        this.isFormFilled = false;
+      }
+      if (!this.user.displayName) {
+        this.isInvalid.displayName = true;
+        this.isFormFilled = false;
+      }
+      if (!this.user.password) {
+        this.isInvalid.password = true;
+        this.isFormFilled = false;
+      }
+      if (!this.confirmPassword) {
+        this.isInvalid.confirmPassword = true;
+        this.isFormFilled = false;
+      }
+
+      return this.isFormFilled;
     },
   },
 };
@@ -158,7 +259,8 @@ input[type="password"] {
   text-align: left;
 }
 
-.btn-white {
+.btn-white,
+.btn-grey {
   margin-top: 20px;
 }
 

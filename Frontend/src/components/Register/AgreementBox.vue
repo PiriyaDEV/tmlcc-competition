@@ -48,7 +48,7 @@
           ผู้เข้าแข่งขันจะต้องได้รับอนุญาตเป็นลายลักษณ์อักษรจากคณะกรรมการการจัดงานเท่านั้น
         </li>
         <li>
-          คณะกรรกการจัดการแข่งขันขอสงวนสิทธิ์ในอันที่จะเพิ่มเติมเปลี่ยนแปลง
+          คณะกรรมการจัดการแข่งขันขอสงวนสิทธิ์ในอันที่จะเพิ่มเติมเปลี่ยนแปลง
           แก้ไข หรือยกเลิกข้อตกลงและเงื่อนไขใด ๆ ทั้งหมดนี้
           ตลอดจนรูปแบบการแข่งขันและของรางวัล โดยไม่ต้องแจ้งให้ทราบล่วงหน้า
         </li>
@@ -69,7 +69,9 @@
     </div>
 
     <div class="center">
-      <button v-if="agree" @click="register()" class="btn-white">ลงทะเบียน</button>
+      <button v-if="agree" @click="register()" class="btn-white">
+        ลงทะเบียน
+      </button>
       <button v-else class="btn-grey">ลงทะเบียน</button>
     </div>
   </div>
@@ -79,13 +81,13 @@
 export default {
   data() {
     return {
-      agree: false
-    }
+      agree: false,
+    };
   },
   methods: {
     register() {
-      this.$emit("pageReturn","applicant")
-    }
+      this.$emit("pageReturn", "applicant");
+    },
   },
 };
 </script>

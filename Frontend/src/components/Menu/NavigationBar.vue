@@ -2,8 +2,11 @@
   <div id="navigation-bar">
     <ul id="nav-menu">
       <li @click="clickSelected()" class="text-normal">
-        <router-link to="/#cp-info">โจทย์การแข่งขัน</router-link>
+        <router-link v-if="page != `mainpage`" to="/#cp-info"
+          >โจทย์การแข่งขัน</router-link
+        >
         <a
+          v-if="page == `mainpage`"
           href="#cp-info"
           v-smooth-scroll="{
             duration: 1000,
@@ -14,7 +17,11 @@
         >
       </li>
       <li @click="clickSelected()" class="text-normal">
+        <router-link v-if="page != `mainpage`" to="/#recieve-info"
+          >สิ่งที่ผู้เข้าแข่งขันจะได้รับ</router-link
+        >
         <a
+          v-if="page == `mainpage`"
           href="#recieve-info"
           v-smooth-scroll="{
             duration: 1000,
@@ -25,7 +32,11 @@
         >
       </li>
       <li @click="clickSelected()" class="text-normal">
+        <router-link v-if="page != `mainpage`" to="/#event-info"
+          >กำหนดการ</router-link
+        >
         <a
+          v-if="page == `mainpage`"
           href="#event-info"
           v-smooth-scroll="{
             duration: 1000,
@@ -36,7 +47,11 @@
         >
       </li>
       <li @click="clickSelected()" class="text-normal">
+        <router-link v-if="page != `mainpage`" to="/#timeline-info"
+          >ไทม์ไลน์การแข่งขัน</router-link
+        >
         <a
+          v-if="page == `mainpage`"
           href="#timeline-info"
           v-smooth-scroll="{
             duration: 1000,
@@ -47,7 +62,11 @@
         >
       </li>
       <li @click="clickSelected()" class="text-normal">
+        <router-link v-if="page != `mainpage`" to="/#users-info"
+          >คุณสมบัติผู้เข้าแข่งขัน</router-link
+        >
         <a
+          v-if="page == `mainpage`"
           href="#users-info"
           v-smooth-scroll="{
             duration: 1000,
@@ -58,7 +77,11 @@
         >
       </li>
       <li @click="clickSelected()" class="text-normal">
+        <router-link v-if="page != `mainpage`" to="/#rules-info"
+          >เกณฑ์การตัดสิน</router-link
+        >
         <a
+          v-if="page == `mainpage`"
           href="#rules-info"
           v-smooth-scroll="{
             duration: 1000,
@@ -69,7 +92,11 @@
         >
       </li>
       <li @click="clickSelected()" class="text-normal">
+        <router-link v-if="page != `mainpage`" to="/#reward-info"
+          >รางวัลทั้งหมด</router-link
+        >
         <a
+          v-if="page == `mainpage`"
           href="#reward-info"
           v-smooth-scroll="{
             duration: 1000,

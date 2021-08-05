@@ -114,6 +114,15 @@ input[type="text"]:disabled {
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
 }
 
+.header-ms {
+  font-size: 3em;
+  margin: 0;
+  text-align: center;
+  font-weight: 700;
+  color: #303030;
+  font-family: "IBM-PLEX-THAI-SEMIBOLD";
+}
+
 .header-s {
   font-size: 2.5em;
   margin: 0;
@@ -138,8 +147,8 @@ input[type="text"]:disabled {
   color: #303030;
 }
 
-.rectangle-bar{
-  width:12px;
+.rectangle-bar {
+  width: 12px;
 }
 
 .input-box {
@@ -226,19 +235,20 @@ select:-webkit-autofill:focus {
   color: #c4c4c4;
 }
 
-.blue-text{
-  color: #2F65AF !important;
+.blue-text {
+  color: #2f65af !important;
 }
 
-.orange-text{
+.orange-text {
   color: #f07821;
 }
 
-.error-message{
+.error-message {
   font-size: 1.75em;
+  margin-bottom: 10px;
 }
 
-.error-input-box{
+.error-input-box {
   border: 1px solid #f07821 !important;
 }
 
@@ -303,10 +313,17 @@ select:-webkit-autofill:focus {
   border-radius: 3px;
 }
 
-.bar-color-o{
-  color: #F07821;
-  background-color: #F07821;
-  border: 1.5px solid #F07821;
+.bar-color-p {
+  color: #764a97;
+  background-color: #764a97;
+  border: 1.5px solid #764a97;
+  border-radius: 3px;
+}
+
+.bar-color-o {
+  color: #f07821;
+  background-color: #f07821;
+  border: 1.5px solid #f07821;
   border-radius: 3px;
 }
 

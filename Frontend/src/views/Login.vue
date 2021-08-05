@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import Navbar from "../components/Navbar.vue";
+import Navbar from "../components/Menu/Navbar.vue";
 import AuthService from "../services/auth.service";
 
 export default {
@@ -106,9 +106,10 @@ export default {
       AuthService.login(this.user).then((res) => {
         this.invalidUser = false;
         this.invalidPassword = false;
-        
+
         if (res.status == 200) {
           console.log("Logged in!");
+          this.$router.push("/dashboard");
         } else if (res.status == 403 && res.data.message == "User not found!") {
           this.invalidUser = true;
           console.log(res.data.message);
@@ -172,9 +173,5 @@ export default {
 .login-below-text {
   margin-top: 15px;
   text-align: center;
-}
-
-.error-message {
-  margin-bottom: 10px;
 }
 </style>

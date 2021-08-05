@@ -4,45 +4,50 @@
       <div class="navbar-container">
         <div id="nav-left">
           <img
-            id="tmlcc-logo"
-            src="../assets/Navbar/TMLCC.png"
+            id="tmlcc-icon"
+            src="../../assets/Navbar/TMLCC_color.png"
             alt=""
             @click="mainpage()"
-            style="cursir: pointer"
+          />
+          <img
+            id="tmlcc-logo"
+            src="../../assets/Navbar/TMLCC.png"
+            alt=""
+            @click="mainpage()"
           />
           <div class="center">
-            <p class="text-normal nav-text" @click="toggleShowMenu()" >ข้อมูลการแข่งขัน</p>
-            <img
-              id="dropdown-icon"
-              src="../assets/Navbar/dropdown.png"
-              alt=""
-              @click="toggleShowMenu()"
-            />
-            <NavigationBar :class="SlideMenu" @click="click" id="navigation-bar" :page="page"/>
+            <p class="text-normal nav-text" @click="toggleShowMenu()">
+              หน้าหลักการแข่งขัน
+            </p>
+          </div>
+        </div>
+        <div id="nav-center">
+          <div class="center">
+            <p class="text-normal nav-text">สมาชิกของระบบ</p>
+            <p class="text-normal nav-text">File Manament</p>
           </div>
         </div>
         <div id="nav-right">
-          <p class="text-normal nav-text">เกี่ยวกับโครงการ</p>
-          <p v-if="page == `login`" class="text-normal nav-text">Q&A</p>
-          <p v-if="page == `register`" class="text-normal nav-text">
-            Workshops
-          </p>
           <p class="text-normal nav-text">ติดต่อเรา</p>
           <div class="center">
-            <button
-              v-if="page == `login`"
-              @click="registerClick()"
-              class="btn-white"
+            <p
+              class="text-normal display-name nav-text"
+              @click="toggleShowMenu()"
             >
-              ลงทะเบียน
-            </button>
-            <button
-              v-if="page == `register`"
-              @click="loginClick()"
-              class="btn-color"
-            >
-              เข้าสู่ระบบ
-            </button>
+              DisplayName
+            </p>
+            <img
+              id="dropdown-icon"
+              src="../../assets/Navbar/dropdown.png"
+              alt=""
+              @click="toggleShowMenu()"
+            />
+            <NavigationBar
+              :class="SlideMenu"
+              @click="click"
+              id="navigation-bar"
+              :page="page"
+            />
           </div>
         </div>
       </div>
@@ -51,18 +56,13 @@
 </template>
 
 <script>
-
-import NavigationBar from "../components/NavigationBar.vue";
-
 export default {
-  components: {
-    NavigationBar,
-  },
+  components: {},
   props: ["page"],
   data() {
     return {
       showMenu: false,
-    }
+    };
   },
   methods: {
     mainpage() {
@@ -75,27 +75,27 @@ export default {
       this.$router.push("/login");
     },
     toggleShowMenu() {
-        this.showMenu = !this.showMenu;
-      },
+      this.showMenu = !this.showMenu;
+    },
     click() {
-        this.showMenu = !this.showMenu
+      this.showMenu = !this.showMenu;
     },
   },
   computed: {
-    SlideMenu(){
-      let down = "open"
-      let up = "closed"
-      if(this.showMenu == true) {
-        return down
+    SlideMenu() {
+      let down = "open";
+      let up = "closed";
+      if (this.showMenu == true) {
+        return down;
       }
-      return up
-    }
-  }
+      return up;
+    },
+  },
 };
 </script>
 
 <style scoped>
-#navbar{
+#navbar {
   position: relative;
 }
 #navbar-menu {
@@ -111,7 +111,8 @@ export default {
 }
 
 #nav-left,
-#nav-right {
+#nav-right,
+#nav-center {
   display: flex;
   align-items: center;
 }
@@ -127,9 +128,10 @@ export default {
   cursor: pointer;
 }
 
-.btn-white,
-.btn-color {
-  margin-left: 10px;
+#tmlcc-icon {
+  width: 74px;
+  padding-right: 5px;
+  cursor: pointer;
 }
 
 #dropdown-icon {
@@ -137,7 +139,7 @@ export default {
   cursor: pointer;
 }
 
-#navigation-bar {
+/* #navigation-bar {
   position: absolute;
   top: 75px;
 }
@@ -158,5 +160,12 @@ export default {
   overflow: hidden;
   transition: all 0.5s ease;
   will-change: transform;
+} */
+
+.display-name {
+  color: #764a97 !important;
+  font-weight: 700;
+  font-family: "IBM-PLEX-THAI-SEMIBOLD";
+  padding-right: 6px;
 }
 </style>

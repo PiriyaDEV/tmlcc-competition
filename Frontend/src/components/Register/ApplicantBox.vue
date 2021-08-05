@@ -5,8 +5,8 @@
       <h1 class="text-normal purple-text">เงื่อนไขการสมัคร</h1>
     </div>
 
-    <div class="center page-change-right">
-      <h1 class="text-normal l-grey-text">ข้อมูลผู้ใช้งานระบบ</h1>
+    <div @click="registerNext()" class="center page-change-right">
+      <h1 :class="cssNextT">ข้อมูลผู้ใช้งานระบบ</h1>
       <i class="fa fa-angle-right" aria-hidden="true"></i>
     </div>
 
@@ -20,28 +20,38 @@
           v-model="user.titleName"
           name="title"
           id="title"
-          class="input-box text-normal"
+          :class="cssTitleName"
         >
           <option value="นาย">นาย</option>
           <option value="นาง">นาง</option>
           <option value="นางสาว">นางสาว</option>
         </select>
+        <p
+          v-if="isInvalid.titleName"
+          class="text-normal orange-text error-message"
+        >
+          * โปรดระบุคำนำหน้า
+        </p>
       </div>
       <div>
         <h1 class="text-normal">ชื่อ</h1>
-        <input
-          v-model="user.firstName"
-          class="input-box text-normal"
-          type="text"
-        />
+        <input v-model="user.firstName" :class="cssFirstName" type="text" />
+        <p
+          v-if="isInvalid.firstName"
+          class="text-normal orange-text error-message"
+        >
+          * โปรดระบุชื่อ
+        </p>
       </div>
       <div>
         <h1 class="text-normal">นามสกุล</h1>
-        <input
-          v-model="user.lastName"
-          class="input-box text-normal"
-          type="text"
-        />
+        <input v-model="user.lastName" :class="cssLastName" type="text" />
+        <p
+          v-if="isInvalid.lastName"
+          class="text-normal orange-text error-message"
+        >
+          * โปรดระบุนามสกุล
+        </p>
       </div>
     </div>
 
@@ -52,21 +62,29 @@
           v-model="user.education"
           name="education"
           id="education"
-          class="input-box text-normal"
+          :class="cssEducation"
         >
           <option value="มัธยมศึกษา">มัธยมศึกษา</option>
           <option value="ปริญญาตรี">ปริญญาตรี</option>
           <option value="ปริญญาโท">ปริญญาโท</option>
           <option value="ปริญญาเอก">ปริญญาเอก</option>
         </select>
+        <p
+          v-if="isInvalid.education"
+          class="text-normal orange-text error-message"
+        >
+          * โปรดระบุระดับการศึกษา
+        </p>
       </div>
       <div>
         <h1 class="text-normal">สถานศึกษา</h1>
-        <input
-          v-model="user.institution"
-          class="input-box text-normal"
-          type="text"
-        />
+        <input v-model="user.institution" :class="cssInstitution" type="text" />
+        <p
+          v-if="isInvalid.institution"
+          class="text-normal orange-text error-message"
+        >
+          * โปรดระบุสถานศึกษา
+        </p>
       </div>
     </div>
 
@@ -80,28 +98,38 @@
         </h1>
         <input
           v-model="user.organization"
-          class="input-box text-normal"
+          :class="cssOrganization"
           type="text"
         />
+        <p
+          v-if="isInvalid.organization"
+          class="text-normal orange-text error-message"
+        >
+          * โปรดระบุสังกัด
+        </p>
       </div>
     </div>
 
     <div id="address-grid" class="center">
       <div>
         <h1 class="text-normal">ที่อยู่</h1>
-        <input
-          v-model="user.address"
-          class="input-box text-normal"
-          type="text"
-        />
+        <input v-model="user.address" :class="cssAddress" type="text" />
+        <p
+          v-if="isInvalid.address"
+          class="text-normal orange-text error-message"
+        >
+          * โปรดระบุที่อยู่
+        </p>
       </div>
       <div>
         <h1 class="text-normal">ประเทศ</h1>
-        <input
-          v-model="user.country"
-          class="input-box text-normal"
-          type="text"
-        />
+        <input v-model="user.country" :class="cssCountry" type="text" />
+        <p
+          v-if="isInvalid.country"
+          class="text-normal orange-text error-message"
+        >
+          * โปรดระบุประเทศ
+        </p>
       </div>
     </div>
 
@@ -110,11 +138,17 @@
     <div id="contact-grid" class="center">
       <div>
         <h1 class="text-normal">เบอร์โทรศัพท์</h1>
-        <input v-model="user.phone" class="input-box text-normal" type="text" />
+        <input v-model="user.phone" :class="cssPhone" type="text" />
+        <p v-if="isInvalid.phone" class="text-normal orange-text error-message">
+          * โปรดระบุเบอร์โทรศัพท์
+        </p>
       </div>
       <div>
-        <h1 class="text-normal">Email</h1>
-        <input v-model="user.email" class="input-box text-normal" type="text" />
+        <h1 class="text-normal">E-mail</h1>
+        <input v-model="user.email" :class="cssEmail" type="text" />
+        <p v-if="isInvalid.email" class="text-normal orange-text error-message">
+          * โปรดระบุ E-mail
+        </p>
       </div>
     </div>
 
@@ -129,9 +163,12 @@
           id="work"
           cols="30"
           rows="5"
-          class="input-box text-normal"
+          :class="cssWorks"
           placeholder="Publication/github/ อื่นๆ"
         ></textarea>
+        <p v-if="isInvalid.works" class="text-normal orange-text error-message">
+          * โปรดระบุผลงานที่เคยทำ
+        </p>
       </div>
     </div>
 
@@ -142,21 +179,39 @@
         </h1>
         <div id="invite-checkbox">
           <div>
-            <input v-model="user.isWorkInterest" value="false" name="workInterest" type="radio" />
+            <input
+              v-model="user.isWorkInterest"
+              value="false"
+              name="workInterest"
+              type="radio"
+            />
             <label class="text-normal">ไม่สนใจ</label>
           </div>
 
           <div>
-            <input v-model="user.isWorkInterest" value="true" name="workInterest"  type="radio" />
+            <input
+              v-model="user.isWorkInterest"
+              value="true"
+              name="workInterest"
+              type="radio"
+            />
             <label class="text-normal">สนใจ</label>
           </div>
 
           <input
+            disabled
+            id="workInterestBox"
             v-model="user.interestField"
-            class="input-box text-normal"
+            :class="cssWorkInterest"
             type="text"
             placeholder="โปรดระบุสาขาที่สนใจ"
           />
+          <p
+            v-if="isInvalid.workInterest"
+            class="text-normal orange-text error-message"
+          >
+            * โปรดระบุความสนใจ
+          </p>
         </div>
       </div>
     </div>
@@ -165,17 +220,17 @@
 
     <div id="skill-grid">
       <div>
-        <h1 class="text-normal">
-          หากมีข้อเสนอโครงการให้เข้าร่วมทำงาน/ฝึกงานกับบริษัท หรือ องค์กร
-        </h1>
+        <h1 class="text-normal">คิดว่าตนเองมีทักษะ</h1>
         <div class="skill-checkbox">
           <div>
-            <input @click="programClick()" v-model="user.hasProgSkill" type="checkbox" />
+            <input v-model="user.hasProgSkill" type="checkbox" />
             <label class="text-normal">Programming</label>
           </div>
 
           <div>
             <input
+              disabled
+              id="subProgramBox1"
               v-model="user.progSkillLevel"
               value="Beginner"
               type="radio"
@@ -186,6 +241,8 @@
 
           <div>
             <input
+              disabled
+              id="subProgramBox2"
               v-model="user.progSkillLevel"
               value="Intermediate"
               type="radio"
@@ -196,6 +253,8 @@
 
           <div>
             <input
+              disabled
+              id="subProgramBox3"
               v-model="user.progSkillLevel"
               value="Influent"
               type="radio"
@@ -205,20 +264,24 @@
           </div>
 
           <input
+            disabled
+            id="programBox"
             v-model="user.progSkillList"
-            class="input-box text-normal"
+            :class="cssProgSkill"
             type="text"
             placeholder="ระบุภาษา โดยใช้ , กั้น"
           />
         </div>
         <div class="skill-checkbox">
           <div>
-            <input v-model="user.hasChemSkill" @click="chemClick()" type="checkbox" />
+            <input v-model="user.hasChemSkill" type="checkbox" />
             <label class="text-normal">Chemistry</label>
           </div>
 
           <div>
             <input
+              disabled
+              id="subChemBox1"
               v-model="user.chemSkillLevel"
               value="Beginner"
               type="radio"
@@ -229,6 +292,8 @@
 
           <div>
             <input
+              disabled
+              id="subChemBox2"
               v-model="user.chemSkillLevel"
               value="Intermediate"
               type="radio"
@@ -239,6 +304,8 @@
 
           <div>
             <input
+              disabled
+              id="subChemBox3"
               v-model="user.chemSkillLevel"
               value="Influent"
               type="radio"
@@ -248,8 +315,10 @@
           </div>
 
           <input
+            disabled
+            id="chemBox"
             v-model="user.chemSkillList"
-            class="input-box text-normal"
+            :class="cssChemSkill"
             type="text"
             placeholder="ระบุเรื่องที่เชี่ยวชาญ โดยใช้ , กั้น"
           />
@@ -257,12 +326,14 @@
 
         <div class="skill-checkbox">
           <div>
-            <input v-model="user.hasMachineLSkill" @click="machineClick()" type="checkbox" />
+            <input v-model="user.hasMachineLSkill" type="checkbox" />
             <label class="text-normal">Machine Learning</label>
           </div>
 
           <div>
             <input
+              disabled
+              id="subMachineBox1"
               v-model="user.machineLSkillLevel"
               value="Beginner"
               type="radio"
@@ -273,6 +344,8 @@
 
           <div>
             <input
+              disabled
+              id="subMachineBox2"
               v-model="user.machineLSkillLevel"
               value="Intermediate"
               type="radio"
@@ -283,6 +356,8 @@
 
           <div>
             <input
+              disabled
+              id="subMachineBox3"
               v-model="user.machineLSkillLevel"
               value="Influent"
               type="radio"
@@ -292,8 +367,10 @@
           </div>
 
           <input
+            disabled
+            id="machineBox"
             v-model="user.machineLSkillList"
-            class="input-box text-normal"
+            :class="cssMachineLSkill"
             type="text"
             placeholder="ระบุเรื่องที่เชี่ยวชาญ โดยใช้ , กั้น"
           />
@@ -301,16 +378,24 @@
 
         <div class="skill-etc-checkbox">
           <div>
-            <input v-model="user.hasOtherSkill" @click="otherClick()" type="checkbox" />
+            <input v-model="user.hasOtherSkill" type="checkbox" />
             <label class="text-normal">อื่นๆ (โปรดระบุ)</label>
           </div>
 
           <input
+            disabled
+            id="otherBox"
             v-model="user.otherSkillList"
-            class="input-box text-normal"
+            :class="cssOtherSkill"
             type="text"
             placeholder="ระบุเรื่องที่เชี่ยวชาญ โดยใช้ , กั้น"
           />
+          <p
+            v-if="isInvalid.skill"
+            class="text-normal orange-text error-message"
+          >
+            * โปรดระบุเรื่องที่เชี่ยวชาญ
+          </p>
         </div>
       </div>
     </div>
@@ -318,74 +403,397 @@
     <hr class="bar-color" />
 
     <div class="center">
-      <button @click="registerNext()" class="btn-white">ไปยังหน้าต่อไป</button>
+      <button @click="registerNext()" :class="cssNextB">ไปยังหน้าต่อไป</button>
     </div>
   </div>
 </template>
 
 <script>
-
+import User from "../../models/user.model";
 
 export default {
   props: ["user"],
   data() {
     return {
-      isAllDataValidated: false
-    }
+      isFormFilled: false,
+      isInvalid: {
+        ...new User(false),
+        workInterest: false,
+        skill: false,
+      },
+    };
+  },
+  computed: {
+    cssNextT() {
+      return this.checkForm()
+        ? "text-normal purple-text"
+        : "text-normal l-grey-text";
+    },
+    cssNextB() {
+      return this.checkForm() ? "btn-white" : "btn-grey";
+    },
+    cssTitleName() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.isInvalid.titleName) {
+        return error;
+      }
+      return complete;
+    },
+    cssFirstName() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.isInvalid.firstName) {
+        return error;
+      }
+      return complete;
+    },
+    cssLastName() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.isInvalid.lastName) {
+        return error;
+      }
+      return complete;
+    },
+    cssEducation() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.isInvalid.education) {
+        return error;
+      }
+      return complete;
+    },
+    cssInstitution() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.isInvalid.institution) {
+        return error;
+      }
+      return complete;
+    },
+    cssOrganization() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.isInvalid.organization) {
+        return error;
+      }
+      return complete;
+    },
+    cssAddress() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.isInvalid.address) {
+        return error;
+      }
+      return complete;
+    },
+    cssCountry() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.isInvalid.country) {
+        return error;
+      }
+      return complete;
+    },
+    cssPhone() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.isInvalid.phone) {
+        return error;
+      }
+      return complete;
+    },
+    cssEmail() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.isInvalid.email) {
+        return error;
+      }
+      return complete;
+    },
+    cssWorks() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.isInvalid.works) {
+        return error;
+      }
+      return complete;
+    },
+    cssWorkInterest() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (
+        this.isInvalid.workInterest &&
+        this.user.isWorkInterest &&
+        !this.user.interestField
+      ) {
+        return error;
+      }
+      return complete;
+    },
+    cssProgSkill() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (
+        this.isInvalid.skill &&
+        this.user.hasProgSkill &&
+        !this.user.progSkillList
+      ) {
+        return error;
+      }
+      return complete;
+    },
+    cssChemSkill() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (
+        this.isInvalid.skill &&
+        this.user.hasChemSkill &&
+        !this.user.chemSkillList
+      ) {
+        return error;
+      }
+      return complete;
+    },
+    cssMachineLSkill() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (
+        this.isInvalid.skill &&
+        this.user.hasMachineLSkill &&
+        !this.user.machineLSkillList
+      ) {
+        return error;
+      }
+      return complete;
+    },
+    cssOtherSkill() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (
+        this.isInvalid.skill &&
+        this.user.hasOtherSkill &&
+        !this.user.otherSkillList
+      ) {
+        return error;
+      }
+      return complete;
+    },
   },
   watch: {
-    'user.isWorkInterest': function() {
-      if(this.user.isWorkInterest == "true") {
+    "user.isWorkInterest": function () {
+      if (this.user.isWorkInterest == "true") {
         this.user.isWorkInterest = true;
-      }
-      if (this.user.isWorkInterest == "false") {
+        document.getElementById("workInterestBox").disabled = false;
+      } else if (this.user.isWorkInterest == "false") {
         this.user.isWorkInterest = false;
+        this.user.interestField = undefined;
+        document.getElementById("workInterestBox").disabled = true;
       }
-    }
+    },
+    "user.hasProgSkill": function () {
+      if (this.user.hasProgSkill) {
+        this.user.progSkillLevel = "Beginner";
+        document.getElementById("programBox").disabled = false;
+        document.getElementById("subProgramBox1").disabled = false;
+        document.getElementById("subProgramBox2").disabled = false;
+        document.getElementById("subProgramBox3").disabled = false;
+      } else {
+        this.user.progSkillLevel = undefined;
+        this.user.progSkillList = undefined;
+        document.getElementById("programBox").disabled = true;
+        document.getElementById("subProgramBox1").disabled = true;
+        document.getElementById("subProgramBox2").disabled = true;
+        document.getElementById("subProgramBox3").disabled = true;
+      }
+    },
+    "user.hasChemSkill": function () {
+      if (this.user.hasChemSkill) {
+        this.user.chemSkillLevel = "Beginner";
+        document.getElementById("chemBox").disabled = false;
+        document.getElementById("subChemBox1").disabled = false;
+        document.getElementById("subChemBox2").disabled = false;
+        document.getElementById("subChemBox3").disabled = false;
+      } else {
+        this.user.chemSkillLevel = undefined;
+        this.user.chemSkillList = undefined;
+        document.getElementById("chemBox").disabled = true;
+        document.getElementById("subChemBox1").disabled = true;
+        document.getElementById("subChemBox2").disabled = true;
+        document.getElementById("subChemBox3").disabled = true;
+      }
+    },
+    "user.hasMachineLSkill": function () {
+      if (this.user.hasMachineLSkill) {
+        this.user.machineLSkillLevel = "Beginner";
+        document.getElementById("machineBox").disabled = false;
+        document.getElementById("subMachineBox1").disabled = false;
+        document.getElementById("subMachineBox2").disabled = false;
+        document.getElementById("subMachineBox3").disabled = false;
+      } else {
+        this.user.machineLSkillLevel = undefined;
+        this.user.machineLSkillList = undefined;
+        document.getElementById("machineBox").disabled = true;
+        document.getElementById("subMachineBox1").disabled = true;
+        document.getElementById("subMachineBox2").disabled = true;
+        document.getElementById("subMachineBox3").disabled = true;
+      }
+    },
+    "user.hasOtherSkill": function () {
+      if (this.user.hasOtherSkill) {
+        document.getElementById("otherBox").disabled = false;
+      } else {
+        this.user.otherSkillList = undefined;
+        document.getElementById("otherBox").disabled = true;
+      }
+    },
   },
   methods: {
     agreementClick() {
       this.$emit("pageReturn", "agreement");
     },
     registerNext() {
-      this.$emit("pageReturn", "info");
-    },
-    programClick() {
-      if(!this.user.hasProgSkill){
-        this.user.progSkillLevel = "Beginner";
-      }
-      if(this.user.hasProgSkill) {
-        this.user.progSkillLevel = undefined
-        this.user.progSkillList = undefined;
+      if (this.validateForm()) {
+        this.$emit("pageReturn", "info");
       }
     },
-    chemClick() {
-      if(!this.user.hasChemSkill){
-        this.user.chemSkillLevel = "Beginner";
-      }
-      if(this.user.hasChemSkill) {
-        this.user.chemSkillLevel = undefined;
-        this.user.chemSkillList = undefined;
-      }
+    checkForm() {
+      let check = !this.user.titleName
+        ? false
+        : !this.user.firstName
+        ? false
+        : !this.user.lastName
+        ? false
+        : !this.user.education
+        ? false
+        : !this.user.institution
+        ? false
+        : !this.user.organization
+        ? false
+        : !this.user.address
+        ? false
+        : !this.user.country
+        ? false
+        : !this.user.phone
+        ? false
+        : !this.user.email
+        ? false
+        : !this.user.works
+        ? false
+        : this.user.isWorkInterest == null
+        ? false
+        : this.user.isWorkInterest && !this.user.interestField
+        ? false
+        : !this.user.hasProgSkill &&
+          !this.user.hasChemSkill &&
+          !this.user.hasMachineLSkill &&
+          !this.user.hasOtherSkill
+        ? false
+        : this.user.hasProgSkill &&
+          (!this.user.progSkillLevel || !this.user.progSkillList)
+        ? false
+        : this.user.hasChemSkill &&
+          (!this.user.chemSkillLevel || !this.user.chemSkillList)
+        ? false
+        : this.user.hasMachineLSkill &&
+          (!this.user.machineLSkillLevel || !this.user.machineLSkillList)
+        ? false
+        : this.user.hasOtherSkill && !this.user.otherSkillList
+        ? false
+        : true;
+      return check;
     },
-    machineClick() {
-      if(!this.user.hasMachineLSkill){
-        this.user.machineLSkillLevel = "Beginner";
+    validateForm() {
+      this.isFormFilled = true;
+      if (!this.user.titleName) {
+        this.isInvalid.titleName = true;
+        this.isFormFilled = false;
       }
-      if(this.user.hasMachineLSkill) {
-        this.user.machineLSkillLevel = undefined;
-        this.user.machineLSkillList = undefined;
+      if (!this.user.firstName) {
+        this.isInvalid.firstName = true;
+        this.isFormFilled = false;
       }
+      if (!this.user.lastName) {
+        this.isInvalid.lastName = true;
+        this.isFormFilled = false;
+      }
+      if (!this.user.education) {
+        this.isInvalid.education = true;
+        this.isFormFilled = false;
+      }
+      if (!this.user.institution) {
+        this.isInvalid.institution = true;
+        this.isFormFilled = false;
+      }
+      if (!this.user.organization) {
+        this.isInvalid.organization = true;
+        this.isFormFilled = false;
+      }
+      if (!this.user.address) {
+        this.isInvalid.address = true;
+        this.isFormFilled = false;
+      }
+      if (!this.user.country) {
+        this.isInvalid.country = true;
+        this.isFormFilled = false;
+      }
+      if (!this.user.phone) {
+        this.isInvalid.phone = true;
+        this.isFormFilled = false;
+      }
+      if (!this.user.email) {
+        this.isInvalid.email = true;
+        this.isFormFilled = false;
+      }
+      if (!this.user.works) {
+        this.isInvalid.works = true;
+        this.isFormFilled = false;
+      }
+      if (this.user.isWorkInterest == null) {
+        this.isInvalid.workInterest = true;
+        this.isFormFilled = false;
+      }
+      if (this.user.isWorkInterest && !this.user.interestField) {
+        this.isInvalid.workInterest = true;
+        this.isFormFilled = false;
+      }
+      if (
+        !this.user.hasProgSkill &&
+        !this.user.hasChemSkill &&
+        !this.user.hasMachineLSkill &&
+        !this.user.hasOtherSkill
+      ) {
+        this.isInvalid.skill = true;
+        this.isFormFilled = false;
+      }
+      if (
+        this.user.hasProgSkill &&
+        (!this.user.progSkillLevel || !this.user.progSkillList)
+      ) {
+        this.isInvalid.skill = true;
+        this.isFormFilled = false;
+      }
+      if (
+        this.user.hasChemSkill &&
+        (!this.user.chemSkillLevel || !this.user.chemSkillList)
+      ) {
+        this.isInvalid.skill = true;
+        this.isFormFilled = false;
+      }
+      if (
+        this.user.hasMachineLSkill &&
+        (!this.user.machineLSkillLevel || !this.user.machineLSkillList)
+      ) {
+        this.isInvalid.skill = true;
+        this.isFormFilled = false;
+      }
+      if (this.user.hasOtherSkill && !this.user.otherSkillList) {
+        this.isInvalid.skill = true;
+        this.isFormFilled = false;
+      }
+      return this.isFormFilled;
     },
-    otherClick() {
-      if(this.user.hasOtherSkill) {
-        this.user.otherSkillList = undefined;
-      }
-    },
-    validate() {
-      this.isInfoFilled = true;
-      
-    }
   },
 };
 </script>
@@ -480,6 +888,7 @@ export default {
   grid-template-columns: 1fr 2fr 2fr;
   grid-gap: 25px;
   grid-auto-rows: auto;
+  align-items: flex-start;
 }
 
 #education-grid,
@@ -488,6 +897,7 @@ export default {
   grid-template-columns: 1fr 3fr;
   grid-gap: 25px;
   grid-auto-rows: auto;
+  align-items: flex-start;
 }
 
 #address-grid {
@@ -495,6 +905,7 @@ export default {
   grid-template-columns: 3fr 1fr;
   grid-gap: 25px;
   grid-auto-rows: auto;
+  align-items: flex-start;
 }
 
 #invite-checkbox {
@@ -527,5 +938,9 @@ export default {
 .skill-checkbox > div > input,
 .skill-etc-checkbox > div > input {
   margin-right: 11px;
+}
+
+.btn-grey {
+  cursor: pointer;
 }
 </style>
