@@ -5,26 +5,30 @@
         <div id="nav-left">
           <img
             id="tmlcc-icon"
-            src="../../assets/Navbar/TMLCC_color.png"
+            src="../../assets/navbar/TMLCC_color.png"
             alt=""
             @click="mainpage()"
           />
           <img
             id="tmlcc-logo"
-            src="../../assets/Navbar/TMLCC.png"
+            src="../../assets/navbar/TMLCC.png"
             alt=""
             @click="mainpage()"
           />
           <div class="center">
-            <p class="text-normal nav-text" @click="toggleShowMenu()">
+            <p class="text-normal nav-text" @click="dashboard()">
               หน้าหลักการแข่งขัน
             </p>
           </div>
         </div>
         <div id="nav-center">
           <div class="center">
-            <p class="text-normal nav-text">สมาชิกของระบบ</p>
-            <p class="text-normal nav-text">File Manament</p>
+            <p class="text-normal nav-text" @click="dashboardMember()">
+              สมาชิกของระบบ
+            </p>
+            <p class="text-normal nav-text" @click="dashboardFile()">
+              File Manament
+            </p>
           </div>
         </div>
         <div id="nav-right">
@@ -34,11 +38,11 @@
               class="text-normal display-name nav-text"
               @click="toggleShowMenu()"
             >
-              DisplayName
+              {{ displayName }}
             </p>
             <img
               id="dropdown-icon"
-              src="../../assets/Navbar/dropdown.png"
+              src="../../assets/navbar/dropdown.png"
               alt=""
               @click="toggleShowMenu()"
             />
@@ -62,11 +66,25 @@ export default {
   data() {
     return {
       showMenu: false,
+      displayName: "",
     };
+  },
+  created() {
+    let user = JSON.parse(localStorage.getItem("currentUser"));
+    this.displayName = user.displayName;
   },
   methods: {
     mainpage() {
       this.$router.push("/");
+    },
+    dashboardMember() {
+      this.$router.push("/dashboard/member");
+    },
+    dashboard() {
+      this.$router.push("/dashboard");
+    },
+    dashboardFile() {
+      this.$router.push("/dashboard/file");
     },
     registerClick() {
       this.$router.push("/register");

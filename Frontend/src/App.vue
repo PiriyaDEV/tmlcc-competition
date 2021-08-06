@@ -41,6 +41,14 @@ button {
   margin: 0;
   font-size: 8px;
   font-family: "IBM-PLEX-THAI";
+}
+
+body,
+html,
+input,
+select,
+label,
+textarea {
   overflow-x: hidden;
 }
 
@@ -327,6 +335,36 @@ select:-webkit-autofill:focus {
   border-radius: 3px;
 }
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Navbar */
+.bm-item-list,
+.bm-item-list > * > span {
+  margin-left: 0 !important;
+}
+
+.bm-burger-button {
+  top: 16px !important;
+}
+
+.line-style {
+  height: 15% !important;
+}
+
+.bm-menu {
+  background-color: #303030 !important;
+}
+
 @media screen and (max-width: 1920px) {
   .page-container,
   .navbar-container {
@@ -344,6 +382,33 @@ select:-webkit-autofill:focus {
     max-width: 1024px;
   }
 }
+
+@media screen and (max-width: 1100px) {
+  .header-c {
+    font-size: 3.5em;
+  }
+
+  .header-m {
+    font-size: 3em;
+  }
+
+  .header-ms {
+    font-size: 2.5em;
+  }
+
+  .header-s {
+    font-size: 2.25em;
+  }
+
+  .text-medium {
+    font-size: 2.25em;
+  }
+
+  .text-normal {
+    font-size: 2em;
+  }
+}
+
 @media screen and (max-width: 1024px) {
   .page-container,
   .navbar-container {
@@ -365,6 +430,30 @@ select:-webkit-autofill:focus {
   .navbar-container {
     width: 720px;
     max-width: 720px;
+  }
+
+  .header-c {
+    font-size: 3.25em;
+  }
+
+  .header-m {
+    font-size: 2.75em;
+  }
+
+  .header-ms {
+    font-size: 2.25em;
+  }
+
+  .header-s {
+    font-size: 2em;
+  }
+
+  .text-medium {
+    font-size: 2em;
+  }
+
+  .text-normal {
+    font-size: 1.75em;
   }
 }
 @media screen and (max-width: 600px) {

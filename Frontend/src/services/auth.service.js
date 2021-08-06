@@ -3,14 +3,16 @@ import authHeader from "./auth-header";
 
 class AuthService {
   async register(user) {
-    return await http.post("/auth/register", user, {
-      headers: authHeader(),
-    }).then((response) => {
-      return response;
-    })
-    .catch((error) => {
-      return error.response;
-    });
+    return await http
+      .post("/auth/register", user, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return error.response;
+      });
   }
 
   async login(user) {
@@ -20,8 +22,12 @@ class AuthService {
       })
       .then((response) => {
         if (response.data.token) {
-          localStorage.setItem("accessToken", response.data.token, { expires: 1 });
-          localStorage.setItem("currentUser", JSON.stringify(response.data), { expires: 1 });
+          localStorage.setItem("accessToken", response.data.token, {
+            expires: 1,
+          });
+          localStorage.setItem("currentUser", JSON.stringify(response.data), {
+            expires: 1,
+          });
         }
         return response;
       })

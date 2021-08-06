@@ -60,7 +60,7 @@
     </div>
 
     <div id="sponsors-section">
-      <Sponsors/>
+      <Sponsors />
     </div>
   </div>
 </template>
@@ -81,8 +81,8 @@ export default {
       minutes2: "0",
     };
   },
-  components:{
-    Sponsors
+  components: {
+    Sponsors,
   },
   mounted() {
     setInterval(() => {
@@ -209,5 +209,33 @@ export default {
 
 #sponsors-section {
   margin-top: 40px;
+}
+
+@media screen and (max-width: 1100px) {
+  .number-box > h1 {
+    font-size: 8em;
+  }
+
+  .colon {
+    font-size: 5em;
+  }
+
+  .number-label {
+    font-size: 2.5em;
+  }
+
+  #tmlcc-logo {
+    width: 500px;
+  }
+
+  .purple-line {
+    width: 170px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .purple-line {
+    width: 120px;
+  }
 }
 </style>

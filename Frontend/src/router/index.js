@@ -23,6 +23,16 @@ const routes = [
     name: "Dashboard",
     component: () => import("../views/Dashboard.vue"),
   },
+  {
+    path: "/dashboard/member",
+    name: "MemberSetting",
+    component: () => import("../views/Admin/MemberSetting.vue"),
+  },
+  {
+    path: "/dashboard/file",
+    name: "FileSetting",
+    component: () => import("../views/Admin/FileSetting.vue"),
+  },
 ];
 
 const router = new VueRouter({

@@ -62,7 +62,7 @@
       <hr class="bar-color bar-color-s" />
 
       <div class="center">
-        <img id="timeline" src="../../assets/Timeline.png" alt="" />
+        <img id="timeline" src="../../assets/mainpage/Timeline.png" alt="" />
       </div>
 
       <h1 id="users-info" class="header-s">คุณสมบัติผู้เข้าแข่งขัน</h1>
@@ -125,9 +125,10 @@
       </p>
 
       <div class="center">
-        <button @click="registerClick()" class="btn-white rg-btn">
+        <!-- <button @click="registerClick()" class="btn-white rg-btn">
           ลงทะเบียนเข้าร่วมการแข่งขัน
-        </button>
+        </button> -->
+        <button class="btn-grey rg-btn">ลงทะเบียนเข้าร่วมการแข่งขัน</button>
       </div>
 
       <h1 class="header-s">ติดต่อสอบถาม</h1>
@@ -137,7 +138,7 @@
         <div>
           <img
             class="rectangle-bar"
-            src="../../assets/rectangle-bar.png"
+            src="../../assets/mainpage/rectangle-bar.png"
             alt=""
           />
         </div>
@@ -259,5 +260,26 @@ export default {
 
 #sponsors-section {
   margin: 20px 0px 130px 0px;
+}
+
+#timeline {
+  margin-top: 28px;
+  width: calc(100% - 40px);
+}
+
+@media screen and (max-width: 1100px) {
+  .rg-btn {
+    width: 650px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .rg-btn {
+    width: 450px;
+  }
+
+  /* #sponsors-section{
+    margin: 30px 0px 50px 0px;
+  } */
 }
 </style>

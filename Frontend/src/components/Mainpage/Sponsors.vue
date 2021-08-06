@@ -69,4 +69,44 @@ export default {};
 #jb-logo {
   width: 102px;
 }
+
+@media screen and (max-width: 1100px) {
+  #kmutt-logo {
+    width: calc(172px - 30px);
+  }
+  #bx-logo {
+    width: calc(160px - 30px);
+  }
+  #csea-logo {
+    width: calc(120px - 30px);
+  }
+  #thaisc-logo {
+    width: calc(166px - 30px);
+  }
+  #vistec-logo {
+    width: calc(125px - 30px);
+  }
+  #jb-logo {
+    width: calc(102px - 30px);
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  #sponsors {
+    flex-wrap: wrap;
+    padding: 0px 120px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  /* #sponsors{
+    display: block;
+  } */
+
+  /* #sponsors > div{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  } */
+}
 </style>

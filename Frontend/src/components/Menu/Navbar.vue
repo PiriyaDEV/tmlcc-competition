@@ -5,17 +5,17 @@
         <div id="nav-left">
           <img
             id="tmlcc-logo"
-            src="../../assets/Navbar/TMLCC.png"
+            src="../../assets/navbar/TMLCC.png"
             alt=""
             @click="mainpage()"
           />
-          <div class="center">
+          <div id="compet-info" class="center">
             <p class="text-normal nav-text" @click="toggleShowMenu()">
               ข้อมูลการแข่งขัน
             </p>
             <img
               id="dropdown-icon"
-              src="../../assets/Navbar/dropdown.png"
+              src="../../assets/navbar/dropdown.png"
               alt=""
               @click="toggleShowMenu()"
             />
@@ -49,17 +49,22 @@
             </button>
           </div>
         </div>
+        <div id="hamburger">
+          <Hamburger />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Hamburger from "../Menu/Hamburger.vue";
 import NavigationBar from "../Menu/NavigationBar.vue";
 
 export default {
   components: {
     NavigationBar,
+    Hamburger,
   },
   props: ["page"],
   data() {
@@ -161,5 +166,23 @@ export default {
   overflow: hidden;
   transition: all 0.5s ease;
   will-change: transform;
+}
+
+#hamburger {
+  display: none;
+}
+
+@media screen and (max-width: 1100px) {
+  #nav-right {
+    display: none;
+  }
+
+  #hamburger {
+    display: inherit;
+  }
+
+  #compet-info{
+    display: none;
+  }
 }
 </style>

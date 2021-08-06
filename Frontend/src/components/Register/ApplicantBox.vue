@@ -145,7 +145,12 @@
       </div>
       <div>
         <h1 class="text-normal">E-mail</h1>
-        <input v-model="user.email" :class="cssEmail" type="text" />
+        <input
+          v-model="user.email"
+          @blur="checkDuplicated()"
+          :class="cssEmail"
+          type="text"
+        />
         <p v-if="isInvalid.email" class="text-normal orange-text error-message">
           * โปรดระบุ E-mail
         </p>
@@ -410,6 +415,7 @@
 
 <script>
 import User from "../../models/user.model";
+import UserService from "../../services/user.service";
 
 export default {
   props: ["user"],
@@ -582,7 +588,51 @@ export default {
     },
   },
   watch: {
+    "user.firstName": function () {
+      this.isInvalid.firstName = false;
+      let reg = /[0-9๐-๙!-/:-@[-`{-~]/;
+      if (reg.test(this.user.firstName)) {
+        this.isInvalid.firstName = true;
+      }
+    },
+    "user.lastName": function () {
+      this.isInvalid.lastName = false;
+      let reg = /[0-9๐-๙!-/:-@[-`{-~]/;
+      if (reg.test(this.user.lastName)) {
+        this.isInvalid.lastName = true;
+      }
+    },
+    "user.institution": function () {
+      this.isInvalid.institution = false;
+    },
+    "user.organization": function () {
+      this.isInvalid.organization = false;
+    },
+    "user.address": function () {
+      this.isInvalid.address = false;
+    },
+    "user.country": function () {
+      this.isInvalid.country = false;
+      let reg = /[0-9๐-๙!-/:-@[-`{-~]/;
+      if (reg.test(this.user.country)) {
+        this.isInvalid.country = true;
+      }
+    },
+    "user.phone": function () {
+      this.isInvalid.phone = false;
+      let reg = /[^0-9]/;
+      if (reg.test(this.user.phone)) {
+        this.isInvalid.phone = true;
+      }
+    },
+    "user.email": function () {
+      this.isInvalid.email = false;
+    },
+    "user.works": function () {
+      this.isInvalid.works = false;
+    },
     "user.isWorkInterest": function () {
+      this.isInvalid.workInterest = false;
       if (this.user.isWorkInterest == "true") {
         this.user.isWorkInterest = true;
         document.getElementById("workInterestBox").disabled = false;
@@ -591,6 +641,9 @@ export default {
         this.user.interestField = undefined;
         document.getElementById("workInterestBox").disabled = true;
       }
+    },
+    "user.interestField": function () {
+      this.isInvalid.workInterest = false;
     },
     "user.hasProgSkill": function () {
       if (this.user.hasProgSkill) {
@@ -654,8 +707,22 @@ export default {
       this.$emit("pageReturn", "agreement");
     },
     registerNext() {
-      if (this.validateForm()) {
+      if (this.validateForm() && !this.isInvalid.email) {
         this.$emit("pageReturn", "info");
+      }
+    },
+    checkDuplicated() {
+      let reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/;
+      if (reg.test(this.user.email)) {
+        UserService.checkDuplicated({ email: this.user.email }).then((res) => {
+          if (res.status == 200) {
+            this.isInvalid.email = res.data.isFound;
+          } else {
+            console.log("Something wrong!");
+          }
+        });
+      } else {
+        this.isInvalid.email = true;
       }
     },
     checkForm() {

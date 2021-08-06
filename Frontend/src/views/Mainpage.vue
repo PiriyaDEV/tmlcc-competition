@@ -85,4 +85,10 @@ export default {
 .show {
   opacity: 1 !important;
 }
+
+@media screen and (max-width: 1100px) {
+  #navigation-bar-fixed {
+    display: none;
+  }
+}
 </style>
