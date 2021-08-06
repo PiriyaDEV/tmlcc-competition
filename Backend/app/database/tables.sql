@@ -32,8 +32,8 @@ CREATE TABLE IF NOT EXISTS Users(
   hasTeam                 BOOLEAN         NOT NULL,
   role                    VARCHAR(8)      NOT NULL,
   lastLogin               BIGINT          NOT NULL,
-  created_at              BIGINT          NOT NULL,
-  updated_at              BIGINT          NOT NULL,
+  createdAt              BIGINT          NOT NULL,
+  updatedAt              BIGINT          NOT NULL,
   PRIMARY KEY (user_id)
 );
 
@@ -43,8 +43,8 @@ CREATE TABLE IF NOT EXISTS Teams(
   teamName                VARCHAR(64)     NOT NULL  UNIQUE,
   leader_id               VARCHAR(8)      NOT NULL,
   status                  VARCHAR(8)      NOT NULL,
-  created_at              BIGINT          NOT NULL,
-  updated_at              BIGINT          NOT NULL,
+  createdAt              BIGINT          NOT NULL,
+  updatedAt              BIGINT          NOT NULL,
   PRIMARY KEY (team_id)
 );
 
@@ -53,8 +53,8 @@ CREATE TABLE IF NOT EXISTS TeamMembers(
   team_id                 VARCHAR(8)      NOT NULL,
   member_id               VARCHAR(8)      NOT NULL,
   status                  VARCHAR(8)      NOT NULL,
-  created_at              BIGINT          NOT NULL,
-  updated_at              BIGINT          NOT NULL,
+  createdAt              BIGINT          NOT NULL,
+  updatedAt              BIGINT          NOT NULL,
   PRIMARY KEY (team_id, member_id)
 );
 
@@ -65,8 +65,8 @@ CREATE TABLE IF NOT EXISTS Files(
   filePath                VARCHAR(255)    NOT NULL,
   type                    VARCHAR(8)      NOT NULL,
   status                  VARCHAR(8)      NOT NULL,
-  created_at              BIGINT          NOT NULL,
-  updated_at              BIGINT          NOT NULL,
+  createdAt              BIGINT          NOT NULL,
+  updatedAt              BIGINT          NOT NULL,
   PRIMARY KEY (file_id)
 );
 
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS Links(
   link_id                 VARCHAR(8)      NOT NULL,
   linkName                VARCHAR(255)    NOT NULL,
   url                     VARCHAR(255)    NOT NULL,
-  created_at              BIGINT          NOT NULL,
-  updated_at              BIGINT          NOT NULL,
+  createdAt              BIGINT          NOT NULL,
+  updatedAt              BIGINT          NOT NULL,
   PRIMARY KEY (link_id)
 );

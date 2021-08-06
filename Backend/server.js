@@ -28,9 +28,11 @@ app.get("/", (req, res) => {
 
 // authorization routes
 require("./app/routes/auth.routes")(app);
+// user service routes
+require("./app/routes/user.routes")(app);
 
 // set port, listen for requests
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`tmlcc-competition API server is running on port ${PORT}.`);
 });

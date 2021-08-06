@@ -31,8 +31,8 @@ const User = function (user) {
   this.hasTeam = user.hasTeam;
   this.role = user.role;
   this.lastLogin = user.lastLogin;
-  this.created_at = user.created_at;
-  this.updated_at = user.updated_at;
+  this.createdAt = user.createdAt;
+  this.updatedAt = user.updatedAt;
 };
 
 User.create = (user, result) => {
@@ -43,7 +43,7 @@ User.create = (user, result) => {
       return;
     }
 
-    console.log("Result: ", { id: res.insertId, ...user });
+    console.log(`Result: new user created -> ${user.user_id}`);
     result(null, user);
     return;
   });
@@ -60,7 +60,7 @@ User.update = (user, result) => {
         return;
       }
 
-      console.log("Result: user updated");
+      console.log(`Result: user updated -> ${user.user_id}`);
       result(null, user);
       return;
     }
@@ -81,24 +81,30 @@ User.getCount = (result) => {
   });
 };
 
-User.findByEmail = (user, result) => {
-  sql.query(`SELECT * FROM Users WHERE email = '${user.email}'`, (err, res) => {
-    if (err) {
-      console.log("Error: ", err);
-      result(err, null);
+User.find = (user, result) => {
+  sql.query(
+    `SELECT * FROM Users WHERE
+      user_id = '${user.user_id}' OR
+      email = '${user.email}' OR
+      displayName = '${user.displayName}'`,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      if (!res.length) {
+        console.log("Result: user not found");
+        result(null, { isFound: false });
+        return;
+      }
+
+      console.log(`Result: user found -> ${res[0].user_id}`);
+      result(null, { isFound: true, ...res[0] });
       return;
     }
-
-    if (!res.length) {
-      console.log("Result: user not found");
-      result(null, { isFound: false });
-      return;
-    }
-
-    console.log("Result: ", res[0]);
-    result(null, { isFound: true, ...res[0] });
-    return;
-  });
+  );
 };
 
 module.exports = User;

@@ -25,14 +25,19 @@ exports.register = (req, res) => {
 
     let user = req.body;
 
-    user.user;
+    if (!user.email || !user.password) {
+      return res.status(400).send({
+        message: "Content can not be empty!",
+      });
+    }
+
     user.user_id = "US" + count.padStart(6, "0");
     user.email = user.email.toLowerCase();
     user.password = bcrypt.hashSync(user.password, 8);
     user.role = "user";
     user.lastLogin = new Date().getTime();
-    user.created_at = new Date().getTime();
-    user.updated_at = new Date().getTime();
+    user.createdAt = new Date().getTime();
+    user.updatedAt = new Date().getTime();
 
     User.create(user, (err, result) => {
       if (err) {
@@ -46,7 +51,6 @@ exports.register = (req, res) => {
         {
           user_id: result.user_id,
           displayName: result.displayName,
-          role: result.role,
           lastLogin: result.lastLogin,
         },
         authConfig.secretKey,
@@ -55,10 +59,9 @@ exports.register = (req, res) => {
 
       res.cookie("user", token, { httpOnly: true, maxAge: 900000 });
 
-      return res.status(200).send({
+      return res.status(201).send({
         user_id: result.user_id,
         displayName: result.displayName,
-        role: result.role,
         lastLogin: result.lastLogin,
         token: token,
       });
@@ -75,9 +78,15 @@ exports.login = (req, res) => {
 
   let user = req.body;
 
+  if (!user.email || !user.password) {
+    return res.status(400).send({
+      message: "Content can not be empty!",
+    });
+  }
+
   user.email = user.email.toLowerCase();
 
-  User.findByEmail(user, (err, result) => {
+  User.find(user, (err, result) => {
     if (err) {
       return res.status(500).send({
         message: err.message || "Some error occurred while finding the user!",
@@ -85,7 +94,7 @@ exports.login = (req, res) => {
     }
 
     if (!result.isFound) {
-      return res.status(401).send({
+      return res.status(403).send({
         message: "User not found!",
       });
     }
@@ -105,7 +114,6 @@ exports.login = (req, res) => {
             {
               user_id: result.user_id,
               displayName: result.displayName,
-              role: result.role,
               lastLogin: update_result.lastLogin,
             },
             authConfig.secretKey,
@@ -117,14 +125,13 @@ exports.login = (req, res) => {
           return res.status(200).send({
             user_id: result.user_id,
             displayName: result.displayName,
-            role: result.role,
             lastLogin: update_result.lastLogin,
             token: token,
           });
         }
       );
     } else {
-      return res.status(401).send({
+      return res.status(403).send({
         message: "Invalid password!",
       });
     }
