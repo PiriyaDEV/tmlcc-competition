@@ -53,7 +53,7 @@ textarea {
 }
 
 body {
-  background-color: #f3f3f3;
+  background-color: #ffffff;
 }
 
 textarea {
