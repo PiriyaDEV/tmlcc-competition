@@ -377,6 +377,7 @@ input[type="number"] {
   background-color: #ffffff !important;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   padding-top: 40px;
+  overflow-y: scroll !important;
 }
 
 @media screen and (max-width: 1920px) {
