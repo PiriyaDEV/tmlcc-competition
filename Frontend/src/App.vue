@@ -353,6 +353,10 @@ input[type="number"] {
   margin-left: 0 !important;
 }
 
+.bm-item-list>*{
+  width: 400px;
+}
+
 .bm-burger-button {
   top: 16px !important;
 }
@@ -362,7 +366,8 @@ input[type="number"] {
 }
 
 .bm-menu {
-  background-color: #303030 !important;
+  background-color: #FFFFFF !important;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 @media screen and (max-width: 1920px) {
