@@ -1,42 +1,114 @@
 <template>
   <div id="hamburger">
-    <Slide right>
-      <div class="nav-head nav-link">
-        <a id="home" href="#" class="text-normal">ข้อมูลการแข่งขัน</a>
+    <Slide right width="280">
+      <div class="nav-head nav-link" @click="toggleDropdown()">
+        <a class="text-normal"
+          >ข้อมูลการแข่งขัน
+          <img :class="cssDropdown" src="../../assets/navbar/dropdown.png"
+        /></a>
       </div>
 
-      <div class="nav-list nav-link">
-        <a id="home" href="#" class="text-normal">โจทย์การแข่งขัน</a>
-      </div>
-      <div class="nav-list nav-link">
-        <a id="home" href="#" class="text-normal"
-          >สิ่งที่ผู้เข้าแข่งขันจะได้รับ</a
-        >
-      </div>
-      <div class="nav-list nav-link">
-        <a id="home" href="#" class="text-normal">กำหนดการ</a>
-      </div>
-      <div class="nav-list nav-link">
-        <a id="home" href="#" class="text-normal">ไทม์ไลน์การแข่งขัน</a>
-      </div>
-      <div class="nav-list nav-link">
-        <a id="home" href="#" class="text-normal">คุณสมบัติผู้เข้าแข่งขัน</a>
-      </div>
-      <div class="nav-list nav-link">
-        <a id="home" href="#" class="text-normal">เกณฑ์การตัดสิน</a>
-      </div>
-      <div class="nav-list nav-link">
-        <a id="home" href="#" class="text-normal">รางวัลทั้งหมด</a>
+      <div :class="cssDropdownSlide">
+        <div>
+          <a
+            class="text-normal"
+            href="#cp-info"
+            v-smooth-scroll="{
+              duration: 1000,
+              offset: -23,
+              updateHistory: true,
+            }"
+            >โจทย์การแข่งขัน</a
+          >
+        </div>
+        <div>
+          <a
+            class="text-normal"
+            href="#recieve-info"
+            v-smooth-scroll="{
+              duration: 1000,
+              offset: -23,
+              updateHistory: true,
+            }"
+            >สิ่งที่ผู้เข้าแข่งขันจะได้รับ</a
+          >
+        </div>
+        <div>
+          <a
+            class="text-normal"
+            href="#event-info"
+            v-smooth-scroll="{
+              duration: 1000,
+              offset: -30,
+              updateHistory: true,
+            }"
+            >กำหนดการ</a
+          >
+        </div>
+        <div>
+          <a
+            class="text-normal"
+            href="#timeline-info"
+            v-smooth-scroll="{
+              duration: 1000,
+              offset: -30,
+              updateHistory: true,
+            }"
+            >ไทม์ไลน์การแข่งขัน</a
+          >
+        </div>
+        <div>
+          <a
+            class="text-normal"
+            href="#users-info"
+            v-smooth-scroll="{
+              duration: 1000,
+              offset: -30,
+              updateHistory: true,
+            }"
+            >คุณสมบัติผู้เข้าแข่งขัน</a
+          >
+        </div>
+        <div>
+          <a
+            class="text-normal"
+            href="#rules-info"
+            v-smooth-scroll="{
+              duration: 1000,
+              offset: -30,
+              updateHistory: true,
+            }"
+            >เกณฑ์การตัดสิน</a
+          >
+        </div>
+        <div>
+          <a
+            class="text-normal"
+            href="#reward-info"
+            v-smooth-scroll="{
+              duration: 1000,
+              offset: -30,
+              updateHistory: true,
+            }"
+            >รางวัลทั้งหมด</a
+          >
+        </div>
       </div>
 
       <div class="nav-head nav-link">
-        <a id="home" href="#" class="text-normal">เกณฑ์การตัดสิน</a>
+        <a class="text-normal">เกี่ยวกับโครงการ</a>
       </div>
       <div class="nav-head nav-link">
-        <a id="home" href="#" class="text-normal">Q&A</a>
+        <a class="text-normal">Workshop</a>
       </div>
       <div class="nav-head nav-link">
-        <a id="home" href="#" class="text-normal">ติดต่อเรา</a>
+        <a class="text-normal">ติดต่อเรา</a>
+      </div>
+      <!-- <div class="nav-head nav-link register-btn">
+        <a class="text-normal" href="/register">ลงทะเบียน</a>
+      </div> -->
+      <div class="nav-head nav-link register-btn blocked">
+        <a class="text-normal" href="/register">ลงทะเบียน</a>
       </div>
     </Slide>
   </div>
@@ -45,15 +117,44 @@
 <script>
 import { Slide } from "vue-burger-menu";
 export default {
+  data() {
+    return {
+      dropdown: true,
+    };
+  },
   components: {
     Slide, // Register your component
+  },
+  methods: {
+    toggleDropdown() {
+      this.dropdown = !this.dropdown;
+    },
+  },
+  computed: {
+    cssDropdown() {
+      let down = "dropdown-down";
+      let up = "dropdown-up";
+      if (this.dropdown) {
+        return up;
+      }
+      return down;
+    },
+    cssDropdownSlide() {
+      let closed = "nav-list nav-link closed dropdown-nav";
+      let open = "nav-list nav-link open dropdown-nav";
+      if (this.dropdown) {
+        return closed;
+      }
+      return open;
+    },
   },
 };
 </script>
 
 <style scoped>
-
-.nav-link > a {
+.nav-link > a,
+.nav-link > div > a,
+.nav-link > p {
   text-decoration: none;
   color: #303030;
   font-size: 18px;
@@ -61,10 +162,80 @@ export default {
 
 .nav-head {
   padding-left: 40px;
-  border: 1px solid #E5E5E5;
 }
 
+.nav-head:not(:last-child) {
+  border-top: 1px solid #e5e5e5;
+}
 .nav-list {
   padding-left: 60px;
+}
+
+.dropdown-down {
+  width: 15px;
+  padding-right: 5px;
+  transition: 0.3s;
+  transform: rotate(180deg);
+}
+
+.dropdown-up {
+  width: 15px;
+  padding-left: 5px;
+  transition: 0.3s;
+}
+
+.dropdown-nav {
+  padding: 0px 0px 0px 60px;
+}
+
+.dropdown-nav > div {
+  padding: 14px 0px 0px 0px;
+}
+
+.dropdown-nav > div:last-child {
+  padding-bottom: 14px;
+}
+
+.closed {
+  overflow: hidden;
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  transition: all 0.5s ease;
+  will-change: transform;
+  display: block;
+}
+
+.open {
+  max-height: 400px;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  will-change: transform;
+  display: block;
+}
+
+.register-btn {
+  border-top: 1px solid #bf2e7e;
+  border-bottom: 1px solid #bf2e7e;
+  background-image: linear-gradient(white, white),
+    linear-gradient(#2f65af, #764a97, #bf2e7e, #f07821);
+}
+
+.register-btn > a {
+  color: #bf2e7e;
+  font-family: "IBM-PLEX-THAI-SEMIBOLD";
+  font-size: 20px;
+}
+
+.blocked {
+  background-color: #c4c4c4 !important;
+  background-image: none;
+  border: none;
+}
+
+.blocked > a {
+  color: #ffffff !important;
 }
 </style>

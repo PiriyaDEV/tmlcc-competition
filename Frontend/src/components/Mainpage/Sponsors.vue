@@ -98,15 +98,10 @@ export default {};
   }
 }
 
-@media screen and (max-width: 767px) {
-  /* #sponsors{
-    display: block;
-  } */
-
-  /* #sponsors > div{
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-  } */
+@media screen and (max-width: 521px) {
+  #sponsors {
+    flex-wrap: wrap;
+    padding: 0px 20px;
+  }
 }
 </style>

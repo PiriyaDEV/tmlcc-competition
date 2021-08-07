@@ -91,4 +91,10 @@ export default {
     display: none;
   }
 }
+
+@media screen and (max-width: 767px) {
+  #mainpage {
+    padding: 55px 0px 0px 0px;
+  }
+}
 </style>

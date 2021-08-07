@@ -353,20 +353,22 @@ input[type="number"] {
   margin-left: 0 !important;
 }
 
-.bm-item-list>*{
+.bm-item-list > * {
   width: 400px;
 }
 
 .bm-burger-button {
   top: 16px !important;
+  width: 32px !important;
+  height: 26px !important;
 }
 
 .line-style {
-  height: 15% !important;
+  height: 12% !important;
 }
 
 .bm-menu {
-  background-color: #FFFFFF !important;
+  background-color: #ffffff !important;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -461,13 +463,42 @@ input[type="number"] {
     font-size: 1.75em;
   }
 }
-@media screen and (max-width: 600px) {
-}
+
 @media screen and (max-width: 414px) {
   .page-container,
   .navbar-container {
     width: 374px;
     max-width: 374px;
+  }
+
+  .page-container,
+  .navbar-container {
+    width: 720px;
+    max-width: 720px;
+  }
+
+  .header-c {
+    font-size: 3em;
+  }
+
+  .header-m {
+    font-size: 2.5em;
+  }
+
+  .header-ms {
+    font-size: 2em;
+  }
+
+  .header-s {
+    font-size: 1.75em;
+  }
+
+  .text-medium {
+    font-size: 1.75em;
+  }
+
+  .text-normal {
+    font-size: 1.5em;
   }
 }
 @media screen and (max-width: 375px) {

@@ -36,33 +36,15 @@
 
       <div class="two-column">
         <ul class="text-medium donut-bullet">
-          <div class="two-column">
-            <li>ลงทะเบียนเข้าร่วมอบรมและการแข่งขัน</li>
-            <li class="second-tab block-tab">1 กันยายน - 14 กันยายน 2564</li>
-          </div>
-          <div class="two-column">
-            <li>ประกาศรายชื่อผู้มีสิทธิ์เข้าแข่งขัน</li>
-            <li class="second-tab block-tab">15 กันยายน 2564</li>
-          </div>
-          <div class="two-column">
-            <li>การอบรมเชิงปฏิบัติการ (workshop)</li>
-            <li class="second-tab block-tab">16 - 19 กันยายน 2564</li>
-          </div>
-          <div class="two-column">
-            <li>การแข่งขัน</li>
-            <li class="second-tab block-tab">20 กันยายน - 4 พฤศจิกายน 2564</li>
-          </div>
-          <div class="two-column">
-            <li>ผู้เข้าแข่งขันนำเสนอผลงาน</li>
-            <li class="second-tab block-tab">6 พฤศจิกายน 2564</li>
-          </div>
-          <div class="two-column">
-            <li>ประกาศผลผู้ได้รับรางวัล</li>
-            <li class="second-tab block-tab">8 พฤศจิกายน 2564</li>
-          </div>
+          <li>ลงทะเบียนเข้าร่วมอบรมและการแข่งขัน</li>
+          <li>ประกาศรายชื่อผู้มีสิทธิ์เข้าแข่งขัน</li>
+          <li>การอบรมเชิงปฏิบัติการ (workshop)</li>
+          <li>การแข่งขัน</li>
+          <li>ผู้เข้าแข่งขันนำเสนอผลงาน</li>
+          <li>ประกาศผลผู้ได้รับรางวัล</li>
         </ul>
 
-        <ul class="text-medium second-tab flex-tab">
+        <ul class="text-medium second-tab">
           <li>1 กันยายน - 14 กันยายน 2564</li>
           <li>15 กันยายน 2564</li>
           <li>16 - 19 กันยายน 2564</li>
@@ -124,33 +106,14 @@
 
       <div class="two-column">
         <ul class="text-medium donut-bullet">
-          <div class="two-column">
-            <li>รางวัลชนะเลิศ</li>
-            <li class="second-tab block-tab">
-              1 รางวัล พร้อม โล่รางวัล เกียรติบัตร
-            </li>
-          </div>
-          <div class="two-column">
-            <li>รางวัลรองชนะเลิศ อันดับ 1</li>
-            <li class="second-tab block-tab">
-              1 รางวัล พร้อม โล่รางวัล เกียรติบัตร
-            </li>
-          </div>
-          <div class="two-column">
-            <li>รางวัลรองชนะเลิศ อันดับ 2</li>
-            <li class="second-tab block-tab">
-              1 รางวัล พร้อม โล่รางวัล เกียรติบัตร
-            </li>
-          </div>
-          <div class="two-column">
-            <li>รางวัลความคิดสร้างสรรค์ยอดเยี่ยม</li>
-          </div>
-          <div class="two-column">
-            <li>รางวัลการมีส่วนร่วมดีเด่น</li>
-          </div>
+          <li>รางวัลชนะเลิศ</li>
+          <li>รางวัลรองชนะเลิศ อันดับ 1</li>
+          <li>รางวัลรองชนะเลิศ อันดับ 2</li>
+          <li>รางวัลความคิดสร้างสรรค์ยอดเยี่ยม</li>
+          <li>รางวัลการมีส่วนร่วมดีเด่น</li>
         </ul>
 
-        <ul class="text-medium second-tab flex-tab">
+        <ul class="text-medium second-tab">
           <li>1 รางวัล พร้อม โล่รางวัล เกียรติบัตร</li>
           <li>1 รางวัล พร้อม โล่รางวัล เกียรติบัตร</li>
           <li>1 รางวัล พร้อม โล่รางวัล เกียรติบัตร</li>
@@ -258,10 +221,6 @@ export default {
   list-style-type: none;
 }
 
-.second-tab:before {
-  background-image: none;
-}
-
 .date-note {
   padding-left: 45px;
   margin-top: 5px;
@@ -308,10 +267,6 @@ export default {
   width: calc(100% - 40px);
 }
 
-.block-tab {
-  display: none;
-}
-
 @media screen and (max-width: 1100px) {
   .rg-btn {
     width: 650px;
@@ -332,37 +287,15 @@ export default {
     margin: 70px 0px 40px 0px;
   }
 
-  .donut-bullet li{
-    padding-left: 25px;
-    margin-left: 10px;
-  }
-
+  .donut-bullet li,
   .circle-bullet li {
     padding-left: 25px;
-    margin-left: 35px;
+    margin-left: 10px;
   }
 
   .date-note {
     margin-top: 20px;
     padding-left: 10px;
-  }
-}
-
-@media screen and (max-width: 660px) {
-  .block-tab {
-    display: inherit;
-  }
-
-  .flex-tab {
-    display: none;
-  }
-
-  .two-column {
-    display: block;
-  }
-
-  .second-tab {
-    padding: 3px 0px 3px 35px !important;
   }
 }
 </style>

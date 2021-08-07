@@ -218,6 +218,7 @@ export default {
 
   .colon {
     font-size: 5em;
+    padding: 0px 10px 55px 10px;
   }
 
   .number-label {
@@ -231,11 +232,76 @@ export default {
   .purple-line {
     width: 170px;
   }
+
+  .number-box > h1 {
+    line-height: 60px;
+  }
 }
 
 @media screen and (max-width: 767px) {
   .purple-line {
     width: 120px;
+  }
+
+  .number-label {
+    font-size: 2em;
+  }
+
+  .number-box > h1 {
+    font-size: 5.5em;
+  }
+
+  #tmlcc-logo {
+    width: 350px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .purple-line {
+    width: 80px;
+  }
+
+  #register-date-section > div:nth-child(2) {
+    padding: 0px 15px;
+  }
+
+  .countdown-number > div:nth-child(1) {
+    margin-right: 7px;
+  }
+
+  #tmlcc-logo {
+    width: 325px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .number-box {
+    padding: 10px;
+  }
+
+  #tmlcc-logo {
+    width: 310px;
+  }
+
+  .number-box > h1 {
+    font-size: 4.5em;
+  }
+
+  .number-box > h1 {
+    line-height: 40px;
+  }
+
+  .number-label {
+    font-size: 2em;
+  }
+
+  .purple-line {
+    width: 30px;
+  }
+
+  .colon {
+    font-size: 4em;
+    padding: 0px 5px 50px 5px;
   }
 }
 </style>
