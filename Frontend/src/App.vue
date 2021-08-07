@@ -369,7 +369,7 @@ input[type="number"] {
 }
 
 .bm-cross-button {
-  right: 229px !important;
+  right: 214px !important;
   top: 20px !important;
 }
 

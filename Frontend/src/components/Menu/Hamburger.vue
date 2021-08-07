@@ -1,6 +1,6 @@
 <template>
   <div id="hamburger">
-    <Slide right width="280">
+    <Slide right width="260">
       <div class="nav-head nav-link" @click="toggleDropdown()">
         <p class="text-normal">
           ข้อมูลการแข่งขัน
@@ -147,6 +147,7 @@ export default {
       var x = document.getElementsByClassName("bm-menu");
       for (var i = 0; i < x.length; i++) {
         x[i].style.width = "0px";
+        this.dropdown = true;
       }
     },
   },
@@ -177,7 +178,7 @@ export default {
 .nav-link > p {
   text-decoration: none;
   color: #303030;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 #hamburger {
@@ -213,12 +214,12 @@ export default {
   padding: 0px 0px 0px 60px;
 }
 
-.dropdown-nav > div {
-  padding: 14px 0px 0px 0px;
+.dropdown-nav > div:not(:first-child) {
+  padding: 10px 0px 0px 0px;
 }
 
 .dropdown-nav > div:last-child {
-  padding-bottom: 14px;
+  padding-bottom: 10px;
 }
 
 .closed {
@@ -251,7 +252,7 @@ export default {
 .register-btn > a {
   color: #bf2e7e;
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .blocked {
@@ -262,5 +263,15 @@ export default {
 
 .blocked > a {
   color: #ffffff !important;
+}
+
+@media screen and (max-width: 414px) {
+  .nav-link > a,
+  .nav-link > div > a,
+  .nav-link > p {
+    text-decoration: none;
+    color: #303030;
+    font-size: 14px;
+  }
 }
 </style>
