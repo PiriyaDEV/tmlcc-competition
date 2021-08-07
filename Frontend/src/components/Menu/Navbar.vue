@@ -33,11 +33,7 @@
           <p v-if="page != `login`" class="text-normal nav-text">Workshops</p>
           <p class="text-normal nav-text">ติดต่อเรา</p>
           <div class="center">
-            <button
-              v-if="page != `register1`"
-              @click="registerClick()"
-              class="btn-white"
-            >
+            <button v-if="page != `register1`" class="btn-white blocked">
               ลงทะเบียน
             </button>
             <button
@@ -170,6 +166,14 @@ export default {
 
 #hamburger {
   display: none;
+}
+
+.blocked {
+  background-color: #c4c4c4 !important;
+  background-image: none;
+  border: none;
+  color: #ffffff;
+  cursor: default;
 }
 
 @media screen and (max-width: 1100px) {
