@@ -177,21 +177,30 @@ export default {
     display: none;
   }
 
+  #navbar-menu {
+    position: fixed;
+  }
+
   #hamburger {
     display: inherit;
   }
 
-  #compet-info{
+  #compet-info {
     display: none;
   }
-  #tmlcc-logo{
+  #tmlcc-logo {
     width: 100px;
   }
 }
 
 @media screen and (max-width: 1100px) {
-  #tmlcc-logo{
+  #tmlcc-logo {
     width: 90px;
+  }
+
+  #navbar-menu{
+    box-shadow: 15px 10px 9px -8px rgb(188 188 188 / 50%);
+    width: 100%;
   }
 }
 </style>

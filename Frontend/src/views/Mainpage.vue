@@ -90,11 +90,15 @@ export default {
   #navigation-bar-fixed {
     display: none;
   }
+
+  #mainpage{
+    padding: 135px 0px 0px 0px;
+  }
 }
 
 @media screen and (max-width: 767px) {
   #mainpage {
-    padding: 55px 0px 0px 0px;
+    padding: 105px 0px 0px 0px;
   }
 }
 </style>

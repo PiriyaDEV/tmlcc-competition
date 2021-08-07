@@ -358,19 +358,25 @@ input[type="number"] {
 }
 
 .bm-burger-button {
-  top: 16px !important;
+  top: -10px !important;
   width: 32px !important;
   height: 26px !important;
-  right: 20px !important;
+  right: 8px !important;
 }
 
 .line-style {
   height: 12% !important;
 }
 
+.bm-cross-button {
+  right: 229px !important;
+  top: 20px !important;
+}
+
 .bm-menu {
   background-color: #ffffff !important;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  padding-top: 40px;
 }
 
 @media screen and (max-width: 1920px) {

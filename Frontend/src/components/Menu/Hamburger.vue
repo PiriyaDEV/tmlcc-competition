@@ -2,16 +2,17 @@
   <div id="hamburger">
     <Slide right width="280">
       <div class="nav-head nav-link" @click="toggleDropdown()">
-        <a class="text-normal"
-          >ข้อมูลการแข่งขัน
-          <img :class="cssDropdown" src="../../assets/navbar/dropdown.png"
-        /></a>
+        <p class="text-normal">
+          ข้อมูลการแข่งขัน
+          <img :class="cssDropdown" src="../../assets/navbar/dropdown.png" />
+        </p>
       </div>
 
       <div :class="cssDropdownSlide">
         <div>
           <a
             class="text-normal"
+            @click="hideNavDropdown"
             href="#cp-info"
             v-smooth-scroll="{
               duration: 1000,
@@ -24,6 +25,7 @@
         <div>
           <a
             class="text-normal"
+            @click="hideNavDropdown"
             href="#recieve-info"
             v-smooth-scroll="{
               duration: 1000,
@@ -36,6 +38,7 @@
         <div>
           <a
             class="text-normal"
+            @click="hideNavDropdown"
             href="#event-info"
             v-smooth-scroll="{
               duration: 1000,
@@ -48,6 +51,7 @@
         <div>
           <a
             class="text-normal"
+            @click="hideNavDropdown"
             href="#timeline-info"
             v-smooth-scroll="{
               duration: 1000,
@@ -60,6 +64,7 @@
         <div>
           <a
             class="text-normal"
+            @click="hideNavDropdown"
             href="#users-info"
             v-smooth-scroll="{
               duration: 1000,
@@ -72,6 +77,7 @@
         <div>
           <a
             class="text-normal"
+            @click="hideNavDropdown"
             href="#rules-info"
             v-smooth-scroll="{
               duration: 1000,
@@ -84,6 +90,7 @@
         <div>
           <a
             class="text-normal"
+            @click="hideNavDropdown"
             href="#reward-info"
             v-smooth-scroll="{
               duration: 1000,
@@ -96,19 +103,19 @@
       </div>
 
       <div class="nav-head nav-link">
-        <a class="text-normal">เกี่ยวกับโครงการ</a>
+        <a class="text-normal" @click="hideNav">เกี่ยวกับโครงการ</a>
       </div>
       <div class="nav-head nav-link">
-        <a class="text-normal">Workshop</a>
+        <a class="text-normal" @click="hideNav">Workshop</a>
       </div>
       <div class="nav-head nav-link">
-        <a class="text-normal">ติดต่อเรา</a>
+        <a class="text-normal" @click="hideNav">ติดต่อเรา</a>
       </div>
       <!-- <div class="nav-head nav-link register-btn">
         <a class="text-normal" href="/register">ลงทะเบียน</a>
       </div> -->
       <div class="nav-head nav-link register-btn blocked">
-        <a class="text-normal">ลงทะเบียน</a>
+        <a class="text-normal" @click="hideNav">ลงทะเบียน</a>
       </div>
     </Slide>
   </div>
@@ -128,6 +135,19 @@ export default {
   methods: {
     toggleDropdown() {
       this.dropdown = !this.dropdown;
+    },
+    hideNavDropdown() {
+      var x = document.getElementsByClassName("bm-menu");
+      for (var i = 0; i < x.length; i++) {
+        x[i].style.width = "0px";
+        this.dropdown = !this.dropdown;
+      }
+    },
+    hideNav() {
+      var x = document.getElementsByClassName("bm-menu");
+      for (var i = 0; i < x.length; i++) {
+        x[i].style.width = "0px";
+      }
     },
   },
   computed: {
@@ -158,6 +178,11 @@ export default {
   text-decoration: none;
   color: #303030;
   font-size: 18px;
+}
+
+#hamburger {
+  position: fixed;
+  right: 10px;
 }
 
 .nav-head {
