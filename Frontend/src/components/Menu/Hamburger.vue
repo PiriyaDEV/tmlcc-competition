@@ -16,7 +16,7 @@
             href="#cp-info"
             v-smooth-scroll="{
               duration: 1000,
-              offset: -23,
+              offset: -73,
               updateHistory: true,
             }"
             >โจทย์การแข่งขัน</a
@@ -29,7 +29,7 @@
             href="#recieve-info"
             v-smooth-scroll="{
               duration: 1000,
-              offset: -23,
+              offset: -73,
               updateHistory: true,
             }"
             >สิ่งที่ผู้เข้าแข่งขันจะได้รับ</a
@@ -42,7 +42,7 @@
             href="#event-info"
             v-smooth-scroll="{
               duration: 1000,
-              offset: -30,
+              offset: -80,
               updateHistory: true,
             }"
             >กำหนดการ</a
@@ -55,7 +55,7 @@
             href="#timeline-info"
             v-smooth-scroll="{
               duration: 1000,
-              offset: -30,
+              offset: -80,
               updateHistory: true,
             }"
             >ไทม์ไลน์การแข่งขัน</a
@@ -68,7 +68,7 @@
             href="#users-info"
             v-smooth-scroll="{
               duration: 1000,
-              offset: -30,
+              offset: -80,
               updateHistory: true,
             }"
             >คุณสมบัติผู้เข้าแข่งขัน</a
@@ -81,7 +81,7 @@
             href="#rules-info"
             v-smooth-scroll="{
               duration: 1000,
-              offset: -30,
+              offset: -80,
               updateHistory: true,
             }"
             >เกณฑ์การตัดสิน</a
@@ -94,7 +94,7 @@
             href="#reward-info"
             v-smooth-scroll="{
               duration: 1000,
-              offset: -30,
+              offset: -80,
               updateHistory: true,
             }"
             >รางวัลทั้งหมด</a
