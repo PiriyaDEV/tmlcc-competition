@@ -198,7 +198,7 @@ export default {
     width: 90px;
   }
 
-  #navbar-menu{
+  #navbar-menu {
     box-shadow: 15px 10px 9px -8px rgb(188 188 188 / 50%);
     width: 100%;
   }

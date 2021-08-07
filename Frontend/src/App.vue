@@ -358,7 +358,7 @@ input[type="number"] {
 }
 
 .bm-burger-button {
-  top: -10px !important;
+  top: -12px !important;
   width: 32px !important;
   height: 26px !important;
   right: 8px !important;

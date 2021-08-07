@@ -91,7 +91,7 @@ export default {
     display: none;
   }
 
-  #mainpage{
+  #mainpage {
     padding: 135px 0px 0px 0px;
   }
 }
