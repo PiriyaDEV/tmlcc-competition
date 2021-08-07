@@ -361,6 +361,7 @@ input[type="number"] {
   top: 16px !important;
   width: 32px !important;
   height: 26px !important;
+  right: 20px !important;
 }
 
 .line-style {

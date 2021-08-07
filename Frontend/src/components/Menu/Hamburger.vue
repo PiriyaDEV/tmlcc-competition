@@ -108,7 +108,7 @@
         <a class="text-normal" href="/register">ลงทะเบียน</a>
       </div> -->
       <div class="nav-head nav-link register-btn blocked">
-        <a class="text-normal" href="/register">ลงทะเบียน</a>
+        <a class="text-normal">ลงทะเบียน</a>
       </div>
     </Slide>
   </div>
