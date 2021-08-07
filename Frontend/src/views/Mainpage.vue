@@ -29,6 +29,7 @@ export default {
     NavigationBar,
   },
   mounted() {
+    // document.querySelector('body').setAttribute('style', 'background:#fff')
     let myID = document.getElementById("navigation-bar-fixed");
 
     var myScrollFunc = function () {
