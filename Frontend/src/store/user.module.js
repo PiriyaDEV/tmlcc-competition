@@ -2,8 +2,8 @@ const state = {
   user: {
     user_id: "",
     displayName: "",
-    role: "user"
-  }
+    role: "user",
+  },
 };
 
 const getters = {
@@ -15,7 +15,7 @@ const getters = {
   },
   getRole(state) {
     return state.user.role;
-  }
+  },
 };
 
 const actions = {};
@@ -25,5 +25,5 @@ export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };
