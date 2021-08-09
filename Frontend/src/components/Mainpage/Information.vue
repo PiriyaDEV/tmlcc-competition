@@ -21,14 +21,13 @@
       <hr class="bar-color bar-color-s" />
 
       <ul class="text-medium number-bullet">
-        <li>เงินรางวัล โล่รางวัล พร้อมเกียรติบัตร (ตามเกณฑ์ที่ผู้จัดกำหนด)</li>
-        <li>เกียรติบัตรการเข้าร่วมกิจกรรม TMLCC</li>
-        <li>การประชาสัมพันธ์ผ่านสื่อต่าง ๆ ที่โครงการจัดทำ</li>
+        <li>เงินรางวัล โล่รางวัล (ตามเกณฑ์ที่ผู้จัดกำหนด)</li>
+        <li>เกียรติบัตรการเข้าร่วมการแข่งขัน</li>
         <li>
-          Exclusive free online workshop และ
-          พบปะแลกเปลี่ยนความรู้กับผู้เชี่ยวชาญสาขาอย่างใกล้ชิด
+          อบรมเชิงปฏิบัติการออนไลน์โดยผู้เชี่ยวชาญด้านปัญญาประดิษฐ์และเคมี
         </li>
-        <li>Lifetime Free Program Licenses</li>
+        <li>สิทธิพิเศษในการเข้าใช้งาน GPU resource สำหรับการแข่งขัน</li>
+        <li>License และ 1 Year Software Subscription</li>
       </ul>
 
       <h1 id="event-info" class="header-s">กำหนดการ</h1>
@@ -37,7 +36,7 @@
       <div class="two-column">
         <ul class="text-medium donut-bullet">
           <div class="two-column">
-            <li>ลงทะเบียนเข้าร่วมอบรมและการแข่งขัน</li>
+            <li>ประชาสัมพันธ์ & ลงทะเบียน</li>
             <li class="second-tab block-tab">1 กันยายน - 14 กันยายน 2564</li>
           </div>
           <div class="two-column">
@@ -49,16 +48,30 @@
             <li class="second-tab block-tab">16 - 19 กันยายน 2564</li>
           </div>
           <div class="two-column">
-            <li>การแข่งขัน</li>
+            <li>การแข่งขัน รอบที่ 1</li>
             <li class="second-tab block-tab">20 กันยายน - 4 พฤศจิกายน 2564</li>
           </div>
           <div class="two-column">
-            <li>ผู้เข้าแข่งขันนำเสนอผลงาน</li>
-            <li class="second-tab block-tab">6 พฤศจิกายน 2564</li>
+            <li>Competition clinic</li>
+            <li class="second-tab block-tab">
+              3 ตุลาคม 2564 (ให้คำปรึกษาแต่ละทีม)
+            </li>
+          </div>
+          <div class="two-column">
+            <li>การแข่งขัน รอบที่ 2</li>
+            <li class="second-tab block-tab">4 - 16 ตุลาคม 2564</li>
+          </div>
+          <div class="two-column">
+            <li>การแข่งขัน รอบที่ 3</li>
+            <li class="second-tab block-tab">17 ตุลาคม 2564</li>
+          </div>
+          <div class="two-column">
+            <li>นำเสนอผลงาน</li>
+            <li class="second-tab block-tab">23 ตุลาคม 2564</li>
           </div>
           <div class="two-column">
             <li>ประกาศผลผู้ได้รับรางวัล</li>
-            <li class="second-tab block-tab">8 พฤศจิกายน 2564</li>
+            <li class="second-tab block-tab">24 ตุลาคม 2564</li>
           </div>
         </ul>
 
@@ -67,8 +80,11 @@
           <li>15 กันยายน 2564</li>
           <li>16 - 19 กันยายน 2564</li>
           <li>20 กันยายน - 4 พฤศจิกายน 2564</li>
-          <li>6 พฤศจิกายน 2564</li>
-          <li>8 พฤศจิกายน 2564</li>
+          <li>3 ตุลาคม 2564 (ให้คำปรึกษาแต่ละทีม)</li>
+          <li>4 - 16 ตุลาคม 2564</li>
+          <li>17 ตุลาคม 2564</li>
+          <li>23 ตุลาคม 2564</li>
+          <li>24 ตุลาคม 2564</li>
         </ul>
       </div>
 
@@ -80,7 +96,7 @@
       <hr class="bar-color bar-color-s" />
 
       <div class="center">
-        <img id="timeline" src="../../assets/mainpage/Timeline.png" alt="" />
+        <img id="timeline" src="../../assets/mainpage/Timeline-2.png" alt="" />
       </div>
 
       <h1 id="users-info" class="header-s">คุณสมบัติผู้เข้าแข่งขัน</h1>
@@ -158,7 +174,7 @@
       </div>
 
       <p class="text-medium reward-note blue-text">
-        ชิงเงินรางวัลมูลค่ารวมกว่า 100,000 บาท !
+        ชิงเงินรางวัลมูลค่ารวมกว่า 60,000 บาท !
       </p>
 
       <div class="center">
@@ -332,7 +348,7 @@ export default {
     margin: 70px 0px 40px 0px;
   }
 
-  .donut-bullet li{
+  .donut-bullet li {
     padding-left: 25px;
     margin-left: 10px;
   }
@@ -363,6 +379,10 @@ export default {
 
   .second-tab {
     padding: 3px 0px 3px 35px !important;
+  }
+
+  #information {
+    margin-top: 50px;
   }
 }
 </style>
