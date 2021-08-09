@@ -70,6 +70,9 @@ export default {
   components: {
     Navbar,
   },
+  mounted() {
+    this.$store.dispatch("inputPage","login")
+  },
   data() {
     return {
       user: {

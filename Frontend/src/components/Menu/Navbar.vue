@@ -46,7 +46,7 @@
           </div>
         </div>
         <div id="hamburger">
-          <Hamburger :page="page"/>
+          <Hamburger :page="page" />
         </div>
       </div>
     </div>
@@ -108,7 +108,7 @@ export default {
   z-index: 999;
 }
 
-a{
+a {
   text-decoration: none;
 }
 
