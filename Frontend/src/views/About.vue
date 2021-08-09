@@ -264,6 +264,15 @@ export default {
   width: 360px;
 }
 
+p,
+li {
+  font-family: "IBM-PLEX-THAI-LOOP" !important;
+}
+
+.text-normal {
+  font-size: 2.25em;
+}
+
 /* Header */
 .blue-line {
   color: #2f65af !important;

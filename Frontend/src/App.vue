@@ -29,6 +29,12 @@ export default {};
   src: url("../src/assets/fonts/IBMPlexSansThai-SemiBold.woff2") format("woff2");
 }
 
+@font-face {
+  font-family: "IBM-PLEX-THAI-LOOP";
+  src: url("../src/assets/fonts/IBMPlexSansThaiLooped-Regular.ttf")
+    format("woff2");
+}
+
 /* ตั้งค่าหน้า */
 body,
 html,
