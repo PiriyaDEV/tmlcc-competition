@@ -33,6 +33,11 @@ const routes = [
     name: "FileSetting",
     component: () => import("../views/Admin/FileSetting.vue"),
   },
+  {
+    path: "/about",
+    name: "About",
+    component: () => import("../views/About.vue"),
+  },
 ];
 
 const router = new VueRouter({

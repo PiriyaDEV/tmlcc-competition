@@ -49,7 +49,7 @@
           </div>
           <div class="two-column">
             <li>การแข่งขัน รอบที่ 1</li>
-            <li class="second-tab block-tab">20 กันยายน - 4 พฤศจิกายน 2564</li>
+            <li class="second-tab block-tab">20 กันยายน - 2 ตุลาคม 2564</li>
           </div>
           <div class="two-column">
             <li>Competition clinic</li>
@@ -79,7 +79,7 @@
           <li>1 กันยายน - 14 กันยายน 2564</li>
           <li>15 กันยายน 2564</li>
           <li>16 - 19 กันยายน 2564</li>
-          <li>20 กันยายน - 4 พฤศจิกายน 2564</li>
+          <li>20 กันยายน - 2 ตุลาคม 2564</li>
           <li>3 ตุลาคม 2564 (ให้คำปรึกษาแต่ละทีม)</li>
           <li>4 - 16 ตุลาคม 2564</li>
           <li>17 ตุลาคม 2564</li>
@@ -254,15 +254,6 @@ export default {
 .text-medium {
   text-align: left;
   margin-top: 15px;
-}
-
-.indent-tab {
-  text-indent: 35px;
-}
-
-.number-bullet > li {
-  text-indent: 0px;
-  list-style-type: number;
 }
 
 .two-column {

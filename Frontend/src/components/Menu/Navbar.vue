@@ -28,10 +28,10 @@
           </div>
         </div>
         <div id="nav-right">
-          <p class="text-normal nav-text">เกี่ยวกับโครงการ</p>
+          <a class="text-normal nav-text" href="/about">เกี่ยวกับโครงการ</a>
           <p v-if="page == `login`" class="text-normal nav-text">Q&A</p>
-          <p v-if="page != `login`" class="text-normal nav-text">Workshops</p>
-          <p class="text-normal nav-text">ติดต่อเรา</p>
+          <!-- <p v-if="page != `login`" class="text-normal nav-text">Workshops</p> -->
+          <!-- <p class="text-normal nav-text">ติดต่อเรา</p> -->
           <div class="center">
             <button v-if="page != `register1`" class="btn-white blocked">
               ลงทะเบียน
@@ -46,7 +46,7 @@
           </div>
         </div>
         <div id="hamburger">
-          <Hamburger />
+          <Hamburger :page="page"/>
         </div>
       </div>
     </div>
@@ -106,6 +106,10 @@ export default {
   background-color: #ffffff;
   padding: 17px 0px;
   z-index: 999;
+}
+
+a{
+  text-decoration: none;
 }
 
 #navbar-menu > div {

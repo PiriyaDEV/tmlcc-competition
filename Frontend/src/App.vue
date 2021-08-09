@@ -260,6 +260,15 @@ select:-webkit-autofill:focus {
   border: 1px solid #f07821 !important;
 }
 
+.indent-tab {
+  text-indent: 35px;
+}
+
+.number-bullet > li {
+  text-indent: 0px;
+  list-style-type: number;
+}
+
 /* ปุ่ม */
 
 .btn-color,
