@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar :page="`login`" />
+    <Navbar />
     <div id="login" class="section">
       <div id="login-container" class="page-container">
         <div>
@@ -71,7 +71,7 @@ export default {
     Navbar,
   },
   mounted() {
-    this.$store.dispatch("inputPage","login")
+    this.$store.dispatch("setPage", "login");
   },
   data() {
     return {
@@ -176,5 +176,45 @@ export default {
 .login-below-text {
   margin-top: 15px;
   text-align: center;
+}
+
+@media screen and (max-width: 1100px) {
+  #login {
+    padding: 100px 0px 200px 0px;
+  }
+
+  #tmlcc-logo {
+    width: 300px;
+  }
+
+  #login-box {
+    margin-top: 25px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .input-box {
+    width: 300px;
+  }
+
+  #tmlcc-logo {
+    width: 250px;
+  }
+}
+
+@media screen and (max-width: 470px) {
+  .input-box {
+    width: 220px;
+  }
+
+  #tmlcc-logo {
+    width: 220px;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .input-box {
+    width: 190px;
+  }
 }
 </style>

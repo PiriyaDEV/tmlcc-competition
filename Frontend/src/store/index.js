@@ -1,13 +1,18 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import user from "./user.module";
+import auth from "./auth.module";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    page: "",
+    page: "mainpage",
+  },
+  getters: {
+    getPage(state) {
+      return state.page;
+    },
   },
   mutations: {
     setPage(state, value) {
@@ -15,16 +20,11 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    inputPage(context, value) {
-      context.commit("setPage", value);
-    },
-  },
-  getters: {
-    getPage(state) {
-      return state.page;
+    setPage({ commit }, value) {
+      commit("setPage", value);
     },
   },
   modules: {
-    user,
+    auth,
   },
 });

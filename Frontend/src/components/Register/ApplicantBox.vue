@@ -704,11 +704,11 @@ export default {
   },
   methods: {
     agreementClick() {
-      this.$emit("pageReturn", "agreement");
+      this.$store.dispatch("setPage", "agreement");
     },
     registerNext() {
       if (this.validateForm() && !this.isInvalid.email) {
-        this.$emit("pageReturn", "info");
+        this.$store.dispatch("setPage", "info");
       }
     },
     checkDuplicated() {

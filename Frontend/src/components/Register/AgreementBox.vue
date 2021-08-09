@@ -84,9 +84,12 @@ export default {
       agree: false,
     };
   },
+  mounted() {
+    this.$store.dispatch("setPage","agreement")
+  },
   methods: {
     register() {
-      this.$emit("pageReturn", "applicant");
+      this.$store.dispatch("setPage","applicant")
     },
   },
 };

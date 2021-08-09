@@ -157,29 +157,6 @@ export default {
   cursor: pointer;
 }
 
-/* #navigation-bar {
-  position: absolute;
-  top: 75px;
-}
-
-.closed {
-  overflow: hidden;
-  max-height: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-  transition: all 0.5s ease;
-  will-change: transform;
-}
-
-.open {
-  max-height: 400px;
-  overflow: hidden;
-  transition: all 0.5s ease;
-  will-change: transform;
-} */
-
 .display-name {
   color: #764a97 !important;
   font-weight: 700;

@@ -1,6 +1,6 @@
 <template>
   <div id="hamburger">
-    <Slide right width="260">
+    <Slide right width="260" noOverlay>
       <div class="nav-head nav-link" @click="toggleDropdown()">
         <p class="text-normal">
           ข้อมูลการแข่งขัน
@@ -153,13 +153,14 @@
 
 <script>
 import { Slide } from "vue-burger-menu";
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
       dropdown: true,
     };
   },
-  props: ["page"],
   components: {
     Slide, // Register your component
   },
@@ -199,6 +200,9 @@ export default {
       }
       return open;
     },
+    ...mapGetters({
+      page: "getPage",
+    }),
   },
 };
 </script>

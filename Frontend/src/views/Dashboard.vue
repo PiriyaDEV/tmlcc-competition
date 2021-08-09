@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DashboardNavbar :page="`login`" />
+    <DashboardNavbar />
     <div id="dashboard" class="section">
       <div id="dashboard-container" class="page-container">
         <div>
@@ -42,6 +42,9 @@ export default {
       displayName: "",
       role: "user",
     };
+  },
+  mounted() {
+    this.$store.dispatch("setPage", "dashBoard");
   },
   created() {
     let user = JSON.parse(localStorage.getItem("currentUser"));

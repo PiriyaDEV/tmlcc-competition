@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar :page="`about`" />
+    <Navbar />
     <div id="about" class="section">
       <div id="about-container" class="page-container">
         <div>
@@ -236,7 +236,7 @@ export default {
     Footer,
   },
   mounted() {
-    this.$store.dispatch("inputPage", "about");
+    this.$store.dispatch("setPage", "about");
   },
 };
 </script>

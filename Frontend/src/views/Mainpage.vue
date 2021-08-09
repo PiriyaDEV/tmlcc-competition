@@ -1,12 +1,12 @@
 <template>
   <div>
-    <Navbar :page="`mainpage`" />
+    <Navbar />
     <div id="mainpage" class="section">
       <div id="mainpage-container" class="page-container">
         <div>
           <Home />
           <Information />
-          <NavigationBar :page="`mainpage`" id="navigation-bar-fixed" />
+          <NavigationBar id="navigation-bar-fixed" />
         </div>
       </div>
     </div>
@@ -20,6 +20,7 @@ import Home from "../components/Mainpage/Home.vue";
 import Information from "../components/Mainpage/Information.vue";
 import Footer from "../components/Mainpage/Footer.vue";
 import NavigationBar from "../components/Menu/NavigationBar.vue";
+
 export default {
   components: {
     Navbar,
@@ -29,7 +30,7 @@ export default {
     NavigationBar,
   },
   mounted() {
-    this.$store.dispatch("inputPage", "mainpage");
+    this.$store.dispatch("setPage", "mainpage");
 
     let myID = document.getElementById("navigation-bar-fixed");
 

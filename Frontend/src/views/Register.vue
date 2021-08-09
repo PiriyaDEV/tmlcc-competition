@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar :page="navbarPage" />
+    <Navbar />
     <div id="register" class="section">
       <div id="register-container" class="page-container">
         <div>
@@ -10,22 +10,11 @@
           <h1 class="header-c">สมัครเข้าร่วมการแข่งขัน</h1>
 
           <div>
-            <AgreementBox
-              v-show="box == `agreement`"
-              @pageReturn="pageReturn"
-            />
+            <AgreementBox v-if="page == `agreement`" />
 
-            <ApplicantBox
-              v-show="box == `applicant`"
-              :user="user"
-              @pageReturn="pageReturn"
-            />
+            <ApplicantBox v-if="page == `applicant`" :user="user" />
 
-            <SystemInfo
-              v-show="box == `info`"
-              :user="user"
-              @pageReturn="pageReturn"
-            />
+            <SystemInfo v-if="page == `info`" :user="user" />
 
             <!-- <ApplicantBox /> -->
           </div>
@@ -41,14 +30,11 @@ import AgreementBox from "../components/Register/AgreementBox.vue";
 import ApplicantBox from "../components/Register/ApplicantBox.vue";
 import SystemInfo from "../components/Register/SystemInfo.vue";
 import User from "../models/user.model";
+import { mapGetters } from "vuex";
 
 export default {
-  mounted() {
-    this.$store.dispatch("inputPage","register")
-  },
   data() {
     return {
-      box: "agreement",
       navbarPage: "register1",
       user: new User({
         titleName: "นาย",
@@ -66,13 +52,13 @@ export default {
     ApplicantBox,
     SystemInfo,
   },
-  methods: {
-    pageReturn(value) {
-      this.box = value;
-      if (value != "agreement") {
-        this.navbarPage = "register2";
-      } else this.navbarPage = "register1";
-    },
+  computed: {
+    ...mapGetters({
+      page: "getPage",
+    }),
+  },
+  mounted() {
+    this.$store.dispatch("setPage", "agreement");
   },
 };
 </script>

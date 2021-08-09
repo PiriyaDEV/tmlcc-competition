@@ -174,7 +174,7 @@
       </div>
 
       <p class="text-medium reward-note blue-text">
-        ชิงเงินรางวัลมูลค่ารวมกว่า 60,000 บาท !
+        ชิงเงินรางวัลมูลค่ารวมกว่า 80,000 บาท !
       </p>
 
       <div class="center">

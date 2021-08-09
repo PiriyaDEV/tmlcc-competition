@@ -199,7 +199,7 @@ export default {
   },
   methods: {
     applicantClick() {
-      this.$emit("pageReturn", "applicant");
+      this.$store.dispatch("setPage", "applicant");
     },
     register() {
       if (this.validateForm() && !this.isInvalid.displayName) {

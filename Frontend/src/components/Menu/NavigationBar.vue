@@ -112,8 +112,9 @@
 
 <script>
 import $ from "jquery";
+import { mapGetters } from "vuex";
+
 export default {
-  props: ["page"],
   methods: {
     clickSelected() {
       this.$emit("click", true);
@@ -132,6 +133,11 @@ export default {
         700
       );
     });
+  },
+  computed: {
+    ...mapGetters({
+      page: "getPage",
+    }),
   },
 };
 </script>

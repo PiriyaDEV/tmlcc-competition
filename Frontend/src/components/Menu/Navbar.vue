@@ -23,7 +23,6 @@
               :class="SlideMenu"
               @click="click"
               id="navigation-bar"
-              :page="page"
             />
           </div>
         </div>
@@ -33,11 +32,11 @@
           <!-- <p v-if="page != `login`" class="text-normal nav-text">Workshops</p> -->
           <!-- <p class="text-normal nav-text">ติดต่อเรา</p> -->
           <div class="center">
-            <button v-if="page != `register1`" class="btn-white blocked">
+            <button v-if="page != `agreement`" class="btn-white blocked">
               ลงทะเบียน
             </button>
             <button
-              v-if="page == `register1`"
+              v-if="page == `agreement`"
               @click="loginClick()"
               class="btn-color"
             >
@@ -46,7 +45,7 @@
           </div>
         </div>
         <div id="hamburger">
-          <Hamburger :page="page" />
+          <Hamburger />
         </div>
       </div>
     </div>
@@ -56,13 +55,13 @@
 <script>
 import Hamburger from "../Menu/Hamburger.vue";
 import NavigationBar from "../Menu/NavigationBar.vue";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     NavigationBar,
     Hamburger,
   },
-  props: ["page"],
   data() {
     return {
       showMenu: false,
@@ -94,6 +93,9 @@ export default {
       }
       return up;
     },
+    ...mapGetters({
+      page: "getPage",
+    }),
   },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar :page="`mainpage`" />
+    <Navbar />
     <div id="workshop" class="section">
       <div id="workshop-container" class="page-container">
         <div>
@@ -32,6 +32,9 @@ import Navbar from "../components/Menu/Navbar.vue";
 export default {
   components: {
     Navbar,
+  },
+  mounted() {
+    this.$store.dispatch("setPage", "workshop");
   },
 };
 </script>
