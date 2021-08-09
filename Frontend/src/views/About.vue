@@ -235,6 +235,9 @@ export default {
     Navbar,
     Footer,
   },
+  mounted() {
+    this.$store.dispatch("inputPage", "about");
+  },
 };
 </script>
 
@@ -322,6 +325,10 @@ th {
 th:first-child,
 td {
   text-align: left;
+}
+
+th:first-child {
+  padding-left: 20px;
 }
 
 td {

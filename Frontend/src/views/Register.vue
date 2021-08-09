@@ -43,6 +43,9 @@ import SystemInfo from "../components/Register/SystemInfo.vue";
 import User from "../models/user.model";
 
 export default {
+  mounted() {
+    this.$store.dispatch("inputPage","register")
+  },
   data() {
     return {
       box: "agreement",

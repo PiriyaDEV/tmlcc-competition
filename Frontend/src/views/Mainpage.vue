@@ -29,6 +29,8 @@ export default {
     NavigationBar,
   },
   mounted() {
+    this.$store.dispatch("inputPage", "mainpage");
+
     let myID = document.getElementById("navigation-bar-fixed");
 
     var myScrollFunc = function () {
