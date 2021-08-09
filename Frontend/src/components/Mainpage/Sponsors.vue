@@ -33,6 +33,9 @@
     <div>
       <img id="jb-logo" src="../../assets/sponsors/jetbrains 1.png" alt="" />
     </div>
+    <div>
+      <img id="scb-logo" src="../../assets/sponsors/scb-bank 1.png" alt="" />
+    </div>
   </div>
 </template>
 
@@ -47,6 +50,11 @@ export default {};
 
 #sponsors > div > img {
   cursor: pointer;
+}
+
+#sponsors {
+  flex-wrap: wrap;
+  padding: 0px 120px;
 }
 
 /* sponsors logo */
@@ -74,8 +82,11 @@ export default {};
 #tw-logo {
   width: 244px;
 }
+#scb-logo {
+  width: 141px;
+}
 
-@media screen and (max-width: 1650px) {
+@media screen and (max-width: 1750px) {
   #kmutt-logo {
     width: calc(172px - 30px);
   }
@@ -99,6 +110,9 @@ export default {};
   }
   #tw-logo {
     width: calc(244px - 30px);
+  }
+  #scb-logo {
+    width: calc(141px - 30px);
   }
 }
 
@@ -127,9 +141,17 @@ export default {};
   #tw-logo {
     width: calc(244px - 40px);
   }
+  #scb-logo {
+    width: calc(141px - 40px);
+  }
 
   #sponsors > div {
     padding: 10px;
+  }
+
+  #sponsors {
+    flex-wrap: wrap;
+    padding: 0px 80px;
   }
 }
 
@@ -157,6 +179,9 @@ export default {};
   }
   #tw-logo {
     width: calc(264px - 80px);
+  }
+  #scb-logo {
+    width: calc(141px - 30px);
   }
 
   #sponsors {
