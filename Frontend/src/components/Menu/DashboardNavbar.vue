@@ -27,18 +27,24 @@
               สมาชิกของระบบ
             </p>
             <p class="text-normal nav-text" @click="dashboardFile()">
-              File Manament
+              File Management
             </p>
           </div>
         </div>
         <div id="nav-right">
           <p class="text-normal nav-text">ติดต่อเรา</p>
           <div class="center">
-            <p
+            <!-- <p
               class="text-normal display-name nav-text"
               @click="toggleShowMenu()"
             >
               {{ displayName }}
+            </p> -->
+            <p
+              class="text-normal display-name nav-text"
+              @click="toggleShowMenu()"
+            >
+              harryfer
             </p>
             <img
               id="dropdown-icon"
@@ -46,13 +52,13 @@
               alt=""
               @click="toggleShowMenu()"
             />
-            <NavigationBar
-              :class="SlideMenu"
-              @click="click"
-              id="navigation-bar"
-              :page="page"
-            />
+            <div id="signout-dropdown" :class="SlideMenu" @click="click">
+              <button class="btn-white">ออกจากระบบ</button>
+            </div>
           </div>
+        </div>
+        <div id="hamburger">
+          <Hamburger />
         </div>
       </div>
     </div>
@@ -60,8 +66,11 @@
 </template>
 
 <script>
+import Hamburger from "../Menu/Hamburger.vue";
 export default {
-  components: {},
+  components: {
+    Hamburger,
+  },
   props: ["page"],
   data() {
     return {
@@ -162,5 +171,81 @@ export default {
   font-weight: 700;
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
   padding-right: 6px;
+}
+
+#hamburger {
+  display: none;
+}
+
+.closed {
+  overflow: hidden;
+  max-height: 0;
+  padding: 0px;
+  margin-top: 0;
+  margin-bottom: 0;
+  transition: all 0.7s ease;
+  will-change: transform;
+}
+
+.open {
+  max-height: 400px;
+  overflow: hidden;
+  transition: all 0.7s ease;
+  will-change: transform;
+}
+
+.btn-white {
+  font-size: 2em;
+}
+
+/* Sign Out */
+#signout-dropdown {
+  border-radius: 12px;
+  list-style-type: none;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  position: absolute;
+  top: 90px;
+}
+
+@media screen and (max-width: 1100px) {
+  #nav-right,
+  #nav-center,
+  #nav-left > div {
+    display: none;
+  }
+
+  #signout-dropdown {
+    display: none;
+  }
+
+  #navbar-menu {
+    position: fixed;
+  }
+
+  #hamburger {
+    display: inherit;
+  }
+
+  #tmlcc-logo {
+    width: 100px;
+  }
+  #tmlcc-icon {
+    width: 50px;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  #tmlcc-logo {
+    width: 90px;
+  }
+  #tmlcc-icon {
+    width: 40px;
+  }
+
+  #navbar-menu {
+    box-shadow: 15px 10px 9px -8px rgb(188 188 188 / 50%);
+    width: 100%;
+  }
 }
 </style>

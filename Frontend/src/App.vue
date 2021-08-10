@@ -437,6 +437,13 @@ input[type="number"] {
   .text-normal {
     font-size: 2em;
   }
+
+  .btn-color,
+  .btn-white,
+  .btn-grey,
+  .rg-btn {
+    font-size: 2.25em;
+  }
 }
 
 @media screen and (max-width: 1024px) {
@@ -485,6 +492,13 @@ input[type="number"] {
   .text-normal {
     font-size: 1.75em;
   }
+
+  .btn-color,
+  .btn-white,
+  .btn-grey,
+  .rg-btn {
+    font-size: 2em;
+  }
 }
 
 @media screen and (max-width: 414px) {
@@ -522,6 +536,13 @@ input[type="number"] {
 
   .text-normal {
     font-size: 1.5em;
+  }
+
+  .btn-color,
+  .btn-white,
+  .btn-grey,
+  .rg-btn {
+    font-size: 1.75em;
   }
 }
 @media screen and (max-width: 375px) {

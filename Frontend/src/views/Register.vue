@@ -68,6 +68,8 @@ export default {
   /* min-height: 100vh; */
   padding: 50px 0px 200px 0px;
   background-color: #f3f3f3;
+  box-shadow: inset 0px 11px 8px -10px rgba(188, 188, 188, 0.5);
+  -webkit-box-shadow: inset 0px 11px 8px -10px rgba(188, 188, 188, 0.5);
 }
 
 #tmlcc-logo {
@@ -88,5 +90,27 @@ export default {
 .btn-color {
   margin-top: 15px;
   margin-bottom: 20px;
+}
+
+@media screen and (max-width: 1100px) {
+  #register {
+    padding: 100px 0px 200px 0px;
+  }
+
+  #tmlcc-logo {
+    width: 300px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #tmlcc-logo {
+    width: 250px;
+  }
+}
+
+@media screen and (max-width: 470px) {
+  #tmlcc-logo {
+    width: 220px;
+  }
 }
 </style>

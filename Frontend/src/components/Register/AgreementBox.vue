@@ -85,11 +85,11 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch("setPage","agreement")
+    this.$store.dispatch("setPage", "agreement");
   },
   methods: {
     register() {
-      this.$store.dispatch("setPage","applicant")
+      this.$store.dispatch("setPage", "applicant");
     },
   },
 };
@@ -130,5 +130,18 @@ export default {
 
 .bar-color {
   width: 120px;
+}
+
+@media screen and (max-width: 1100px) {
+  #agreement-box {
+    padding: 20px 40px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #agreement-box {
+    margin-top: 15px;
+    padding: 20px 20px;
+  }
 }
 </style>

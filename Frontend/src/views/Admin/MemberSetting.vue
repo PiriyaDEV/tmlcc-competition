@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DashboardNavbar :page="`login`" />
+    <DashboardNavbar />
     <div id="member-setting" class="section">
       <div id="member-container" class="page-container">
         <div>
@@ -69,6 +69,9 @@ export default {
       this.choice = "admin";
     },
   },
+  mounted() {
+    this.$store.dispatch("setPage", "dashBoard");
+  },
 };
 </script>
 
@@ -122,5 +125,11 @@ export default {
   color: #f3f3f3;
   background-color: #f3f3f3;
   border: 1.5px solid #f3f3f3;
+}
+
+@media screen and (max-width: 1100px) {
+  #member-setting {
+    padding: 100px 0px 200px 0px;
+  }
 }
 </style>

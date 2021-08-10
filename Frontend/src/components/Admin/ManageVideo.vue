@@ -192,4 +192,98 @@ div::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.5);
   /* box-shadow: 0 0 1px rgba(255, 255, 255, 1); */
 }
+
+@media screen and (max-width: 980px) {
+  #manage-video {
+    padding: 30px;
+  }
+
+  #video-box {
+    padding: 0px 15px 0px 0px;
+  }
+
+  .play-btn {
+    left: 42px;
+    bottom: 32px;
+    width: 18px;
+  }
+
+  .file-name {
+    font-size: 1.75em;
+  }
+
+  .edit-btn {
+    font-size: 1.75em;
+  }
+
+  .add-btn {
+    font-size: 1.5em;
+    padding: 1.5px 10px;
+    margin-top: 10px;
+  }
+
+  .video-image {
+    width: 95px;
+    height: 70px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .file-name {
+    font-size: 1.5em;
+    margin-top: 10px;
+  }
+
+  .video-container {
+    display: block;
+  }
+
+  #video-box-section {
+    margin-bottom: 20px;
+    align-items: flex-start;
+    /* display: block; */
+  }
+
+  #video-section {
+    margin-top: 10px;
+  }
+
+  .edit-btn {
+    font-size: 1.5em;
+    margin-top: 15px;
+  }
+
+  #search-grid {
+    display: block;
+  }
+
+  .play-btn {
+    left: 34px;
+    bottom: 26px;
+    width: 13px;
+  }
+
+  .video-image {
+    width: 75px;
+    height: 50px;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  #video-box-section {
+    display: block;
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    padding: 10px 5px;
+  }
+
+  .video-container {
+    display: flex;
+  }
+
+  .edit-btn {
+    width: 100%;
+    margin-top: 0px;
+  }
+}
 </style>

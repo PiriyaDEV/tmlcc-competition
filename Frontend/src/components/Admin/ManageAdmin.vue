@@ -40,13 +40,32 @@
           <th class="table-regis-hd">แก้ไขข้อมูล</th>
         </tr>
         <tr v-for="(member, i) in memberList" :key="i">
-          <td class="table-info">Admin</td>
-          <td class="table-info">พิริยะ</td>
-          <td class="table-info">ชัยกุล</td>
-          <td class="table-info">0896832465</td>
-          <td class="table-info">piriya@gmail.com</td>
-          <td class="table-info">DeepBlueSea</td>
           <td>
+            <span class="table-hd mb-head">Role</span
+            ><span class="table-info">Admin</span>
+          </td>
+          <td>
+            <span class="table-hd mb-head">ชื่อ</span
+            ><span class="table-info">พิริยะ</span>
+          </td>
+          <td>
+            <span class="table-hd mb-head">นามสกุล</span
+            ><span class="table-info">ชัยกุล</span>
+          </td>
+          <td>
+            <span class="table-hd mb-head">เบอร์โทร</span
+            ><span class="table-info">0896832465</span>
+          </td>
+          <td>
+            <span class="table-hd mb-head">E-mail</span
+            ><span class="table-info">piriya@gmail.com</span>
+          </td>
+          <td>
+            <span class="table-hd mb-head">สังกัด</span
+            ><span class="table-info">DeepBlueSea</span>
+          </td>
+          <td>
+            <span class="table-hd mb-head">แก้ไขข้อมูล</span>
             <button class="edit-btn">edit</button>
           </td>
         </tr>
@@ -115,6 +134,10 @@ export default {
   font-weight: 600;
   color: #303030;
   margin: 0;
+}
+
+.mb-head {
+  display: none;
 }
 
 .table-regis-hd {
@@ -191,5 +214,54 @@ div::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background-color: rgba(0, 0, 0, 0.5);
   /* box-shadow: 0 0 1px rgba(255, 255, 255, 1); */
+}
+
+@media screen and (max-width: 980px) {
+  #manage-admin {
+    padding: 30px;
+  }
+
+  table tr {
+    display: block;
+  }
+
+  table td {
+    display: block;
+  }
+
+  td {
+    background-color: #f8f8f8;
+  }
+
+  .mb-head {
+    display: initial;
+    padding-right: 15px;
+  }
+  td:last-child {
+    text-align: left;
+    display: flex;
+    align-items: center;
+  }
+  #member-table > tr:first-child {
+    display: none;
+  }
+  #member-table > tr {
+    margin-bottom: 20px;
+  }
+  td,
+  th {
+    border: 1px solid #c4c4c4;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #search-grid {
+    display: block;
+  }
+
+  #role-select {
+    margin-top: 0px;
+    margin-bottom: 10px;
+  }
 }
 </style>

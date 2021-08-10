@@ -153,4 +153,47 @@ div::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.5);
   /* box-shadow: 0 0 1px rgba(255, 255, 255, 1); */
 }
+
+@media screen and (max-width: 980px) {
+  #manage-file {
+    padding: 30px;
+  }
+
+  .file-container {
+    padding: 0px 15px 10px 0px;
+  }
+
+  .file-name {
+    font-size: 1.75em;
+  }
+
+  .edit-btn {
+    font-size: 1.75em;
+  }
+
+  .add-btn {
+    font-size: 1.5em;
+    padding: 1.5px 10px;
+    margin-top: 10px;
+  }
+
+  .file-icon {
+    width: 18px;
+    margin-right: 12px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .file-name {
+    font-size: 1.5em;
+  }
+
+  .edit-btn {
+    font-size: 1.5em;
+  }
+
+  #search-grid {
+    display: block;
+  }
+}
 </style>

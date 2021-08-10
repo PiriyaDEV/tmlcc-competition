@@ -1,5 +1,5 @@
 <template>
-  <div id="agreement-box">
+  <div id="systeminfo-box">
     <div @click="applicantClick()" class="center page-change-left">
       <i class="fa fa-angle-left" aria-hidden="true"></i>
       <h1 class="text-normal purple-text">ข้อมูลผู้สมัคร</h1>
@@ -268,7 +268,7 @@ export default {
 </script>
 
 <style scoped>
-#agreement-box {
+#systeminfo-box {
   /* width: 100%; */
   margin-top: 30px;
   background-color: #ffffff;
@@ -350,5 +350,48 @@ input[type="password"] {
 
 .team-checkbox > div:nth-child(1) {
   margin-right: 60px;
+}
+
+@media screen and (max-width: 1100px) {
+  #systeminfo-box {
+    padding: 20px 40px;
+  }
+
+  .page-change-left {
+    left: 40px;
+  }
+
+  .page-change-right {
+    right: 40px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #systeminfo-box {
+    margin-top: 15px;
+    padding: 20px 20px;
+  }
+
+  .page-change-left {
+    left: 30px;
+  }
+
+  .page-change-right {
+    right: 30px;
+  }
+
+  .page-change-right > h1,
+  .page-change-left > h1 {
+    display: none;
+  }
+
+  .fa {
+    font-size: 3.25em;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+  }
 }
 </style>

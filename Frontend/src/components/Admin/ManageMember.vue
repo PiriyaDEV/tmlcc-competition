@@ -27,13 +27,32 @@
           <th class="table-regis-hd">แสดงใบสมัคร</th>
         </tr>
         <tr v-for="(member, i) in memberList" :key="i">
-          <td class="table-info">pd.piriya</td>
-          <td class="table-info">พิริยะ</td>
-          <td class="table-info">ชัยกุล</td>
-          <td class="table-info">Deep Blue Sea</td>
-          <td class="table-info">piriya@gmail.com</td>
-          <td class="table-info">มัธยมศึกษา</td>
           <td>
+            <span class="table-hd mb-head">Display Name</span
+            ><span class="table-info">pd.piriya</span>
+          </td>
+          <td>
+            <span class="table-hd mb-head">ชื่อ</span
+            ><span class="table-info">พิริยะ</span>
+          </td>
+          <td>
+            <span class="table-hd mb-head">นามสกุล</span
+            ><span class="table-info">ชัยกุล</span>
+          </td>
+          <td>
+            <span class="table-hd mb-head">Team</span
+            ><span class="table-info">Deep Blue Sea</span>
+          </td>
+          <td>
+            <span class="table-hd mb-head">E-mail</span
+            ><span class="table-info">piriya@gmail.com</span>
+          </td>
+          <td>
+            <span class="table-hd mb-head">ระดับการศึกษา</span
+            ><span class="table-info">มัธยมศึกษา</span>
+          </td>
+          <td>
+            <span class="table-hd mb-head">แสดงใบสมัคร</span>
             <img
               class="file-icon"
               src="../../assets/icon/file-icon.png"
@@ -110,6 +129,10 @@ export default {
   margin: 0;
 }
 
+.mb-head {
+  display: none;
+}
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -156,5 +179,52 @@ div::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background-color: rgba(0, 0, 0, 0.5);
   /* box-shadow: 0 0 1px rgba(255, 255, 255, 1); */
+}
+
+@media screen and (max-width: 980px) {
+  #manage-member {
+    padding: 30px;
+  }
+
+  table tr {
+    display: block;
+  }
+
+  table td {
+    display: block;
+  }
+
+  td {
+    background-color: #f8f8f8;
+  }
+
+  .mb-head {
+    display: initial;
+    padding-right: 15px;
+  }
+  td:last-child {
+    text-align: left;
+    display: flex;
+    align-items: center;
+  }
+  #member-table > tr:first-child {
+    display: none;
+  }
+  #member-table > tr {
+    margin-bottom: 20px;
+  }
+  td,
+  th {
+    border: 1px solid #c4c4c4;
+  }
+  .file-icon {
+    width: 18px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #search-grid {
+    display: block;
+  }
 }
 </style>

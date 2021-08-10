@@ -1,14 +1,18 @@
 <template>
   <div id="hamburger">
     <Slide right width="260" noOverlay>
-      <div class="nav-head nav-link" @click="toggleDropdown()">
+      <div
+        v-if="page != `dashBoard`"
+        class="nav-head nav-link"
+        @click="toggleDropdown()"
+      >
         <p class="text-normal">
           ข้อมูลการแข่งขัน
           <img :class="cssDropdown" src="../../assets/navbar/dropdown.png" />
         </p>
       </div>
 
-      <div :class="cssDropdownSlide">
+      <div v-if="page != `dashBoard`" :class="cssDropdownSlide">
         <div>
           <router-link v-if="page != `mainpage`" to="/#cp-info"
             >โจทย์การแข่งขัน</router-link
@@ -130,9 +134,40 @@
         </div>
       </div>
 
-      <div class="nav-head nav-link">
+      <div v-if="page != `dashBoard`" class="nav-head nav-link">
         <a class="text-normal" @click="hideNav" href="/about"
           >เกี่ยวกับโครงการ</a
+        >
+      </div>
+
+      <div v-if="page == `dashBoard`" class="nav-head nav-link">
+        <a class="text-normal" @click="hideNav" href="/dashboard"
+          >หน้าหลักการแข่งขัน</a
+        >
+      </div>
+
+      <div v-if="page == `dashBoard`" class="nav-head nav-link">
+        <a class="text-normal" @click="hideNav" href="/dashboard/member"
+          >สมาชิกของระบบ</a
+        >
+      </div>
+
+      <div v-if="page == `dashBoard`" class="nav-head nav-link">
+        <a class="text-normal" @click="hideNav" href="/dashboard/file"
+          >File Management</a
+        >
+      </div>
+
+      <div v-if="page == `dashBoard`" class="nav-head nav-link">
+        <a class="text-normal" @click="hideNav" href="/dashboard">ติดต่อเรา</a>
+      </div>
+
+      <div
+        v-if="page == `dashBoard`"
+        class="nav-head nav-link display-name-box"
+      >
+        <a class="text-normal display-name" @click="hideNav" href="/dashboard"
+          >harryfer</a
         >
       </div>
       <!-- <div class="nav-head nav-link">
@@ -144,8 +179,14 @@
       <!-- <div class="nav-head nav-link register-btn">
         <a class="text-normal" href="/register">ลงทะเบียน</a>
       </div> -->
-      <div class="nav-head nav-link register-btn blocked">
+      <div
+        v-if="page != `dashBoard`"
+        class="nav-head nav-link register-btn blocked"
+      >
         <a class="text-normal" @click="hideNav">ลงทะเบียน</a>
+      </div>
+      <div v-if="page == `dashBoard`" class="nav-head nav-link register-btn">
+        <a class="text-normal" @click="hideNav">ออกจากระบบ</a>
       </div>
     </Slide>
   </div>
@@ -181,6 +222,9 @@ export default {
         x[i].style.width = "0px";
         this.dropdown = true;
       }
+    },
+    dashboard(value) {
+      this.$router.push(value);
     },
   },
   computed: {
@@ -230,6 +274,17 @@ export default {
 }
 .nav-list {
   padding-left: 60px;
+}
+
+.display-name {
+  color: #764a97 !important;
+  font-weight: 700;
+  font-family: "IBM-PLEX-THAI-SEMIBOLD";
+  padding-right: 6px;
+}
+
+.display-name-box {
+  border-top: 1px solid #764a97 !important;
 }
 
 .dropdown-down {

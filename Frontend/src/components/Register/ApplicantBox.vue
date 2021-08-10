@@ -1,5 +1,5 @@
 <template>
-  <div id="agreement-box">
+  <div id="applicant-box">
     <div @click="agreementClick()" class="center page-change-left">
       <i class="fa fa-angle-left" aria-hidden="true"></i>
       <h1 class="text-normal purple-text">เงื่อนไขการสมัคร</h1>
@@ -866,7 +866,7 @@ export default {
 </script>
 
 <style scoped>
-#agreement-box {
+#applicant-box {
   /* width: 100%; */
   margin-top: 30px;
   background-color: #ffffff;
@@ -1009,5 +1009,60 @@ export default {
 
 .btn-grey {
   cursor: pointer;
+}
+
+@media screen and (max-width: 1100px) {
+  #applicant-box {
+    padding: 20px 40px;
+  }
+
+  .skill-checkbox,
+  .skill-etc-checkbox,
+  #invite-checkbox,
+  #education-grid {
+    display: block;
+  }
+
+  .skill-checkbox > div:not(:first-child) {
+    margin-left: 20px;
+  }
+
+  .page-change-left {
+    left: 40px;
+  }
+
+  .page-change-right {
+    right: 40px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #applicant-box {
+    margin-top: 15px;
+    padding: 20px 20px;
+  }
+
+  #name-grid,
+  #contact-grid,
+  #address-grid {
+    display: block;
+  }
+
+  .page-change-left {
+    left: 30px;
+  }
+
+  .page-change-right {
+    right: 30px;
+  }
+
+  .page-change-right > h1,
+  .page-change-left > h1 {
+    display: none;
+  }
+
+  .fa {
+    font-size: 3.25em;
+  }
 }
 </style>

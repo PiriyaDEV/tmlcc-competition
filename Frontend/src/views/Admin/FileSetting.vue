@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DashboardNavbar :page="`login`" />
+    <DashboardNavbar />
     <div id="file-setting" class="section">
       <div id="file-container" class="page-container">
         <div>
@@ -81,6 +81,9 @@ export default {
       this.choice = "video";
     },
   },
+  mounted() {
+    this.$store.dispatch("setPage", "dashBoard");
+  },
 };
 </script>
 
@@ -134,5 +137,11 @@ export default {
   color: #f3f3f3;
   background-color: #f3f3f3;
   border: 1.5px solid #f3f3f3;
+}
+
+@media screen and (max-width: 1100px) {
+  #file-setting {
+    padding: 100px 0px 200px 0px;
+  }
 }
 </style>

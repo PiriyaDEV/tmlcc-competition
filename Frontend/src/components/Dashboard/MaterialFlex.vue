@@ -61,8 +61,8 @@ export default {
   background: #ffffff;
   border-radius: 30px;
   padding: 15px 32px 15px 32px;
-  width: 100%;
-  height: 662px;
+  width: calc(100% - 60px);
+  height: calc(100% - 30px);
   position: relative;
 }
 
@@ -124,7 +124,7 @@ export default {
   padding: 0px 20px;
   margin-top: 14px;
   overflow-y: scroll;
-  height: 260px;
+  height: 360px;
 }
 
 .video-container {
@@ -191,5 +191,95 @@ div::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background-color: rgba(0, 0, 0, 0.5);
   /* box-shadow: 0 0 1px rgba(255, 255, 255, 1); */
+}
+
+@media screen and (max-width: 1100px) {
+  #materialflex {
+    margin-top: 30px;
+  }
+
+  .play-btn {
+    left: 42px;
+    bottom: 32px;
+    width: 18px;
+  }
+
+  #video-box {
+    height: 260px;
+  }
+
+  .join-btn,
+  .edit-btn {
+    font-size: 1.5em;
+  }
+
+  .file-name {
+    font-size: 1.75em;
+  }
+
+  .file-icon {
+    width: 20px;
+  }
+
+  .video-image {
+    width: 95px;
+    height: 70px;
+  }
+
+  #materialflex {
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #btn-right {
+    position: initial;
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 20px;
+  }
+
+  .play-btn {
+    left: 34px;
+    bottom: 26px;
+    width: 13px;
+  }
+
+  .file-container,
+  #video-box {
+    padding-left: 0px;
+  }
+
+  .video-image {
+    width: 75px;
+    height: 50px;
+  }
+
+  .file-name {
+    font-size: 1.5em;
+  }
+
+  .file-icon {
+    width: 18px;
+  }
+
+  .file-container {
+    display: block;
+  }
+
+  #file-box > div > .file-date {
+    margin: 10px 0px;
+    padding-left: 30px;
+  }
+
+  hr {
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  #btn-right {
+    justify-content: center;
+  }
 }
 </style>

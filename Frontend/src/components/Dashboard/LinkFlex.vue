@@ -4,13 +4,53 @@
     <hr class="bar-color" />
 
     <div id="link-box">
-      <div class="icon-box">
+      <div
+        class="icon-box"
+        @click="linkClick('https://www.facebook.com/tmlcc.th')"
+      >
         <img
           class="link-icon"
           src="../../assets/icon/facebook-icon.png"
           alt=""
         />
-        <h1 class="text-normal gray-text">Group Discussion</h1>
+        <h1 class="text-normal gray-text">TMLCC Facebook Fanpage</h1>
+      </div>
+      <div
+        class="icon-box"
+        @click="linkClick('https://community.deepnote.com/c/tmlcc')"
+      >
+        <img
+          class="link-icon"
+          src="../../assets/icon/deepnote-icon.png"
+          alt=""
+        />
+        <h1 class="text-normal gray-text">TMLCC Community</h1>
+      </div>
+      <div
+        class="icon-box"
+        @click="
+          linkClick('https://deepnote.com/dashboard/TMLCC-workshop/projects')
+        "
+      >
+        <img
+          class="link-icon"
+          src="../../assets/icon/deepnote-icon.png"
+          alt=""
+        />
+        <h1 class="text-normal gray-text">Workshop Project</h1>
+      </div>
+      <div
+        class="icon-box"
+        @click="
+          linkClick('https://deepnote.com/dashboard/TMLCC-workshop/projects')
+        "
+      >
+        <img
+          class="link-icon"
+          src="../../assets/icon/sw-drive-icon.png"
+          alt=""
+        />
+        <h1 class="text-normal gray-text">Dataset</h1>
       </div>
       <div class="icon-box">
         <img
@@ -18,7 +58,7 @@
           src="../../assets/icon/codalab-icon.png"
           alt=""
         />
-        <h1 class="text-normal gray-text">Submission Program</h1>
+        <h1 class="text-normal gray-text">Codalab Competition</h1>
       </div>
     </div>
 
@@ -31,7 +71,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    linkClick(value) {
+      window.open(value);
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -77,7 +123,7 @@ export default {};
   border: 2px solid #f07821;
   box-sizing: border-box;
   border-radius: 12px;
-  font-size: 2em;
+  font-size: 1.75em;
   color: #f07821;
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
   font-weight: 400;
@@ -85,9 +131,31 @@ export default {};
   padding: 3px 13px 2px 13px;
   line-height: 20.8px;
   width: calc(100% - 80px);
+  cursor: pointer;
 }
 
 .spacer {
   height: 70px;
+}
+
+@media screen and (max-width: 1100px) {
+  #linkflex {
+    width: 100%;
+    margin-top: 0px;
+    margin-left: 15px;
+  }
+
+  .join-btn,
+  .edit-btn {
+    font-size: 1.75em;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #linkflex {
+    width: calc(100% - 60px);
+    margin-left: 0px;
+    margin-top: 30px;
+  }
 }
 </style>

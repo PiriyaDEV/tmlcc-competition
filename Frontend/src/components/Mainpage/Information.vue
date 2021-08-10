@@ -322,6 +322,7 @@ export default {
 @media screen and (max-width: 1100px) {
   .rg-btn {
     width: 650px;
+    font-size: 2.25em;
   }
 
   #contact-section {
@@ -353,6 +354,9 @@ export default {
     margin-top: 20px;
     padding-left: 10px;
   }
+  .rg-btn {
+    font-size: 2em;
+  }
 }
 
 @media screen and (max-width: 660px) {
@@ -374,6 +378,12 @@ export default {
 
   #information {
     margin-top: 50px;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .rg-btn {
+    font-size: 1.75em;
   }
 }
 </style>

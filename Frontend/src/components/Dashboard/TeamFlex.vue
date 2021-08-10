@@ -108,7 +108,7 @@ button {
   border: 2px solid #764a97;
   box-sizing: border-box;
   border-radius: 12px;
-  font-size: 2em;
+  font-size: 1.75em;
   color: #764a97;
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
   font-weight: 400;
@@ -171,5 +171,30 @@ div::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background-color: rgba(0, 0, 0, 0.5);
   /* box-shadow: 0 0 1px rgba(255, 255, 255, 1); */
+}
+
+@media screen and (max-width: 1100px) {
+  #teamflex {
+    width: 100%;
+    margin-right: 15px;
+  }
+
+  .join-btn,
+  .edit-btn {
+    font-size: 1.75em;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #teamflex {
+    width: calc(100% - 60px);
+    margin-right: 0px;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .teamname {
+    width: 100px;
+  }
 }
 </style>

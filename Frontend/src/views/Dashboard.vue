@@ -6,7 +6,8 @@
         <div>
           <h1 class="header-m">ยินดีต้อนรับเข้าสู่ระบบ</h1>
           <h1 class="header-c">
-            คุณ <span class="l-grey-text">{{ displayName }}</span>
+            <!-- คุณ <span class="l-grey-text">{{ displayName }}</span> -->
+            คุณ <span class="l-grey-text">harryfer</span>
           </h1>
           <div id="dashboard-menu">
             <div>
@@ -66,6 +67,8 @@ export default {
   /* min-height: 100vh; */
   padding: 50px 0px 200px 0px;
   background-color: #f3f3f3;
+  box-shadow: inset 0px 11px 8px -10px rgba(188, 188, 188, 0.5);
+  -webkit-box-shadow: inset 0px 11px 8px -10px rgba(188, 188, 188, 0.5);
 }
 
 #dashboard-container {
@@ -87,5 +90,33 @@ export default {
 #material-flex {
   width: 100%;
   margin-left: 50px;
+}
+
+@media screen and (max-width: 1100px) {
+  #dashboard {
+    padding: 100px 0px 200px 0px;
+  }
+  #dashboard-menu {
+    display: block;
+  }
+  #dashboard-menu > div:first-child {
+    display: flex;
+    justify-content: space-between;
+  }
+  #material-flex {
+    margin-left: 0px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #dashboard-menu > div:first-child {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 470px) {
+}
+
+@media screen and (max-width: 380px) {
 }
 </style>

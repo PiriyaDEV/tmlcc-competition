@@ -134,6 +134,8 @@ export default {
   /* min-height: 100vh; */
   padding: 50px 0px 200px 0px;
   background-color: #f3f3f3;
+  box-shadow: inset 0px 11px 8px -10px rgba(188, 188, 188, 0.5);
+  -webkit-box-shadow: inset 0px 11px 8px -10px rgba(188, 188, 188, 0.5);
 }
 
 #tmlcc-logo {

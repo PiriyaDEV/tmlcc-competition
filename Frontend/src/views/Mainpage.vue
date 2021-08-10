@@ -52,10 +52,10 @@ export default {
 #mainpage {
   padding: 85px 0px 0px 0px;
   background-color: #ffffff;
-  box-shadow: inset 15px 10px 9px -8px rgba(188, 188, 188, 0.5),
-    inset 15px -10px 9px -8px rgba(188, 188, 188, 0.5);
-  -webkit-box-shadow: inset 15px 10px 9px -8px rgba(188, 188, 188, 0.5),
-    inset 15px -10px 9px -8px rgba(188, 188, 188, 0.5);
+  box-shadow: inset 0px 11px 8px -10px rgba(188, 188, 188, 0.5),
+    inset 0px -11px 8px -10px rgba(188, 188, 188, 0.5);
+  -webkit-box-shadow: inset 0px 11px 8px -10px rgba(188, 188, 188, 0.5),
+    inset 0px -11px 8px -10px rgba(188, 188, 188, 0.5);
 }
 
 #mainpage-container {
