@@ -1,5 +1,5 @@
 <template>
-  <div id="agreement-box">
+  <div id="applicant-box">
     <div @click="agreementClick()" class="center page-change-left">
       <i class="fa fa-angle-left" aria-hidden="true"></i>
       <h1 class="text-normal purple-text">เงื่อนไขการสมัคร</h1>
@@ -145,7 +145,12 @@
       </div>
       <div>
         <h1 class="text-normal">E-mail</h1>
-        <input v-model="user.email" :class="cssEmail" type="text" />
+        <input
+          v-model="user.email"
+          @blur="checkDuplicated()"
+          :class="cssEmail"
+          type="text"
+        />
         <p v-if="isInvalid.email" class="text-normal orange-text error-message">
           * โปรดระบุ E-mail
         </p>
@@ -410,6 +415,7 @@
 
 <script>
 import User from "../../models/user.model";
+import UserService from "../../services/user.service";
 
 export default {
   props: ["user"],
@@ -582,7 +588,51 @@ export default {
     },
   },
   watch: {
+    "user.firstName": function () {
+      this.isInvalid.firstName = false;
+      let reg = /[0-9๐-๙!-/:-@[-`{-~]/;
+      if (reg.test(this.user.firstName)) {
+        this.isInvalid.firstName = true;
+      }
+    },
+    "user.lastName": function () {
+      this.isInvalid.lastName = false;
+      let reg = /[0-9๐-๙!-/:-@[-`{-~]/;
+      if (reg.test(this.user.lastName)) {
+        this.isInvalid.lastName = true;
+      }
+    },
+    "user.institution": function () {
+      this.isInvalid.institution = false;
+    },
+    "user.organization": function () {
+      this.isInvalid.organization = false;
+    },
+    "user.address": function () {
+      this.isInvalid.address = false;
+    },
+    "user.country": function () {
+      this.isInvalid.country = false;
+      let reg = /[0-9๐-๙!-/:-@[-`{-~]/;
+      if (reg.test(this.user.country)) {
+        this.isInvalid.country = true;
+      }
+    },
+    "user.phone": function () {
+      this.isInvalid.phone = false;
+      let reg = /[^0-9]/;
+      if (reg.test(this.user.phone)) {
+        this.isInvalid.phone = true;
+      }
+    },
+    "user.email": function () {
+      this.isInvalid.email = false;
+    },
+    "user.works": function () {
+      this.isInvalid.works = false;
+    },
     "user.isWorkInterest": function () {
+      this.isInvalid.workInterest = false;
       if (this.user.isWorkInterest == "true") {
         this.user.isWorkInterest = true;
         document.getElementById("workInterestBox").disabled = false;
@@ -591,6 +641,9 @@ export default {
         this.user.interestField = undefined;
         document.getElementById("workInterestBox").disabled = true;
       }
+    },
+    "user.interestField": function () {
+      this.isInvalid.workInterest = false;
     },
     "user.hasProgSkill": function () {
       if (this.user.hasProgSkill) {
@@ -651,11 +704,25 @@ export default {
   },
   methods: {
     agreementClick() {
-      this.$emit("pageReturn", "agreement");
+      this.$store.dispatch("setPage", "agreement");
     },
     registerNext() {
-      if (this.validateForm()) {
-        this.$emit("pageReturn", "info");
+      if (this.validateForm() && !this.isInvalid.email) {
+        this.$store.dispatch("setPage", "info");
+      }
+    },
+    checkDuplicated() {
+      let reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/;
+      if (reg.test(this.user.email)) {
+        UserService.checkDuplicated({ email: this.user.email }).then((res) => {
+          if (res.status == 200) {
+            this.isInvalid.email = res.data.isFound;
+          } else {
+            console.log("Something wrong!");
+          }
+        });
+      } else {
+        this.isInvalid.email = true;
       }
     },
     checkForm() {
@@ -799,7 +866,7 @@ export default {
 </script>
 
 <style scoped>
-#agreement-box {
+#applicant-box {
   /* width: 100%; */
   margin-top: 30px;
   background-color: #ffffff;
@@ -942,5 +1009,60 @@ export default {
 
 .btn-grey {
   cursor: pointer;
+}
+
+@media screen and (max-width: 1100px) {
+  #applicant-box {
+    padding: 20px 40px;
+  }
+
+  .skill-checkbox,
+  .skill-etc-checkbox,
+  #invite-checkbox,
+  #education-grid {
+    display: block;
+  }
+
+  .skill-checkbox > div:not(:first-child) {
+    margin-left: 20px;
+  }
+
+  .page-change-left {
+    left: 40px;
+  }
+
+  .page-change-right {
+    right: 40px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #applicant-box {
+    margin-top: 15px;
+    padding: 20px 20px;
+  }
+
+  #name-grid,
+  #contact-grid,
+  #address-grid {
+    display: block;
+  }
+
+  .page-change-left {
+    left: 30px;
+  }
+
+  .page-change-right {
+    right: 30px;
+  }
+
+  .page-change-right > h1,
+  .page-change-left > h1 {
+    display: none;
+  }
+
+  .fa {
+    font-size: 3.25em;
+  }
 }
 </style>

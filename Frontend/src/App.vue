@@ -29,6 +29,12 @@ export default {};
   src: url("../src/assets/fonts/IBMPlexSansThai-SemiBold.woff2") format("woff2");
 }
 
+@font-face {
+  font-family: "IBM-PLEX-THAI-LOOP";
+  src: url("../src/assets/fonts/IBMPlexSansThaiLooped-Regular.ttf")
+    format("woff2");
+}
+
 /* ตั้งค่าหน้า */
 body,
 html,
@@ -41,6 +47,14 @@ button {
   margin: 0;
   font-size: 8px;
   font-family: "IBM-PLEX-THAI";
+}
+
+body,
+html,
+input,
+select,
+label,
+textarea {
   overflow-x: hidden;
 }
 
@@ -252,6 +266,15 @@ select:-webkit-autofill:focus {
   border: 1px solid #f07821 !important;
 }
 
+.indent-tab {
+  text-indent: 35px;
+}
+
+.number-bullet > li {
+  text-indent: 0px;
+  list-style-type: number;
+}
+
 /* ปุ่ม */
 
 .btn-color,
@@ -327,6 +350,51 @@ select:-webkit-autofill:focus {
   border-radius: 3px;
 }
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Navbar */
+.bm-item-list,
+.bm-item-list > * > span {
+  margin-left: 0 !important;
+}
+
+.bm-item-list > * {
+  width: 400px;
+}
+
+.bm-burger-button {
+  top: -12px !important;
+  width: 32px !important;
+  height: 26px !important;
+  right: 8px !important;
+}
+
+.line-style {
+  height: 12% !important;
+}
+
+.bm-cross-button {
+  right: 214px !important;
+  top: 20px !important;
+}
+
+.bm-menu {
+  background-color: #ffffff !important;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  padding-top: 40px;
+  overflow-y: scroll !important;
+}
+
 @media screen and (max-width: 1920px) {
   .page-container,
   .navbar-container {
@@ -344,6 +412,40 @@ select:-webkit-autofill:focus {
     max-width: 1024px;
   }
 }
+
+@media screen and (max-width: 1100px) {
+  .header-c {
+    font-size: 3.5em;
+  }
+
+  .header-m {
+    font-size: 3em;
+  }
+
+  .header-ms {
+    font-size: 2.5em;
+  }
+
+  .header-s {
+    font-size: 2.25em;
+  }
+
+  .text-medium {
+    font-size: 2.25em;
+  }
+
+  .text-normal {
+    font-size: 2em;
+  }
+
+  .btn-color,
+  .btn-white,
+  .btn-grey,
+  .rg-btn {
+    font-size: 2.25em;
+  }
+}
+
 @media screen and (max-width: 1024px) {
   .page-container,
   .navbar-container {
@@ -366,14 +468,81 @@ select:-webkit-autofill:focus {
     width: 720px;
     max-width: 720px;
   }
+
+  .header-c {
+    font-size: 3.25em;
+  }
+
+  .header-m {
+    font-size: 2.75em;
+  }
+
+  .header-ms {
+    font-size: 2.25em;
+  }
+
+  .header-s {
+    font-size: 2em;
+  }
+
+  .text-medium {
+    font-size: 2em;
+  }
+
+  .text-normal {
+    font-size: 1.75em;
+  }
+
+  .btn-color,
+  .btn-white,
+  .btn-grey,
+  .rg-btn {
+    font-size: 2em;
+  }
 }
-@media screen and (max-width: 600px) {
-}
+
 @media screen and (max-width: 414px) {
   .page-container,
   .navbar-container {
     width: 374px;
     max-width: 374px;
+  }
+
+  .page-container,
+  .navbar-container {
+    width: 720px;
+    max-width: 720px;
+  }
+
+  .header-c {
+    font-size: 3em;
+  }
+
+  .header-m {
+    font-size: 2.5em;
+  }
+
+  .header-ms {
+    font-size: 2em;
+  }
+
+  .header-s {
+    font-size: 1.75em;
+  }
+
+  .text-medium {
+    font-size: 1.75em;
+  }
+
+  .text-normal {
+    font-size: 1.5em;
+  }
+
+  .btn-color,
+  .btn-white,
+  .btn-grey,
+  .rg-btn {
+    font-size: 1.75em;
   }
 }
 @media screen and (max-width: 375px) {

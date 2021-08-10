@@ -1,12 +1,12 @@
 <template>
   <div>
-    <Navbar :page="`mainpage`" />
+    <Navbar />
     <div id="mainpage" class="section">
       <div id="mainpage-container" class="page-container">
         <div>
           <Home />
           <Information />
-          <NavigationBar :page="`mainpage`" id="navigation-bar-fixed" />
+          <NavigationBar id="navigation-bar-fixed" />
         </div>
       </div>
     </div>
@@ -20,6 +20,7 @@ import Home from "../components/Mainpage/Home.vue";
 import Information from "../components/Mainpage/Information.vue";
 import Footer from "../components/Mainpage/Footer.vue";
 import NavigationBar from "../components/Menu/NavigationBar.vue";
+
 export default {
   components: {
     Navbar,
@@ -29,6 +30,8 @@ export default {
     NavigationBar,
   },
   mounted() {
+    this.$store.dispatch("setPage", "mainpage");
+
     let myID = document.getElementById("navigation-bar-fixed");
 
     var myScrollFunc = function () {
@@ -49,10 +52,10 @@ export default {
 #mainpage {
   padding: 85px 0px 0px 0px;
   background-color: #ffffff;
-  box-shadow: inset 15px 10px 9px -8px rgba(188, 188, 188, 0.5),
-    inset 15px -10px 9px -8px rgba(188, 188, 188, 0.5);
-  -webkit-box-shadow: inset 15px 10px 9px -8px rgba(188, 188, 188, 0.5),
-    inset 15px -10px 9px -8px rgba(188, 188, 188, 0.5);
+  box-shadow: inset 0px 11px 8px -10px rgba(188, 188, 188, 0.5),
+    inset 0px -11px 8px -10px rgba(188, 188, 188, 0.5);
+  -webkit-box-shadow: inset 0px 11px 8px -10px rgba(188, 188, 188, 0.5),
+    inset 0px -11px 8px -10px rgba(188, 188, 188, 0.5);
 }
 
 #mainpage-container {
@@ -84,5 +87,21 @@ export default {
 
 .show {
   opacity: 1 !important;
+}
+
+@media screen and (max-width: 1100px) {
+  #navigation-bar-fixed {
+    display: none;
+  }
+
+  #mainpage {
+    padding: 135px 0px 0px 0px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #mainpage {
+    padding: 105px 0px 0px 0px;
+  }
 }
 </style>

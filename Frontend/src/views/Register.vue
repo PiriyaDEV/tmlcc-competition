@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar :page="navbarPage" />
+    <Navbar />
     <div id="register" class="section">
       <div id="register-container" class="page-container">
         <div>
@@ -10,22 +10,11 @@
           <h1 class="header-c">สมัครเข้าร่วมการแข่งขัน</h1>
 
           <div>
-            <AgreementBox
-              v-show="box == `agreement`"
-              @pageReturn="pageReturn"
-            />
+            <AgreementBox v-if="page == `agreement`" />
 
-            <ApplicantBox
-              v-show="box == `applicant`"
-              :user="user"
-              @pageReturn="pageReturn"
-            />
+            <ApplicantBox v-if="page == `applicant`" :user="user" />
 
-            <SystemInfo
-              v-show="box == `info`"
-              :user="user"
-              @pageReturn="pageReturn"
-            />
+            <SystemInfo v-if="page == `info`" :user="user" />
 
             <!-- <ApplicantBox /> -->
           </div>
@@ -41,11 +30,11 @@ import AgreementBox from "../components/Register/AgreementBox.vue";
 import ApplicantBox from "../components/Register/ApplicantBox.vue";
 import SystemInfo from "../components/Register/SystemInfo.vue";
 import User from "../models/user.model";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
     return {
-      box: "agreement",
       navbarPage: "register1",
       user: new User({
         titleName: "นาย",
@@ -63,13 +52,13 @@ export default {
     ApplicantBox,
     SystemInfo,
   },
-  methods: {
-    pageReturn(value) {
-      this.box = value;
-      if (value != "agreement") {
-        this.navbarPage = "register2";
-      } else this.navbarPage = "register1";
-    },
+  computed: {
+    ...mapGetters({
+      page: "getPage",
+    }),
+  },
+  mounted() {
+    this.$store.dispatch("setPage", "agreement");
   },
 };
 </script>
@@ -79,6 +68,8 @@ export default {
   /* min-height: 100vh; */
   padding: 50px 0px 200px 0px;
   background-color: #f3f3f3;
+  box-shadow: inset 0px 11px 8px -10px rgba(188, 188, 188, 0.5);
+  -webkit-box-shadow: inset 0px 11px 8px -10px rgba(188, 188, 188, 0.5);
 }
 
 #tmlcc-logo {
@@ -99,5 +90,27 @@ export default {
 .btn-color {
   margin-top: 15px;
   margin-bottom: 20px;
+}
+
+@media screen and (max-width: 1100px) {
+  #register {
+    padding: 100px 0px 200px 0px;
+  }
+
+  #tmlcc-logo {
+    width: 300px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #tmlcc-logo {
+    width: 250px;
+  }
+}
+
+@media screen and (max-width: 470px) {
+  #tmlcc-logo {
+    width: 220px;
+  }
 }
 </style>

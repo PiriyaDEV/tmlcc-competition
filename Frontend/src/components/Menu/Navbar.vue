@@ -5,17 +5,17 @@
         <div id="nav-left">
           <img
             id="tmlcc-logo"
-            src="../../assets/Navbar/TMLCC.png"
+            src="../../assets/navbar/TMLCC.png"
             alt=""
             @click="mainpage()"
           />
-          <div class="center">
+          <div id="compet-info" class="center">
             <p class="text-normal nav-text" @click="toggleShowMenu()">
               ข้อมูลการแข่งขัน
             </p>
             <img
               id="dropdown-icon"
-              src="../../assets/Navbar/dropdown.png"
+              src="../../assets/navbar/dropdown.png"
               alt=""
               @click="toggleShowMenu()"
             />
@@ -23,25 +23,20 @@
               :class="SlideMenu"
               @click="click"
               id="navigation-bar"
-              :page="page"
             />
           </div>
         </div>
         <div id="nav-right">
-          <p class="text-normal nav-text">เกี่ยวกับโครงการ</p>
+          <a class="text-normal nav-text" href="/about">เกี่ยวกับโครงการ</a>
           <p v-if="page == `login`" class="text-normal nav-text">Q&A</p>
-          <p v-if="page != `login`" class="text-normal nav-text">Workshops</p>
-          <p class="text-normal nav-text">ติดต่อเรา</p>
+          <!-- <p v-if="page != `login`" class="text-normal nav-text">Workshops</p> -->
+          <!-- <p class="text-normal nav-text">ติดต่อเรา</p> -->
           <div class="center">
-            <button
-              v-if="page != `register1`"
-              @click="registerClick()"
-              class="btn-white"
-            >
+            <button v-if="page != `agreement`" class="btn-white blocked">
               ลงทะเบียน
             </button>
             <button
-              v-if="page == `register1`"
+              v-if="page == `agreement`"
               @click="loginClick()"
               class="btn-color"
             >
@@ -49,19 +44,24 @@
             </button>
           </div>
         </div>
+        <div id="hamburger">
+          <Hamburger />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Hamburger from "../Menu/Hamburger.vue";
 import NavigationBar from "../Menu/NavigationBar.vue";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     NavigationBar,
+    Hamburger,
   },
-  props: ["page"],
   data() {
     return {
       showMenu: false,
@@ -93,6 +93,9 @@ export default {
       }
       return up;
     },
+    ...mapGetters({
+      page: "getPage",
+    }),
   },
 };
 </script>
@@ -105,6 +108,10 @@ export default {
   background-color: #ffffff;
   padding: 17px 0px;
   z-index: 999;
+}
+
+a {
+  text-decoration: none;
 }
 
 #navbar-menu > div {
@@ -161,5 +168,49 @@ export default {
   overflow: hidden;
   transition: all 0.5s ease;
   will-change: transform;
+}
+
+#hamburger {
+  display: none;
+}
+
+.blocked {
+  background-color: #c4c4c4 !important;
+  background-image: none;
+  border: none;
+  color: #ffffff;
+  cursor: default;
+}
+
+@media screen and (max-width: 1100px) {
+  #nav-right {
+    display: none;
+  }
+
+  #navbar-menu {
+    position: fixed;
+  }
+
+  #hamburger {
+    display: inherit;
+  }
+
+  #compet-info {
+    display: none;
+  }
+  #tmlcc-logo {
+    width: 100px;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  #tmlcc-logo {
+    width: 90px;
+  }
+
+  #navbar-menu {
+    box-shadow: 15px 10px 9px -8px rgb(188 188 188 / 50%);
+    width: 100%;
+  }
 }
 </style>

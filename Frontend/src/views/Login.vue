@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar :page="`login`" />
+    <Navbar />
     <div id="login" class="section">
       <div id="login-container" class="page-container">
         <div>
@@ -70,6 +70,9 @@ export default {
   components: {
     Navbar,
   },
+  mounted() {
+    this.$store.dispatch("setPage", "login");
+  },
   data() {
     return {
       user: {
@@ -131,6 +134,8 @@ export default {
   /* min-height: 100vh; */
   padding: 50px 0px 200px 0px;
   background-color: #f3f3f3;
+  box-shadow: inset 0px 11px 8px -10px rgba(188, 188, 188, 0.5);
+  -webkit-box-shadow: inset 0px 11px 8px -10px rgba(188, 188, 188, 0.5);
 }
 
 #tmlcc-logo {
@@ -173,5 +178,45 @@ export default {
 .login-below-text {
   margin-top: 15px;
   text-align: center;
+}
+
+@media screen and (max-width: 1100px) {
+  #login {
+    padding: 100px 0px 200px 0px;
+  }
+
+  #tmlcc-logo {
+    width: 300px;
+  }
+
+  #login-box {
+    margin-top: 25px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .input-box {
+    width: 300px;
+  }
+
+  #tmlcc-logo {
+    width: 250px;
+  }
+}
+
+@media screen and (max-width: 470px) {
+  .input-box {
+    width: 220px;
+  }
+
+  #tmlcc-logo {
+    width: 220px;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .input-box {
+    width: 190px;
+  }
 }
 </style>
