@@ -1,4 +1,4 @@
-const sql = require("./../database/db.connection");
+const sql = require("../database/db.connection");
 
 const User = function (user) {
   this.user_id = user.user_id;
@@ -50,8 +50,11 @@ User.create = (user, result) => {
 };
 
 User.update = (user, result) => {
+  user.updatedAt = Date.now();
+
   sql.query(
-    `UPDATE Users SET ? WHERE user_id = '${user.user_id}'`,
+    `UPDATE Users SET ? WHERE 
+      user_id = '${user.user_id}'`,
     user,
     (err, res) => {
       if (err) {
