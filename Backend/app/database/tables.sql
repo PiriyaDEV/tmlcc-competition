@@ -70,12 +70,3 @@ CREATE TABLE IF NOT EXISTS Files(
   PRIMARY KEY (file_id)
 );
 
--- Create Links Table
-CREATE TABLE IF NOT EXISTS Links(
-  link_id                 VARCHAR(8)      NOT NULL,
-  linkName                VARCHAR(255)    NOT NULL,
-  url                     VARCHAR(255)    NOT NULL,
-  createdAt               BIGINT          NOT NULL,
-  updatedAt               BIGINT          NOT NULL,
-  PRIMARY KEY (link_id)
-);

@@ -47,3 +47,27 @@ exports.getRole = (req, res) => {
     });
   });
 };
+
+exports.getAllUsers = (req, res) => {
+  User.getAllUsers((err, result) => {
+    if (err) {
+      return res.status(500).send({
+        message: err.message || "Some error occurred while getting all users!",
+      });
+    }
+
+    return res.status(200).send(result);
+  });
+};
+
+exports.getAllStaffs = (req, res) => {
+  User.getAllStaffs((err, result) => {
+    if (err) {
+      return res.status(500).send({
+        message: err.message || "Some error occurred while getting all staffs!",
+      });
+    }
+
+    return res.status(200).send(result);
+  });
+};

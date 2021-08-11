@@ -113,7 +113,6 @@ exports.login = (req, res) => {
           let token = jwt.sign(
             {
               user_id: result.user_id,
-              displayName: result.displayName,
               lastLogin: update_result.lastLogin,
             },
             authConfig.secretKey,
@@ -124,7 +123,6 @@ exports.login = (req, res) => {
 
           return res.status(200).send({
             user_id: result.user_id,
-            displayName: result.displayName,
             lastLogin: update_result.lastLogin,
             token: token,
           });

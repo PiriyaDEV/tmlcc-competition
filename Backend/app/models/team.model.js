@@ -86,7 +86,7 @@ Team.find = (team, result) => {
 Team.getAll = (result) => {
   sql.query(
     `SELECT T.team_id, T.teamName,
-      ( SELECT COUNT(*) FROM TeamMembers TM
+      IFNULL( SELECT COUNT(*) FROM TeamMembers TM
         WHERE
          TM.team_id = T.team_id AND 
          TM.status = 'approved'
@@ -118,7 +118,7 @@ Team.getInfo = (team_id, result) => {
         'teamName',
         T.teamName,
         'members',
-          (
+          IFNULL((
               SELECT
                   JSON_ARRAYAGG(
                       JSON_OBJECT(
@@ -134,7 +134,7 @@ Team.getInfo = (team_id, result) => {
               WHERE
                   TM.team_id = T.team_id
                   AND TM.status = 'approved'
-              )
+              ), JSON_ARRAY())
           ) AS result
       FROM
           Teams T
