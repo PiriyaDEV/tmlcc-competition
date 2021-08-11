@@ -245,7 +245,7 @@ export default {
       return open;
     },
     ...mapGetters({
-      page: "getPage",
+      page: "page/getPage",
     }),
   },
 };

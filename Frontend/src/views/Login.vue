@@ -19,7 +19,7 @@
                 v-model="user.email"
               />
               <p
-                v-if="invalidUser"
+                v-if="loginStatus.email.isInvalid"
                 class="text-normal orange-text error-message"
               >
                 * ไม่พบผู้ใช้งาน
@@ -34,7 +34,7 @@
                 v-model="user.password"
               />
               <p
-                v-if="invalidPassword"
+                v-if="loginStatus.password.isInvalid"
                 class="text-normal orange-text error-message"
               >
                 * รหัสผ่านไม่ถูกต้อง
@@ -64,14 +64,11 @@
 
 <script>
 import Navbar from "../components/Menu/Navbar.vue";
-import AuthService from "../services/auth.service";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
     Navbar,
-  },
-  mounted() {
-    this.$store.dispatch("setPage", "login");
   },
   data() {
     return {
@@ -79,9 +76,10 @@ export default {
         email: "",
         password: "",
       },
-      invalidUser: false,
-      invalidPassword: false,
     };
+  },
+  mounted() {
+    this.$store.dispatch("page/setPage", "login");
   },
   computed: {
     cssInvalidEmail() {
@@ -100,31 +98,17 @@ export default {
       }
       return valid;
     },
+    ...mapGetters({
+      loginStatus: "auth/getLoginStatus",
+    }),
   },
   methods: {
     registerClick() {
       this.$router.push("/register");
     },
-    login() {
-      AuthService.login(this.user).then((res) => {
-        this.invalidUser = false;
-        this.invalidPassword = false;
-
-        if (res.status == 200) {
-          console.log("Logged in!");
-          this.$router.push("/dashboard");
-        } else if (res.status == 403 && res.data.message == "User not found!") {
-          this.invalidUser = true;
-          console.log(res.data.message);
-        } else if (
-          res.status == 403 &&
-          res.data.message == "Invalid password!"
-        ) {
-          this.invalidPassword = true;
-          console.log(res.data.message);
-        }
-      });
-    },
+    ...mapAction({
+      login: this.$store.dispatch("auth/login", user),
+    }),
   },
 };
 </script>

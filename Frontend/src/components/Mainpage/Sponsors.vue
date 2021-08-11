@@ -25,16 +25,19 @@
       />
     </div>
     <div>
+      <img id="hmm-logo" src="../../assets/sponsors/hmm-logo.png" alt="" />
+    </div>
+    <div>
       <img id="deepnote-logo" src="../../assets/sponsors/dnlogo 1.png" alt="" />
+    </div>
+    <div>
+      <img id="scb-logo" src="../../assets/sponsors/scb-bank 1.png" alt="" />
     </div>
     <div>
       <img id="tw-logo" src="../../assets/sponsors/thoughtworks 1.png" alt="" />
     </div>
     <div>
       <img id="jb-logo" src="../../assets/sponsors/jetbrains 1.png" alt="" />
-    </div>
-    <div>
-      <img id="scb-logo" src="../../assets/sponsors/scb-bank 1.png" alt="" />
     </div>
   </div>
 </template>
@@ -52,9 +55,17 @@ export default {};
   cursor: pointer;
 }
 
+#sponsors > div:nth-child(1) {
+  padding-left: 150px;
+}
+
+#sponsors > div:nth-child(4) {
+  padding-right: 150px;
+}
+
 #sponsors {
   flex-wrap: wrap;
-  padding: 0px 120px;
+  padding: 0px 130px;
 }
 
 /* sponsors logo */
@@ -77,13 +88,36 @@ export default {};
   width: 102px;
 }
 #deepnote-logo {
-  width: 243px;
+  width: 220px;
 }
 #tw-logo {
-  width: 244px;
+  width: 200px;
 }
 #scb-logo {
   width: 141px;
+}
+#hmm-logo {
+  width: 180px;
+}
+
+@media screen and (max-width: 1920px) {
+  #sponsors {
+    padding: 0px 110px;
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  #sponsors > div:nth-child(1) {
+    padding-left: 70px;
+  }
+
+  #sponsors > div:nth-child(4) {
+    padding-right: 70px;
+  }
+
+  #sponsors {
+    padding: 0px 60px;
+  }
 }
 
 @media screen and (max-width: 1750px) {
@@ -106,13 +140,16 @@ export default {};
     width: calc(102px - 30px);
   }
   #deepnote-logo {
-    width: calc(243px - 30px);
+    width: calc(220px - 30px);
   }
   #tw-logo {
-    width: calc(244px - 30px);
+    width: calc(200px - 30px);
   }
   #scb-logo {
     width: calc(141px - 30px);
+  }
+  #hmm-logo {
+    width: calc(180px - 30px);
   }
 }
 
@@ -136,13 +173,24 @@ export default {};
     width: calc(102px - 40px);
   }
   #deepnote-logo {
-    width: calc(243px - 40px);
+    width: calc(220px - 40px);
   }
   #tw-logo {
-    width: calc(244px - 40px);
+    width: calc(200px - 40px);
   }
   #scb-logo {
     width: calc(141px - 40px);
+  }
+  #hmm-logo {
+    width: calc(180px - 40px);
+  }
+
+  #sponsors > div:nth-child(1) {
+    padding-left: 130px;
+  }
+
+  #sponsors > div:nth-child(4) {
+    padding-right: 130px;
   }
 
   #sponsors > div {
@@ -175,13 +223,24 @@ export default {};
     width: calc(102px - 40px);
   }
   #deepnote-logo {
-    width: calc(243px - 50px);
+    width: calc(220px - 50px);
   }
   #tw-logo {
-    width: calc(264px - 80px);
+    width: calc(200px - 50px);
   }
   #scb-logo {
     width: calc(141px - 30px);
+  }
+  #hmm-logo {
+    width: calc(180px - 30px);
+  }
+
+  #sponsors > div:nth-child(1) {
+    padding-left: 8px;
+  }
+
+  #sponsors > div:nth-child(4) {
+    padding-right: 8px;
   }
 
   #sponsors {

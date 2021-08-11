@@ -45,7 +45,7 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch("setPage", "dashBoard");
+    this.$store.dispatch("page/setPage", "dashBoard");
   },
   created() {
     let user = JSON.parse(localStorage.getItem("currentUser"));

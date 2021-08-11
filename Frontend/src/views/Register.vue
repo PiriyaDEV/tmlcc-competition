@@ -54,11 +54,11 @@ export default {
   },
   computed: {
     ...mapGetters({
-      page: "getPage",
+      page: "page/getPage",
     }),
   },
   mounted() {
-    this.$store.dispatch("setPage", "agreement");
+    this.$store.dispatch("page/setPage", "agreement");
   },
 };
 </script>

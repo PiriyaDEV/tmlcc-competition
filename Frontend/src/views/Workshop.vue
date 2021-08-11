@@ -34,7 +34,7 @@ export default {
     Navbar,
   },
   mounted() {
-    this.$store.dispatch("setPage", "workshop");
+    this.$store.dispatch("page/setPage", "workshop");
   },
 };
 </script>

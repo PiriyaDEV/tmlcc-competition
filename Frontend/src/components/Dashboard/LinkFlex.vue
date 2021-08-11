@@ -115,7 +115,6 @@ export default {
 
 #link-box {
   margin-top: 22px;
-  /* margin-bottom: 70px; */
 }
 
 .edit-btn {

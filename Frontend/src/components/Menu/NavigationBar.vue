@@ -136,7 +136,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      page: "getPage",
+      page: "page/getPage",
     }),
   },
 };

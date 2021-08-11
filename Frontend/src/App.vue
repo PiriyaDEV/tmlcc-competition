@@ -221,6 +221,7 @@ select:-webkit-autofill:focus {
   background-position: center;
   left: 0;
   top: 50%;
+  /* top: 13px; */
   transform: translateY(-50%);
 }
 
@@ -499,6 +500,11 @@ input[type="number"] {
   .rg-btn {
     font-size: 2em;
   }
+
+  .donut-bullet li:before,
+  .circle-bullet li:before {
+    top: 13px;
+  }
 }
 
 @media screen and (max-width: 414px) {
@@ -543,6 +549,11 @@ input[type="number"] {
   .btn-grey,
   .rg-btn {
     font-size: 1.75em;
+  }
+
+  .donut-bullet li:before,
+  .circle-bullet li:before {
+    top: 12px;
   }
 }
 @media screen and (max-width: 375px) {
