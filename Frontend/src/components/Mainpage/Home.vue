@@ -44,6 +44,20 @@
         </div>
         <h1 class="number-label">MINUTES</h1>
       </div>
+
+      <h1 class="colon seconds">:</h1>
+
+      <div class="countdown-container seconds">
+        <div class="countdown-number">
+          <div class="number-box">
+            <h1>{{ this.seconds1 }}</h1>
+          </div>
+          <div class="number-box">
+            <h1>{{ this.seconds2 }}</h1>
+          </div>
+        </div>
+        <h1 class="number-label">SECONDS</h1>
+      </div>
     </div>
 
     <div id="register-date-section" class="section">
@@ -79,6 +93,9 @@ export default {
       minutes: "0",
       minutes1: "0",
       minutes2: "0",
+      seconds: "0",
+      seconds1: "0",
+      seconds2: "0",
     };
   },
   components: {
@@ -94,6 +111,7 @@ export default {
         (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       );
       this.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      this.seconds = Math.floor((distance % (1000 * 60)) / 1000);
       if (distance <= 0) {
         this.days1 = "0";
         this.days2 = "0";
@@ -101,6 +119,8 @@ export default {
         this.hours2 = "0";
         this.minutes1 = "0";
         this.minutes2 = "0";
+        this.seconds1 = "0";
+        this.seconds2 = "0";
       } else {
         if (this.days >= 10) {
           this.days1 = this.days.toString().substring(0, 1);
@@ -114,6 +134,10 @@ export default {
           this.minutes1 = this.minutes.toString().substring(0, 1);
           this.minutes2 = this.minutes.toString().substring(1);
         }
+        if (this.seconds >= 10) {
+          this.seconds1 = this.seconds.toString().substring(0, 1);
+          this.seconds2 = this.seconds.toString().substring(1);
+        }
         if (this.days < 10) {
           this.days1 = "0";
           this.days2 = this.days;
@@ -125,6 +149,10 @@ export default {
         if (this.minutes < 10) {
           this.minutes1 = "0";
           this.minutes2 = this.minutes;
+        }
+        if (this.seconds < 10) {
+          this.seconds1 = "0";
+          this.seconds2 = this.seconds;
         }
       }
     }, 1000);
@@ -241,6 +269,10 @@ export default {
 @media screen and (max-width: 767px) {
   .purple-line {
     width: 120px;
+  }
+
+  .seconds {
+    display: none;
   }
 
   .number-label {

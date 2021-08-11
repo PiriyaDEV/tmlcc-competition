@@ -30,7 +30,7 @@ export default {
     NavigationBar,
   },
   mounted() {
-    this.$store.dispatch("setPage", "mainpage");
+    this.$store.dispatch("page/setPage", "mainpage");
 
     let myID = document.getElementById("navigation-bar-fixed");
 

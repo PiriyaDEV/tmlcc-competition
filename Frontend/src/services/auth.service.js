@@ -21,14 +21,6 @@ class AuthService {
         headers: authHeader(),
       })
       .then((response) => {
-        if (response.data.token) {
-          localStorage.setItem("accessToken", response.data.token, {
-            expires: 1,
-          });
-          localStorage.setItem("currentUser", JSON.stringify(response.data), {
-            expires: 1,
-          });
-        }
         return response;
       })
       .catch((error) => {

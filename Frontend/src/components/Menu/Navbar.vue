@@ -94,7 +94,7 @@ export default {
       return up;
     },
     ...mapGetters({
-      page: "getPage",
+      page: "page/getPage",
     }),
   },
 };

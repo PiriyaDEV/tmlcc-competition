@@ -127,7 +127,8 @@
                   นาย อาทิตย์ วงศ์อัฉริยา<br />ฝ่ายจัดหาการสนับสนุน
                 </td>
                 <td class="text-normal">
-                  กรรมการจัดงาน<br />Thailand Computational Chemistry Challenge
+                  ฝ่ายสนับสนุนทั่วไป<br />Thailand Computational Chemistry
+                  Challenge
                 </td>
               </tr>
               <tr>
@@ -159,9 +160,11 @@
               </tr>
               <tr>
                 <td class="text-normal">7</td>
-                <td class="text-normal">บัณฑิต บุญยฤทธิ์<br />ฝ่ายวิชาการ</td>
                 <td class="text-normal">
-                  นักศึกษาปริญญาเอก<br />สถาบันวิทยสิริเมธี
+                  นาย บัณฑิต บุญยฤทธิ์<br />ฝ่ายวิชาการ
+                </td>
+                <td class="text-normal">
+                  นิสิตปริญญาเอก<br />สถาบันวิทยสิริเมธี
                 </td>
               </tr>
               <tr>
@@ -170,7 +173,7 @@
                   นาย ชยพัทธ์ อุทโยภาศ<br />ฝ่ายวิชาการ
                 </td>
                 <td class="text-normal">
-                  นักศึกษาปริญญาเอก<br />สถาบันวิทยสิริเมธี
+                  นิสิตปริญญาเอก<br />สถาบันวิทยสิริเมธี
                 </td>
               </tr>
               <tr>
@@ -179,7 +182,7 @@
                   นาย กัจจานะ บุญปาลิต<br />ฝ่ายวิชาการ
                 </td>
                 <td class="text-normal">
-                  นักศึกษาปริญญาเอก<br />สถาบันวิทยสิริเมธี
+                  นิสิตปริญญาเอก<br />สถาบันวิทยสิริเมธี
                 </td>
               </tr>
               <tr>
@@ -236,7 +239,7 @@ export default {
     Footer,
   },
   mounted() {
-    this.$store.dispatch("setPage", "about");
+    this.$store.dispatch("page/setPage", "about");
   },
 };
 </script>
