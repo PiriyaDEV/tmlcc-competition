@@ -30,6 +30,8 @@ app.get("/", (req, res) => {
 require("./app/routes/auth.routes")(app);
 // user service routes
 require("./app/routes/user.routes")(app);
+// team service routes
+require("./app/routes/team.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

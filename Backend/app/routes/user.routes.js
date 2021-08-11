@@ -1,4 +1,4 @@
-const controller = require("./../controllers/user.controller");
+const controller = require("../controllers/user.controller");
 
 module.exports = (app) => {
   app.post("/api/user/checkDuplicated", controller.checkDuplicated);

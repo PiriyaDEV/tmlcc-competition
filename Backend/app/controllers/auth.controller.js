@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-const User = require("./../models/user.model");
-const authConfig = require("./../config/auth.config");
+const User = require("../models/user.model");
+const authConfig = require("../config/auth.config");
 
 exports.register = (req, res) => {
   if (!req.body) {
@@ -35,9 +35,9 @@ exports.register = (req, res) => {
     user.email = user.email.toLowerCase();
     user.password = bcrypt.hashSync(user.password, 8);
     user.role = "user";
-    user.lastLogin = new Date().getTime();
-    user.createdAt = new Date().getTime();
-    user.updatedAt = new Date().getTime();
+    user.lastLogin = Date.now();
+    user.createdAt = Date.now();
+    user.updatedAt = Date.now();
 
     User.create(user, (err, result) => {
       if (err) {
@@ -101,7 +101,7 @@ exports.login = (req, res) => {
 
     if (bcrypt.compareSync(user.password, result.password)) {
       User.update(
-        { user_id: result.user_id, lastLogin: new Date().getTime() },
+        { user_id: result.user_id, lastLogin: Date.now() },
         (err, update_result) => {
           if (err) {
             return res.status(500).send({
