@@ -151,6 +151,7 @@ export default {
   margin: 10px 20px 10px 80px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   z-index: 999;
+  background-color: #ffffff;
 }
 
 #nav-menu > li {

@@ -85,11 +85,11 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch("setPage", "agreement");
+    this.$store.dispatch("page/setPage", "agreement");
   },
   methods: {
     register() {
-      this.$store.dispatch("setPage", "applicant");
+      this.$store.dispatch("page/setPage", "applicant");
     },
   },
 };

@@ -22,7 +22,7 @@
                 v-if="loginStatus.email.isInvalid"
                 class="text-normal orange-text error-message"
               >
-                * ไม่พบผู้ใช้งาน
+                * {{ loginStatus.email.message }}
               </p>
             </div>
             <div>
@@ -37,11 +37,13 @@
                 v-if="loginStatus.password.isInvalid"
                 class="text-normal orange-text error-message"
               >
-                * รหัสผ่านไม่ถูกต้อง
+                * {{ loginStatus.password.message }}
               </p>
             </div>
 
-            <h1 class="text-normal purple-text forgot-pass">ลืมรหัสผ่าน</h1>
+            <h1 class="text-normal purple-text forgot-pass">
+              <span>ลืมรหัสผ่าน</span>
+            </h1>
 
             <div class="center">
               <button @click="login()" class="btn-color">เข้าสู่ระบบ</button>
@@ -51,8 +53,10 @@
 
             <div class="login-below-text">
               <h1 class="text-normal gray-text">หรือ หากยังไม่ได้สมัคร</h1>
-              <h1 @click="registerClick()" class="text-normal purple-text">
-                ลงทะเบียนเข้าร่วมการแข่งขัน
+              <h1 class="text-normal purple-text">
+                <span @click="registerClick()"
+                  >ลงทะเบียนเข้าร่วมการแข่งขัน</span
+                >
               </h1>
             </div>
           </div>
@@ -64,7 +68,7 @@
 
 <script>
 import Navbar from "../components/Menu/Navbar.vue";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -82,10 +86,13 @@ export default {
     this.$store.dispatch("page/setPage", "login");
   },
   computed: {
+    ...mapGetters({
+      loginStatus: "auth/getLoginStatus",
+    }),
     cssInvalidEmail() {
       let valid = "input-box text-normal";
       let invalid = "input-box text-normal error-input-box";
-      if (this.invalidUser) {
+      if (this.loginStatus.email.isInvalid) {
         return invalid;
       }
       return valid;
@@ -93,22 +100,22 @@ export default {
     cssInvalidPassword() {
       let valid = "input-box text-normal";
       let invalid = "input-box text-normal error-input-box";
-      if (this.invalidPassword) {
+      if (this.loginStatus.password.isInvalid) {
         return invalid;
       }
       return valid;
     },
-    ...mapGetters({
-      loginStatus: "auth/getLoginStatus",
-    }),
   },
   methods: {
     registerClick() {
       this.$router.push("/register");
     },
-    ...mapAction({
-      login: this.$store.dispatch("auth/login", user),
-    }),
+    async login() {
+      await this.$store.dispatch("auth/login", this.user);
+      if (this.loginStatus.isAuthenticated) {
+        this.$router.push("/dashboard");
+      }
+    },
   },
 };
 </script>
@@ -143,6 +150,9 @@ export default {
 .forgot-pass {
   margin-left: 15px;
   margin-top: 0px;
+}
+
+.forgot-pass > span {
   cursor: pointer;
 }
 
@@ -162,6 +172,10 @@ export default {
 .login-below-text {
   margin-top: 15px;
   text-align: center;
+}
+
+.login-below-text > h1:nth-child(2) > span {
+  cursor: pointer;
 }
 
 @media screen and (max-width: 1100px) {

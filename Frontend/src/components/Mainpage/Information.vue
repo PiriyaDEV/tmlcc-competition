@@ -177,29 +177,86 @@
         ชิงรางวัลมูลค่ารวมกว่า 100,000 บาท !
       </p>
 
-      <div class="center">
-        <!-- <button @click="registerClick()" class="btn-white rg-btn">
+      <!-- <div class="center">
+        <button @click="registerClick()" class="btn-white rg-btn">
           ลงทะเบียนเข้าร่วมการแข่งขัน
-        </button> -->
+        </button>
         <button class="btn-grey rg-btn">ลงทะเบียนเข้าร่วมการแข่งขัน</button>
+      </div> -->
+
+      <div :class="cssSubBox">
+        <div>
+          <h1 class="header-s purple-text">สมัครรับข่าวสารการแข่งขัน</h1>
+        </div>
+
+        <div>
+          <input
+            v-model="subscribe.email"
+            @blur="validateEmail()"
+            limit="64"
+            type="text"
+            :class="cssEmailSub"
+            placeholder="กรอก E-mail ของคุณ"
+          />
+          <p
+            v-if="subscribe.isInvalid"
+            class="text-normal orange-text error-message"
+          >
+            * {{ subscribe.invalidMessage }}
+          </p>
+        </div>
+
+        <div>
+          <button @click="subscribeClick()" class="subscribe-btn btn-color">
+            Subscribe
+          </button>
+        </div>
       </div>
 
-      <h1 class="header-s">ติดต่อสอบถาม</h1>
-      <hr class="bar-color-o bar-color-s" />
-
-      <div id="contact-section">
+      <div id="contact-box">
         <div>
-          <img
-            class="rectangle-bar"
-            src="../../assets/mainpage/rectangle-bar.png"
-            alt=""
-          />
+          <h1 class="header-s">ติดต่อสอบถาม</h1>
+          <hr class="bar-color-o bar-color-s" />
+
+          <div id="contact-section">
+            <div>
+              <img
+                class="rectangle-bar"
+                src="../../assets/mainpage/rectangle-bar.png"
+                alt=""
+              />
+            </div>
+            <div>
+              <p class="text-medium">
+                คุณวารินทร์ ระงับพิศม์ <br />
+                E-mail : <span class="blue-text">tmlcc.th@gmail.com</span>
+              </p>
+            </div>
+          </div>
         </div>
         <div>
-          <p class="text-medium">
-            คุณวารินทร์ ระงับพิศม์ <br />
-            E-mail : <span class="blue-text">tmlcc.th@gmail.com</span>
-          </p>
+          <h1 class="header-s">ติดตามข่าวสาร</h1>
+          <hr class="bar-color-o bar-color-s" />
+
+          <div id="contact-section">
+            <div>
+              <img
+                class="fb-icon"
+                src="../../assets/icon/facebook-icon.png"
+                alt=""
+              />
+            </div>
+            <div>
+              <p class="text-medium blue-text">
+                <a
+                  class="fb-click"
+                  target="_blank"
+                  href="https://www.facebook.com/tmlcc.th"
+                  >facebook.com/tmlcc.th</a
+                >
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -215,13 +272,85 @@
 
 <script>
 import Sponsors from "../Mainpage/Sponsors.vue";
+import subscribeService from "../../services/subscribe.service";
+
 export default {
   components: {
     Sponsors,
   },
+  data() {
+    return {
+      subscribe: {
+        email: "",
+        isInvalid: false,
+        invalidMessage: "",
+      },
+    };
+  },
+  computed: {
+    cssEmailSub() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.subscribe.isInvalid) {
+        return error;
+      }
+      return complete;
+    },
+    cssSubBox() {
+      let error = "subscribe-box-error subscribe-box";
+      let complete = "subscribe-box";
+      if (this.subscribe.isInvalid) {
+        return error;
+      }
+      return complete;
+    },
+  },
   methods: {
     registerClick() {
       this.$router.push("/register");
+    },
+    subscribeClick() {
+      this.validateEmail();
+      if (!this.subscribe.isInvalid && this.subscribe.email) {
+        subscribeService
+          .subscribe({
+            email: this.subscribe.email,
+          })
+          .then((res) => {
+            if (res.status == 201) {
+              this.subscribe.email = "";
+            } else {
+              console.log("Something wrong!");
+              this.subscribe.isInvalid = true;
+              this.subscribe.invalidMessage = "เกิดข้อผิดพลาด โปรดลองอีกครั้ง";
+            }
+          })
+          .catch(() => {
+            console.log("Something wrong!");
+            this.subscribe.isInvalid = true;
+            this.subscribe.invalidMessage = "เกิดข้อผิดพลาด โปรดลองอีกครั้ง";
+          });
+      } else {
+        if (!this.subscribe.email) {
+          this.subscribe.isInvalid = true;
+          this.subscribe.invalidMessage = "โปรดกรอก E-mail";
+        }
+      }
+    },
+    validateEmail() {
+      let reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/;
+      if (reg.test(this.subscribe.email)) {
+        this.subscribe.isInvalid = false;
+        this.subscribe.invalidMessage = "";
+      } else {
+        if (this.subscribe.email) {
+          this.subscribe.isInvalid = true;
+          this.subscribe.invalidMessage = "E-mail ไม่ถูกต้อง";
+        } else {
+          this.subscribe.isInvalid = false;
+          this.subscribe.invalidMessage = "";
+        }
+      }
     },
   },
 };
@@ -230,6 +359,7 @@ export default {
 <style scoped>
 #information {
   margin-top: 70px;
+  position: relative;
 }
 
 .bar-color-l {
@@ -296,6 +426,7 @@ export default {
   margin-top: 15px;
   margin-bottom: 25px;
   display: flex;
+  align-items: center;
 }
 
 .rectangle-bar {
@@ -319,6 +450,73 @@ export default {
   display: none;
 }
 
+.subscribe-box > div:first-child {
+  margin-top: 35px;
+}
+
+.subscribe-box > div:nth-child(2) {
+  margin-top: 32px;
+}
+
+.subscribe-box > div:nth-child(3) {
+  margin-top: 30px;
+}
+
+.subscribe-box > div:nth-child(1) > h1 {
+  margin-top: 0px;
+  margin-left: 30px;
+}
+
+.subscribe-box > div:nth-child(2) > input {
+  margin: 0px 30px 0px 30px;
+  width: calc(100% - 60px);
+}
+
+.subscribe-box > div:nth-child(2) > p {
+  margin: 5px 30px 0px 30px;
+}
+
+.subscribe-box > div:nth-child(3) > button {
+  margin-right: 30px;
+}
+
+.subscribe-box {
+  display: grid;
+  grid-template-columns: 1.5fr 3fr 1fr;
+  border: double 2px transparent;
+  border-radius: 12px;
+  height: 104px;
+  background-image: linear-gradient(white, white),
+    linear-gradient(#2f65af, #764a97, #bf2e7e, #f07821);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  margin-top: 34px;
+  margin-bottom: 20px;
+}
+
+.subscribe-box-error {
+  height: 114px !important;
+}
+
+.fb-icon {
+  width: 32px;
+  margin-right: 10px;
+}
+
+.fb-click {
+  color: inherit;
+  text-decoration: none;
+}
+
+#contact-box {
+  display: flex;
+  margin: 15px 0px;
+}
+
+#contact-box > div:nth-child(2) {
+  margin-left: 80px;
+}
+
 @media screen and (max-width: 1100px) {
   .rg-btn {
     width: 650px;
@@ -331,6 +529,56 @@ export default {
 
   #sponsors-section {
     margin: 20px 0px 70px 0px;
+  }
+
+  .subscribe-box {
+    display: block;
+    text-align: center;
+    height: 174px;
+  }
+
+  .subscribe-box-error {
+    height: 204px !important;
+  }
+
+  .subscribe-box > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0px;
+  }
+
+  .subscribe-box > div:first-child,
+  .subscribe-box > div:nth-child(2),
+  .subscribe-box > div:nth-child(3) {
+    margin-top: 0px;
+  }
+
+  .subscribe-box > div:nth-child(1) > h1 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 0px;
+  }
+
+  .subscribe-box > div:nth-child(2) {
+    display: block;
+  }
+
+  .error-message {
+    text-align: left;
+    padding-left: 30px;
+    padding-top: 10px;
+  }
+
+  .subscribe-box > div:nth-child(2) > p {
+    margin: 0;
+  }
+
+  .subscribe-box > div:nth-child(3) > button {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-right: 0px;
+    width: calc(100% - 50px);
   }
 }
 
@@ -378,6 +626,14 @@ export default {
 
   #information {
     margin-top: 50px;
+  }
+
+  #contact-box {
+    display: block;
+  }
+
+  #contact-box > div:nth-child(2) {
+    margin-left: 0px;
   }
 }
 

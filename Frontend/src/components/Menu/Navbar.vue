@@ -103,6 +103,7 @@ export default {
 <style scoped>
 #navbar {
   position: relative;
+  z-index: 999;
 }
 #navbar-menu {
   background-color: #ffffff;

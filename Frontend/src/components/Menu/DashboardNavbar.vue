@@ -67,6 +67,8 @@
 
 <script>
 import Hamburger from "../Menu/Hamburger.vue";
+import { mapGetters } from "vuex";
+
 export default {
   components: {
     Hamburger,
@@ -75,12 +77,12 @@ export default {
   data() {
     return {
       showMenu: false,
-      displayName: "",
     };
   },
-  created() {
-    let user = JSON.parse(localStorage.getItem("currentUser"));
-    this.displayName = user.displayName;
+  mounted() {
+    if (!this.loginStatus.isAuthenticated) {
+      this.$router.push("/login");
+    }
   },
   methods: {
     mainpage() {
@@ -109,6 +111,9 @@ export default {
     },
   },
   computed: {
+    ...mapGetters({
+      loginStatus: "auth/getLoginStatus",
+    }),
     SlideMenu() {
       let down = "open";
       let up = "closed";

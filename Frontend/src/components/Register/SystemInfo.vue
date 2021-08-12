@@ -199,7 +199,7 @@ export default {
   },
   methods: {
     applicantClick() {
-      this.$store.dispatch("setPage", "applicant");
+      this.$store.dispatch("page/setPage", "applicant");
     },
     register() {
       if (this.validateForm() && !this.isInvalid.displayName) {
