@@ -70,3 +70,9 @@ CREATE TABLE IF NOT EXISTS Files(
   PRIMARY KEY (file_id)
 );
 
+-- Create Subscribe Table
+CREATE TABLE IF NOT EXISTS Subscribe(
+  email                   VARCHAR(64)     NOT NULL,
+  createdAt               TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (email)
+);

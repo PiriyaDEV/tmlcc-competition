@@ -8,7 +8,7 @@ const authConfig = require("./app/config/auth.config");
 const app = express();
 
 let corsOptions = {
-  origin: "*",
+  origin: "http://localhost:8081",
   credentials: false,
 };
 
@@ -32,6 +32,8 @@ require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
 // team service routes
 require("./app/routes/team.routes")(app);
+// subscribe service routes
+require("./app/routes/subscribe.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
