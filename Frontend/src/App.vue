@@ -396,11 +396,68 @@ input[type="number"] {
   overflow-y: scroll !important;
 }
 
+/* Molecule */
+#molecule-absolute-1 {
+  position: absolute;
+  left: -638px;
+  top: -122px;
+  z-index: 0;
+}
+
+#molecule-absolute-2 {
+  position: absolute;
+  right: -490px;
+  top: 1084px;
+  z-index: 0;
+}
+
+#molecule-absolute-3 {
+  position: absolute;
+  right: -672px;
+  top: 2155px;
+  z-index: 0;
+}
+
+#molecule-absolute-1 > img {
+  width: 1530px;
+}
+
+#molecule-absolute-2 > img {
+  width: 1219px;
+}
+
+#molecule-absolute-3 > img {
+  width: 1264px;
+  transform: matrix(-1, 0, 0, 1, 0, 0);
+}
+
 @media screen and (max-width: 1920px) {
   .page-container,
   .navbar-container {
     width: 1280px;
     max-width: 1280px;
+  }
+
+  /* Molecule */
+  #molecule-absolute-1 {
+    position: absolute;
+    left: -778px;
+    top: -122px;
+    z-index: 0;
+  }
+
+  #molecule-absolute-2 {
+    position: absolute;
+    right: -490px;
+    top: 1084px;
+    z-index: 0;
+  }
+
+  #molecule-absolute-3 {
+    position: absolute;
+    right: -672px;
+    top: 2155px;
+    z-index: 0;
   }
 }
 
@@ -411,6 +468,50 @@ input[type="number"] {
   .navbar-container {
     width: 1024px;
     max-width: 1024px;
+  }
+
+  /* Molecule */
+  #molecule-absolute-1 {
+    position: absolute;
+    left: -483px;
+    top: 83px;
+    z-index: 0;
+  }
+
+  #molecule-absolute-2 {
+    position: absolute;
+    right: -131px;
+    top: 1125px;
+    z-index: 0;
+  }
+
+  #molecule-absolute-3 {
+    position: absolute;
+    right: -302px;
+    top: 2155px;
+    z-index: 0;
+  }
+
+  #molecule-absolute-1 > img {
+    width: 930px;
+  }
+
+  #molecule-absolute-2 > img {
+    width: 819px;
+  }
+
+  #molecule-absolute-3 > img {
+    width: 864px;
+    transform: matrix(-1, 0, 0, 1, 0, 0);
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  #molecule-absolute-2 {
+    position: absolute;
+    right: -231px;
+    top: 1125px;
+    z-index: 0;
   }
 }
 
@@ -445,6 +546,28 @@ input[type="number"] {
   .rg-btn {
     font-size: 2.25em;
   }
+
+  /* Molecule */
+  #molecule-absolute-1 {
+    position: absolute;
+    left: -521px;
+    top: 57px;
+    z-index: 0;
+  }
+
+  #molecule-absolute-2 {
+    position: absolute;
+    right: -331px;
+    top: 1125px;
+    z-index: 0;
+  }
+
+  #molecule-absolute-3 {
+    position: absolute;
+    right: -452px;
+    top: 2155px;
+    z-index: 0;
+  }
 }
 
 @media screen and (max-width: 1024px) {
@@ -454,6 +577,64 @@ input[type="number"] {
     max-width: 960px;
     padding-left: 20px;
     padding-right: 20px;
+  }
+
+  #molecule-absolute-1 > img {
+    width: 730px;
+  }
+
+  #molecule-absolute-2 > img {
+    width: 619px;
+  }
+
+  #molecule-absolute-3 > img {
+    width: 664px;
+  }
+
+  /* Molecule */
+  #molecule-absolute-1 {
+    position: absolute;
+    left: -421px;
+    top: 136px;
+    z-index: 0;
+  }
+
+  #molecule-absolute-2 {
+    position: absolute;
+    right: -331px;
+    top: 1225px;
+    z-index: 0;
+  }
+
+  #molecule-absolute-3 {
+    position: absolute;
+    right: -412px;
+    top: 2155px;
+    z-index: 0;
+  }
+}
+
+@media screen and (max-width: 827px) {
+  /* Molecule */
+  #molecule-absolute-1 {
+    position: absolute;
+    left: -455px;
+    top: 136px;
+    z-index: 0;
+  }
+
+  #molecule-absolute-2 {
+    position: absolute;
+    right: -331px;
+    top: 1225px;
+    z-index: 0;
+  }
+
+  #molecule-absolute-3 {
+    position: absolute;
+    right: -412px;
+    top: 2053px;
+    z-index: 0;
   }
 }
 @media screen and (max-width: 768px) {
@@ -504,6 +685,68 @@ input[type="number"] {
   .donut-bullet li:before,
   .circle-bullet li:before {
     top: 13px;
+  }
+
+  /* Molecule */
+  #molecule-absolute-1 {
+    position: absolute;
+    left: -455px;
+    top: 64px;
+    z-index: 0;
+  }
+
+  #molecule-absolute-2 {
+    position: absolute;
+    right: -331px;
+    top: 1147px;
+    z-index: 0;
+  }
+
+  #molecule-absolute-3 {
+    position: absolute;
+    right: -412px;
+    top: 1889px;
+    z-index: 0;
+  }
+}
+
+@media screen and (max-width: 660px) {
+  #molecule-absolute-2 {
+    position: absolute;
+    right: -331px;
+    top: 1447px;
+    z-index: 0;
+  }
+
+  #molecule-absolute-3 {
+    position: absolute;
+    right: -412px;
+    top: 2639px;
+    z-index: 0;
+  }
+}
+
+@media screen and (max-width: 489px) {
+  /* Molecule */
+  #molecule-absolute-1 {
+    position: absolute;
+    left: -476px;
+    top: 53px;
+    z-index: 0;
+  }
+
+  #molecule-absolute-2 {
+    position: absolute;
+    right: -331px;
+    top: 1547px;
+    z-index: 0;
+  }
+
+  #molecule-absolute-3 {
+    position: absolute;
+    right: -412px;
+    top: 2639px;
+    z-index: 0;
   }
 }
 

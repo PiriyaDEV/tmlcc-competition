@@ -2,6 +2,17 @@
   <div>
     <Navbar />
     <div id="mainpage" class="section">
+      <div id="molecule-absolute-1">
+        <img src="../assets/molecule/molecule1.png" alt="" />
+      </div>
+
+      <div id="molecule-absolute-2">
+        <img src="../assets/molecule/molecule2.png" alt="" />
+      </div>
+
+      <div id="molecule-absolute-3">
+        <img src="../assets/molecule/molecule3.png" alt="" />
+      </div>
       <div id="mainpage-container" class="page-container">
         <div>
           <Home />
@@ -56,6 +67,7 @@ export default {
     inset 0px -11px 8px -10px rgba(188, 188, 188, 0.5);
   -webkit-box-shadow: inset 0px 11px 8px -10px rgba(188, 188, 188, 0.5),
     inset 0px -11px 8px -10px rgba(188, 188, 188, 0.5);
+  position: relative;
 }
 
 #mainpage-container {
