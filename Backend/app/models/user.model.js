@@ -110,4 +110,70 @@ User.find = (user, result) => {
   );
 };
 
+User.getAllUsers = (result) => {
+  sql.query(
+    `SELECT
+      U.user_id,
+      U.email,
+      U.displayName,
+      U.firstName,
+      U.lastName,
+      U.education,
+      IFNULL(
+          (SELECT
+              T.teamName
+          FROM
+              TeamMembers TM
+              LEFT JOIN Teams T ON TM.team_id = T.team_id
+          WHERE
+              TM.member_id = U.user_id
+              AND TM.status = 'approved'),
+              '-'
+      ) AS team
+     FROM
+         Users U
+     WHERE
+         U.role = 'user'`,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      console.log(`Result: ${res.length} user(s)`);
+      result(null, res);
+      return;
+    }
+  );
+};
+
+User.getAllStaffs = (result) => {
+  sql.query(
+    `SELECT
+      user_id,
+      firstName,
+      lastName,
+      phone,
+      email,
+      organization,
+      role
+     FROM
+         Users
+     WHERE
+         role IN ('editor', 'admin')`,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      console.log(`Result: ${res.length} user(s)`);
+      result(null, res);
+      return;
+    }
+  );
+};
+
 module.exports = User;

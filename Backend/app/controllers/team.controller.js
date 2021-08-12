@@ -257,6 +257,12 @@ exports.getAll = (req, res) => {
 };
 
 exports.getInfo = (req, res) => {
+  if (!req.query.team_id) {
+    return res.status(400).send({
+      message: "Content can not be empty!",
+    });
+  }
+
   let team_id = req.query.team_id;
 
   Team.getInfo(team_id, (err, result) => {
