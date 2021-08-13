@@ -47,7 +47,7 @@ export default {
 
     var myScrollFunc = function () {
       var y = window.scrollY;
-      if (y >= 950 && y <= 2100) {
+      if (y >= 950) {
         myID.className = "show";
       } else {
         myID.className = "hide";
