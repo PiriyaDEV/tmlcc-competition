@@ -62,11 +62,11 @@
       </div>
     </div>
 
-    <div class="section">
+    <!-- <div class="section">
       <button class="edit-btn">Edit Information</button>
-    </div>
+    </div> -->
 
-    <!-- <div class="spacer"></div> -->
+    <div class="spacer"></div>
   </div>
 </template>
 
@@ -134,7 +134,7 @@ export default {
 }
 
 .spacer {
-  height: 70px;
+  height: 50px;
 }
 
 @media screen and (max-width: 1100px) {
@@ -147,6 +147,10 @@ export default {
   .join-btn,
   .edit-btn {
     font-size: 1.75em;
+  }
+
+  .spacer {
+    display: none;
   }
 }
 

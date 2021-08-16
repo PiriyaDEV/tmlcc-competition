@@ -6,8 +6,7 @@
         <div>
           <h1 class="header-m">ยินดีต้อนรับเข้าสู่ระบบ</h1>
           <h1 class="header-c">
-            <!-- คุณ <span class="l-grey-text">{{ displayName }}</span> -->
-            คุณ <span class="l-grey-text">harryfer</span>
+            คุณ <span class="l-grey-text display-name">{{ displayName }}</span>
           </h1>
           <div id="dashboard-menu">
             <div>
@@ -29,7 +28,7 @@ import DashboardNavbar from "../components/Menu/DashboardNavbar.vue";
 import Teamflex from "../components/Dashboard/TeamFlex.vue";
 import LinkFlex from "../components/Dashboard/LinkFlex.vue";
 import MaterialFlex from "../components/Dashboard/MaterialFlex.vue";
-import UserService from "../services/user.service";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -38,26 +37,14 @@ export default {
     LinkFlex,
     MaterialFlex,
   },
-  data() {
-    return {
-      displayName: "",
-      role: "user",
-    };
+  computed: {
+    ...mapGetters({
+      displayName: "auth/getDisplayName",
+      loginStatus: "auth/getLoginStatus",
+    }),
   },
   mounted() {
     this.$store.dispatch("page/setPage", "dashBoard");
-  },
-  created() {
-    let user = JSON.parse(localStorage.getItem("currentUser"));
-    this.displayName = user.displayName;
-
-    if (user.user_id) {
-      UserService.getRole({ user_id: user.user_id }).then((res) => {
-        if (res.status == 200) {
-          this.role = res.data.role;
-        }
-      });
-    }
   },
 };
 </script>
@@ -90,6 +77,10 @@ export default {
 #material-flex {
   width: 100%;
   margin-left: 50px;
+}
+
+.display-name {
+  text-transform: capitalize;
 }
 
 @media screen and (max-width: 1100px) {

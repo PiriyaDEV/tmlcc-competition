@@ -166,8 +166,23 @@
         v-if="page == `dashBoard`"
         class="nav-head nav-link display-name-box"
       >
-        <a class="text-normal display-name" @click="hideNav" href="/dashboard"
-          >harryfer</a
+        <a
+          class="text-normal display-name"
+          @click="hideNav"
+          href="/dashboard"
+          >{{ displayName }}</a
+        >
+      </div>
+      <div
+        v-if="page != `dashBoard` && loginStatus.isAuthenticated"
+        class="nav-head nav-link register-btn"
+      >
+        <a
+          v-if="loginStatus.isAuthenticated"
+          class="text-normal display-name"
+          @click="hideNav"
+          href="/dashboard"
+          >{{ displayName }}</a
         >
       </div>
       <!-- <div class="nav-head nav-link">
@@ -180,13 +195,24 @@
         <a class="text-normal" href="/register">ลงทะเบียน</a>
       </div> -->
       <div
-        v-if="page != `dashBoard`"
+        v-if="page != `dashBoard` && !loginStatus.isAuthenticated"
         class="nav-head nav-link register-btn blocked"
       >
         <a class="text-normal" @click="hideNav">ลงทะเบียน</a>
       </div>
+      <div
+        v-if="page != `dashBoard` && loginStatus.isAuthenticated"
+        class="nav-head nav-link register-btn"
+      >
+        <a
+          v-if="loginStatus.isAuthenticated"
+          class="text-normal"
+          @click="logoutMainpage"
+          >ออกจากระบบ</a
+        >
+      </div>
       <div v-if="page == `dashBoard`" class="nav-head nav-link register-btn">
-        <a class="text-normal" @click="hideNav">ออกจากระบบ</a>
+        <a class="text-normal" @click="logout">ออกจากระบบ</a>
       </div>
     </Slide>
   </div>
@@ -226,6 +252,18 @@ export default {
     dashboard(value) {
       this.$router.push(value);
     },
+    logout() {
+      this.$store.dispatch("auth/logout");
+      if (!this.loginStatus.isAuthenticated) {
+        this.$router.push("/login");
+      }
+    },
+    logoutMainpage() {
+      this.$store.dispatch("auth/logout");
+      if (!this.loginStatus.isAuthenticated) {
+        this.$router.push("/");
+      }
+    },
   },
   computed: {
     cssDropdown() {
@@ -246,6 +284,8 @@ export default {
     },
     ...mapGetters({
       page: "page/getPage",
+      displayName: "auth/getDisplayName",
+      loginStatus: "auth/getLoginStatus",
     }),
   },
 };
@@ -281,6 +321,7 @@ export default {
   font-weight: 700;
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
   padding-right: 6px;
+  text-transform: capitalize;
 }
 
 .display-name-box {

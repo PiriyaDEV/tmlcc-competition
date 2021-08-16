@@ -44,7 +44,7 @@
               class="text-normal display-name nav-text"
               @click="toggleShowMenu()"
             >
-              harryfer
+              {{ displayName }}
             </p>
             <img
               id="dropdown-icon"
@@ -53,7 +53,7 @@
               @click="toggleShowMenu()"
             />
             <div id="signout-dropdown" :class="SlideMenu" @click="click">
-              <button class="btn-white">ออกจากระบบ</button>
+              <button @click="logout()" class="btn-white">ออกจากระบบ</button>
             </div>
           </div>
         </div>
@@ -78,11 +78,6 @@ export default {
     return {
       showMenu: false,
     };
-  },
-  mounted() {
-    if (!this.loginStatus.isAuthenticated) {
-      this.$router.push("/login");
-    }
   },
   methods: {
     mainpage() {
@@ -109,9 +104,16 @@ export default {
     click() {
       this.showMenu = !this.showMenu;
     },
+    logout() {
+      this.$store.dispatch("auth/logout");
+      if (!this.loginStatus.isAuthenticated) {
+        this.$router.push("/login");
+      }
+    },
   },
   computed: {
     ...mapGetters({
+      displayName: "auth/getDisplayName",
       loginStatus: "auth/getLoginStatus",
     }),
     SlideMenu() {
@@ -176,6 +178,7 @@ export default {
   font-weight: 700;
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
   padding-right: 6px;
+  text-transform: capitalize;
 }
 
 #hamburger {

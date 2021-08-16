@@ -84,6 +84,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("page/setPage", "login");
+    this.$store.dispatch("auth/resetStatus");
   },
   computed: {
     ...mapGetters({

@@ -1,5 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "../store";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -12,26 +14,41 @@ const routes = [
   //   path: "/login",
   //   name: "Login",
   //   component: () => import("../views/Login.vue"),
+  //   meta: {
+  //     hideForAuth: true,
+  //   },
   // },
   // {
   //   path: "/register",
   //   name: "Register",
   //   component: () => import("../views/Register.vue"),
+  //   meta: {
+  //     hideForAuth: true,
+  //   },
   // },
   // {
   //   path: "/dashboard",
   //   name: "Dashboard",
   //   component: () => import("../views/Dashboard.vue"),
+  //   meta: {
+  //     requiresAuth: true,
+  //   },
   // },
   // {
   //   path: "/dashboard/member",
   //   name: "MemberSetting",
   //   component: () => import("../views/Admin/MemberSetting.vue"),
+  //   meta: {
+  //     requiresAuth: true,
+  //   },
   // },
   // {
   //   path: "/dashboard/file",
   //   name: "FileSetting",
   //   component: () => import("../views/Admin/FileSetting.vue"),
+  //   meta: {
+  //     requiresAuth: true,
+  //   },
   // },
   {
     path: "/about",
@@ -44,6 +61,26 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  let loginStatus = store.getters["auth/getLoginStatus"];
+
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!loginStatus.isAuthenticated) {
+      next({ name: "Login" });
+    } else {
+      next();
+    }
+  } else if (to.matched.some((record) => record.meta.hideForAuth)) {
+    if (loginStatus.isAuthenticated) {
+      next({ name: "Dashboard" });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;
