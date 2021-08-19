@@ -52,7 +52,11 @@
         <div v-if="!currentTeam.isLeader">
           <div v-for="(team, i) in teamList" :key="i">
             <h1 class="text-normal gray-text teamname">{{ team.teamName }}</h1>
-            <button class="join-btn" v-if="role == `user`" @click="joinTeam()">
+            <button
+              class="join-btn"
+              v-if="role == `user` && team.status != 'pending'"
+              @click="joinTeam()"
+            >
               เข้าร่วม
             </button>
             <button
@@ -64,13 +68,31 @@
             <button class="join-btn" v-if="role != `user`">แสดง</button>
           </div>
         </div>
-        <div v-if="currentTeam.isLeader">
-          <div v-for="(team, i) in currentTeam.members" :key="i">
-            <h1 class="text-normal gray-text teamname">แฮรรี่ จันทร์โอชา</h1>
-            <button class="join-btn">อนุญาติ</button>
+        <div v-if="teamStatus.hasTeam">
+          <div
+            v-for="(member, i) in currentTeam.members.filter(
+              (m) => m.member_id != user_id
+            )"
+            :key="i"
+          >
+            <h1 class="text-normal gray-text teamname">
+              {{ member.fullName }}
+            </h1>
+            <button v-if="currentTeam.isLeader" class="join-btn">อนุญาติ</button>
           </div>
         </div>
-        <h1 v-if="!teamList" class="text-normal l-grey-text">ไม่พบทีมในระบบ</h1>
+        <h1
+          v-if="!currentTeam.isLeader &&  !currentTeam.members && !teamList.length "
+          class="text-normal l-grey-text"
+        >
+          ไม่พบทีมในระบบ
+        </h1>
+        <h1
+          v-if="currentTeam.isLeader && currentTeam.members.length == 1"
+          class="text-normal l-grey-text"
+        >
+          คุณยังไม่มีเพื่อนร่วมทีม
+        </h1>
       </div>
 
       <p class="note" v-if="role == `user`">
@@ -103,6 +125,7 @@ export default {
   computed: {
     ...mapGetters({
       role: ["auth/getRole"],
+      user_id: ["auth/getUserId"],
       teamList: ["team/getTeamList"],
       currentTeam: ["team/getCurrentTeam"],
       teamStatus: ["team/getTeamStatus"],
@@ -197,13 +220,13 @@ button {
   overflow-y: scroll;
 }
 
-#team-box > div {
+#team-box > div > div {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-#team-box > div:not(:last-child) {
+#team-box > div > div:not(:last-child) {
   margin: 0px 0px 13px 0px;
 }
 
@@ -224,13 +247,14 @@ button {
   border: 2px solid #764a97;
   box-sizing: border-box;
   border-radius: 12px;
-  font-size: 1.75em;
+  font-size: 1.5em;
   color: #ffffff;
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
   font-weight: 400;
   background-color: #764a97;
-  padding: 3px 13px 2px 13px;
+  padding: 3px 7px 2px 7px;
   line-height: 20.8px;
+  cursor: default !important;
 }
 
 .note {
@@ -262,6 +286,7 @@ button {
 }
 
 .teamname {
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 157px;
@@ -296,7 +321,6 @@ div::-webkit-scrollbar-thumb {
   }
 
   .join-btn,
-  .approve-btn,
   .edit-btn {
     font-size: 1.75em;
   }

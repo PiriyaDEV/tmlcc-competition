@@ -54,7 +54,7 @@ export default {
     },
     setTeamList(state, list) {
       state.teamList = list;
-    }
+    },
   },
   actions: {
     async create({ rootGetters, state, commit, dispatch }, teamName) {
@@ -100,28 +100,32 @@ export default {
     async checkTeam({ rootGetters, commit }) {
       await TeamService.checkTeam({
         user_id: rootGetters["auth/getUserId"],
-      }).then((res) => {
-            if (res.status == 200) {
-              let data = res.data;
-              if (data.teamStatus.hasTeam) {
-                commit("setTeamStatus", data.teamStatus.status);
-                commit("setCurrentTeam", data.team);
-              } else {
-                commit("setTeamList", data.teamList);
-              }
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            let data = res.data;
+            if (data.teamStatus.hasTeam) {
+              commit("setTeamStatus", data.teamStatus.status);
+              commit("setCurrentTeam", data.team);
+            } else {
+              commit("setTeamList", data.teamList);
             }
-          }).catch((err) => {
-            console.log(err);
-          });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     async getTeamList({ commit }) {
-      await TeamService.getAll().then((res) => {
-        if (res.status == 200) {
-          commit("setTeamList", res.data);
-        }
-      }).catch((err) => {
-        console.log(err);
-      });
+      await TeamService.getAll()
+        .then((res) => {
+          if (res.status == 200) {
+            commit("setTeamList", res.data);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
-    },
+  },
 };
