@@ -45,7 +45,7 @@ TeamMember.update = (teamMember, result) => {
         result(err, null);
         return;
       }
-      console.log(res)
+      console.log(res);
 
       console.log(
         `Result: team member ${teamMember.member_id} updated in -> ${teamMember.team_id}`
@@ -76,6 +76,38 @@ TeamMember.find = (teamMember, result) => {
 
       console.log(
         `Result: team member ${teamMember.member_id} found in -> ${res[0].team_id}`
+      );
+      result(null, { isFound: true, ...res[0] });
+      return;
+    }
+  );
+};
+
+TeamMember.findTeam = (user, result) => {
+  sql.query(
+    `SELECT
+         team_id,
+         status
+     FROM
+         TeamMembers
+     WHERE
+         member_id = '${user.user_id}'
+         AND status = 'approved'`,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      if (!res.length) {
+        console.log(`Result: user -> ${user.user_id} has no team`);
+        result(null, { isFound: false });
+        return;
+      }
+
+      console.log(
+        `Result: user -> ${user.user_id} has team -> ${res[0].team_id} with status '${res[0].status}'`
       );
       result(null, { isFound: true, ...res[0] });
       return;

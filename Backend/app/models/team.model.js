@@ -83,17 +83,94 @@ Team.find = (team, result) => {
   );
 };
 
+Team.checkLeader = (user, result) => {
+  sql.query(
+    `SELECT
+         leader_id
+     FROM
+         Teams
+     WHERE
+         leader_id = '${user.user_id}'
+         AND status = 'active'`,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      if (!res.length) {
+        console.log("Result: not a leader");
+        result(null, false);
+        return;
+      }
+
+      console.log(`Result: user -> ${user.user_id} is a leader`);
+      result(null, true);
+      return;
+    }
+  );
+};
+
 Team.getAll = (result) => {
   sql.query(
     `SELECT T.team_id, T.teamName,
-      IFNULL( SELECT COUNT(*) FROM TeamMembers TM
+      IFNULL( (SELECT COUNT(*) FROM TeamMembers TM
         WHERE
          TM.team_id = T.team_id AND 
-         TM.status = 'approved'
+         TM.status = 'approved'), 0
       ) AS members
      FROM
       Teams T
      WHERE
+      T.status = 'active'`,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      console.log(`Result: ${res.length} team(s)`);
+      result(null, res);
+      return;
+    }
+  );
+};
+
+Team.getAllWithStatus = (user, result) => {
+  sql.query(
+    `SELECT
+      T.team_id,
+      T.teamName,
+      IFNULL(
+          (
+              SELECT
+                  COUNT(*)
+              FROM
+                  TeamMembers TM
+              WHERE
+                  TM.team_id = T.team_id
+                  AND TM.status = 'approved'
+          ),
+          0
+      ) AS members,
+      IFNULL(
+          (
+              SELECT
+                  TM.status
+              FROM
+                  TeamMembers TM
+              WHERE
+                  TM.team_id = T.team_id
+                  AND TM.member_id = '${user.user_id}'
+                  AND TM.status = 'pending'
+          ),
+          '-'
+      ) AS status
+  FROM
+      Teams T
+  WHERE
       T.status = 'active'`,
     (err, res) => {
       if (err) {
@@ -134,6 +211,55 @@ Team.getInfo = (team_id, result) => {
               WHERE
                   TM.team_id = T.team_id
                   AND TM.status = 'approved'
+              ), JSON_ARRAY())
+          ) AS result
+      FROM
+          Teams T
+      WHERE
+          T.team_id = '${team_id}'`,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      let data = JSON.parse(res[0].result);
+
+      console.log(`team found -> ${data.team_id}`);
+      result(null, data);
+      return;
+    }
+  );
+};
+
+Team.getInfoForLeader = (team_id, result) => {
+  sql.query(
+    `SELECT
+      JSON_OBJECT(
+        'team_id',
+        T.team_id,
+        'teamName',
+        T.teamName,
+        'members',
+          IFNULL((
+              SELECT
+                  JSON_ARRAYAGG(
+                      JSON_OBJECT(
+                          'member_id',
+                          TM.member_id,
+                          'status',
+                          TM.status,
+                          'fullName',
+                          CONCAT(U.firstName, ' ', U.lastName)
+                      )
+                  )
+              FROM
+                  TeamMembers TM
+                  LEFT JOIN Users U ON TM.member_id = U.user_id
+              WHERE
+                  TM.team_id = T.team_id
+                  AND TM.status IN ('approved', 'pending')
               ), JSON_ARRAY())
           ) AS result
       FROM

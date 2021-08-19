@@ -17,6 +17,8 @@ module.exports = (app) => {
 
   app.post("/api/team/leave", controller.leave);
 
+  app.post("/api/team/checkTeam", controller.checkTeam);
+
   app.get("/api/team/getAll", controller.getAll);
 
   app.get("/api/team/getInfo", controller.getInfo);
