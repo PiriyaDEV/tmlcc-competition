@@ -82,7 +82,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch("setPage", "dashBoard");
+    this.$store.dispatch("page/setPage", "dashBoard");
   },
 };
 </script>

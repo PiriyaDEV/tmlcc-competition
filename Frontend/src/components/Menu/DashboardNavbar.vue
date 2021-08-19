@@ -22,7 +22,7 @@
           </div>
         </div>
         <div id="nav-center">
-          <div class="center">
+          <div v-if="roleStatus == `admin`" class="center">
             <p class="text-normal nav-text" @click="dashboardMember()">
               สมาชิกของระบบ
             </p>
@@ -34,17 +34,13 @@
         <div id="nav-right">
           <p class="text-normal nav-text">ติดต่อเรา</p>
           <div class="center">
-            <!-- <p
-              class="text-normal display-name nav-text"
-              @click="toggleShowMenu()"
-            >
-              {{ displayName }}
-            </p> -->
             <p
               class="text-normal display-name nav-text"
               @click="toggleShowMenu()"
             >
-              {{ displayName }}
+              <span v-if="roleStatus == `admin`">Admin </span
+              ><span v-if="roleStatus == `editor`">Editor </span
+              >{{ displayName }}
             </p>
             <img
               id="dropdown-icon"
@@ -73,7 +69,6 @@ export default {
   components: {
     Hamburger,
   },
-  props: ["page"],
   data() {
     return {
       showMenu: false,
@@ -115,6 +110,7 @@ export default {
     ...mapGetters({
       displayName: "auth/getDisplayName",
       loginStatus: "auth/getLoginStatus",
+      roleStatus: "auth/getRole",
     }),
     SlideMenu() {
       let down = "open";

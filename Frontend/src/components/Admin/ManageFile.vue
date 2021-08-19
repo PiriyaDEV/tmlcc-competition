@@ -15,7 +15,21 @@
         </select>
       </div>
       <div>
-        <button class="add-btn">เพิ่มไฟล์</button>
+        <button
+          class="add-btn"
+          onclick="document.getElementById('file-input').click(); return false;"
+        >
+          เพิ่มไฟล์
+        </button>
+        <input
+          type="file"
+          id="file-input"
+          style="visibility: hidden"
+          ref="fileUploader"
+          @change="fileUpload()"
+          multiple
+          accept="application/pdf"
+        />
       </div>
     </div>
     <div>
@@ -42,7 +56,17 @@ export default {
   data() {
     return {
       fileList: 20,
+      files: null,
     };
+  },
+  methods: {
+    async fileUpload() {
+      this.files = this.$refs.fileUploader.files;
+      await this.uploadFileMethod();
+    },
+    uploadFileMethod() {
+      console.log(this.files);
+    },
   },
 };
 </script>
@@ -83,6 +107,10 @@ export default {
   padding: 6px 15px;
   width: 100%;
   cursor: pointer;
+}
+
+#file-input {
+  display: none;
 }
 
 .edit-btn {

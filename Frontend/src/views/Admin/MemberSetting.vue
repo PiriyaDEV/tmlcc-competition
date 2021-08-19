@@ -32,6 +32,8 @@
 import ManageMember from "../../components/Admin/ManageMember.vue";
 import ManageAdmin from "../../components/Admin/ManageAdmin.vue";
 import DashboardNavbar from "../../components/Menu/DashboardNavbar.vue";
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -68,9 +70,15 @@ export default {
     adminChoice() {
       this.choice = "admin";
     },
+    ...mapActions({
+      getUserList: "admin/getUserList",
+      getStaffList: "admin/getStaffList",
+    }),
   },
   mounted() {
-    this.$store.dispatch("setPage", "dashBoard");
+    this.$store.dispatch("page/setPage", "dashBoard");
+    this.getUserList();
+    this.getStaffList();
   },
 };
 </script>

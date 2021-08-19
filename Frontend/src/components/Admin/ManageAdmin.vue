@@ -39,30 +39,30 @@
           <th class="table-hd">สังกัด</th>
           <th class="table-regis-hd">แก้ไขข้อมูล</th>
         </tr>
-        <tr v-for="(member, i) in memberList" :key="i">
+        <tr v-for="(member, i) in staffList" :key="i">
           <td>
             <span class="table-hd mb-head">Role</span
-            ><span class="table-info">Admin</span>
+            ><span class="table-info member-role">{{ member.role }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">ชื่อ</span
-            ><span class="table-info">พิริยะ</span>
+            ><span class="table-info">{{ member.firstName }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">นามสกุล</span
-            ><span class="table-info">ชัยกุล</span>
+            ><span class="table-info">{{ member.lastName }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">เบอร์โทร</span
-            ><span class="table-info">0896832465</span>
+            ><span class="table-info">{{ member.phone }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">E-mail</span
-            ><span class="table-info">piriya@gmail.com</span>
+            ><span class="table-info">{{ member.email }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">สังกัด</span
-            ><span class="table-info">DeepBlueSea</span>
+            ><span class="table-info">{{ member.organization }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">แก้ไขข้อมูล</span>
@@ -75,11 +75,13 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
-  data() {
-    return {
-      memberList: 20,
-    };
+  computed: {
+    ...mapGetters({
+      staffList: "admin/getStaffList",
+    }),
   },
 };
 </script>
@@ -138,6 +140,10 @@ export default {
 
 .mb-head {
   display: none;
+}
+
+.member-role {
+  text-transform: capitalize;
 }
 
 .table-regis-hd {

@@ -134,6 +134,15 @@
         </div>
       </div>
 
+      <div
+        v-if="page != `dashBoard` && loginStatus.isAuthenticated"
+        class="nav-head nav-link"
+      >
+        <a class="text-normal" @click="hideNav" href="/dashboard"
+          >กลับหน้าแดชบอร์ด</a
+        >
+      </div>
+
       <div v-if="page != `dashBoard`" class="nav-head nav-link">
         <a class="text-normal" @click="hideNav" href="/about"
           >เกี่ยวกับโครงการ</a
@@ -146,13 +155,19 @@
         >
       </div>
 
-      <div v-if="page == `dashBoard`" class="nav-head nav-link">
+      <div
+        v-if="page == `dashBoard` && roleStatus != `user`"
+        class="nav-head nav-link"
+      >
         <a class="text-normal" @click="hideNav" href="/dashboard/member"
           >สมาชิกของระบบ</a
         >
       </div>
 
-      <div v-if="page == `dashBoard`" class="nav-head nav-link">
+      <div
+        v-if="page == `dashBoard` && roleStatus != `user`"
+        class="nav-head nav-link"
+      >
         <a class="text-normal" @click="hideNav" href="/dashboard/file"
           >File Management</a
         >
@@ -166,10 +181,9 @@
         v-if="page == `dashBoard`"
         class="nav-head nav-link display-name-box"
       >
-        <a
-          class="text-normal display-name"
-          @click="hideNav"
-          href="/dashboard"
+        <a class="text-normal display-name" @click="hideNav" href="/dashboard"
+          ><span v-if="roleStatus == `admin`">Admin </span
+          ><span v-if="roleStatus == `editor`">Editor </span
           >{{ displayName }}</a
         >
       </div>
@@ -182,6 +196,8 @@
           class="text-normal display-name"
           @click="hideNav"
           href="/dashboard"
+          ><span v-if="roleStatus == `admin`">Admin </span
+          ><span v-if="roleStatus == `editor`">Editor </span
           >{{ displayName }}</a
         >
       </div>
@@ -286,6 +302,7 @@ export default {
       page: "page/getPage",
       displayName: "auth/getDisplayName",
       loginStatus: "auth/getLoginStatus",
+      roleStatus: "auth/getRole",
     }),
   },
 };

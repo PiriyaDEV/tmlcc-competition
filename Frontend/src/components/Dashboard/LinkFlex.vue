@@ -66,16 +66,31 @@
       <button class="edit-btn">Edit Information</button>
     </div> -->
 
-    <div class="spacer"></div>
+    <div :class="spacerCss"></div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   methods: {
     linkClick(value) {
       window.open(value);
     },
+  },
+  computed: {
+    spacerCss() {
+      let user = "spacer";
+      let admin = "spacer spacer-admin";
+      if (this.roleStatus == "admin") {
+        return admin;
+      }
+      return user;
+    },
+    ...mapGetters({
+      roleStatus: "auth/getRole",
+    }),
   },
 };
 </script>
@@ -115,6 +130,10 @@ export default {
 
 #link-box {
   margin-top: 22px;
+}
+
+.spacer-admin {
+  height: 110px !important;
 }
 
 .edit-btn {

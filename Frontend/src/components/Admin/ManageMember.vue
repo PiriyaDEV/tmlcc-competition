@@ -26,30 +26,32 @@
           <th class="table-hd">ระดับการศึกษา</th>
           <th class="table-regis-hd">แสดงใบสมัคร</th>
         </tr>
-        <tr v-for="(member, i) in memberList" :key="i">
+        <tr v-for="(member, i) in userList" :key="i">
           <td>
             <span class="table-hd mb-head">Display Name</span
-            ><span class="table-info">pd.piriya</span>
+            ><span class="table-info display-name">{{
+              member.displayName
+            }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">ชื่อ</span
-            ><span class="table-info">พิริยะ</span>
+            ><span class="table-info">{{ member.firstName }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">นามสกุล</span
-            ><span class="table-info">ชัยกุล</span>
+            ><span class="table-info">{{ member.lastName }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">Team</span
-            ><span class="table-info">Deep Blue Sea</span>
+            ><span class="table-info">{{ member.teamName }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">E-mail</span
-            ><span class="table-info">piriya@gmail.com</span>
+            ><span class="table-info">{{ member.email }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">ระดับการศึกษา</span
-            ><span class="table-info">มัธยมศึกษา</span>
+            ><span class="table-info">{{ member.education }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">แสดงใบสมัคร</span>
@@ -66,11 +68,13 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
-  data() {
-    return {
-      memberList: 20,
-    };
+  computed: {
+    ...mapGetters({
+      userList: "admin/getUserList",
+    }),
   },
 };
 </script>
@@ -131,6 +135,10 @@ export default {
 
 .mb-head {
   display: none;
+}
+
+.display-name {
+  text-transform: capitalize;
 }
 
 table {

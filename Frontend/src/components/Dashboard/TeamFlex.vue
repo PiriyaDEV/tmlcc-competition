@@ -4,42 +4,132 @@
     <hr class="bar-color-p" />
 
     <div>
-      <h1 class="text-normal">สร้างทีม</h1>
-      <div id="team-input">
+      <h1 v-if="role == `user` && !teamStatus.hasTeam" class="text-normal">
+        สร้างทีม
+      </h1>
+      <div v-if="role == `user` && !teamStatus.hasTeam" id="team-input">
         <input
           type="text"
           class="input-box text-normal"
           placeholder="กรอกชื่อทีมที่ต้องการ"
+          v-model="teamName"
+          @blur="checkDuplicated()"
         />
-        <h1 class="add-btn">+</h1>
+        <h1 @click="createClick()" class="add-btn">+</h1>
+      </div>
+      <p
+        v-if="createStatus.isInvalid && !teamStatus.hasTeam"
+        class="text-normal orange-text error-message"
+      >
+        * {{ createStatus.message }}
+      </p>
+
+      <h1 v-if="teamStatus.hasTeam" class="text-normal">ทีมของคุณ</h1>
+      <div v-if="teamStatus.hasTeam && !edit" id="team-input">
+        <h1 class="teamname-text-l">{{ currentTeam.teamName }}</h1>
+        <button @click="editTeamName" class="edit-btn">edit</button>
       </div>
 
-      <!-- <h1 class="text-normal">ทีมของคุณ</h1>
-      <div id="team-input">
-        <h1 class="teamname-text-l">Team_DrStone</h1>
-        <h1 class="edit-btn">edit</h1>
-      </div> -->
+      <div v-if="teamStatus.hasTeam && edit" id="team-input">
+        <input
+          class="teamname-text-l input-box"
+          type="text"
+          v-model="currentTeam.teamName"
+        />
+        <button @click="editTeamName" class="edit-btn">save</button>
+      </div>
 
-      <h1 class="text-normal">เลือกทีมของคุณ</h1>
+      <h1 class="text-normal" v-if="role == `user` && !teamStatus.hasTeam">
+        เลือกทีมของคุณ
+      </h1>
+      <h1 class="text-normal" v-if="role == `user` && teamStatus.hasTeam">
+        เพื่อนร่วมทีม
+      </h1>
+      <h1 class="text-normal team-list" v-if="role != `user`">
+        รายการทีมทั้งหมด
+      </h1>
       <div id="team-box">
-        <div v-for="(team, i) in teamList" :key="i">
-          <h1 class="text-normal gray-text teamname">Team_StrangerThs</h1>
-          <button class="join-btn">เข้าร่วม</button>
+        <div v-if="!currentTeam.isLeader">
+          <div v-for="(team, i) in teamList" :key="i">
+            <h1 class="text-normal gray-text teamname">{{ team.teamName }}</h1>
+            <button class="join-btn" v-if="role == `user`" @click="joinTeam()">
+              เข้าร่วม
+            </button>
+            <button
+              class="approve-btn"
+              v-if="role == `user` && team.status == 'pending'"
+            >
+              รออนุญาติ
+            </button>
+            <button class="join-btn" v-if="role != `user`">แสดง</button>
+          </div>
         </div>
+        <div v-if="currentTeam.isLeader">
+          <div v-for="(team, i) in currentTeam.members" :key="i">
+            <h1 class="text-normal gray-text teamname">แฮรรี่ จันทร์โอชา</h1>
+            <button class="join-btn">อนุญาติ</button>
+          </div>
+        </div>
+        <h1 v-if="!teamList" class="text-normal l-grey-text">ไม่พบทีมในระบบ</h1>
       </div>
 
-      <!-- <p class="note">เมื่อเลือกทีมแล้ว กรุณารอหัวหน้าทีม Approve</p> -->
-      <button class="join-btn show-btn">แสดงรายชื่อผู้ลงทะเบียน</button>
+      <p class="note" v-if="role == `user`">
+        เมื่อเลือกทีมแล้ว กรุณารอหัวหน้าทีม Approve
+      </p>
+      <button
+        v-if="role != `user`"
+        @click="memberClick"
+        class="join-btn show-btn"
+      >
+        แสดงรายชื่อผู้ลงทะเบียน
+      </button>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   data() {
     return {
-      teamList: 20,
+      teamName: "",
+      edit: false,
     };
+  },
+  mounted() {
+    this.checkTeam();
+  },
+  computed: {
+    ...mapGetters({
+      role: ["auth/getRole"],
+      teamList: ["team/getTeamList"],
+      currentTeam: ["team/getCurrentTeam"],
+      teamStatus: ["team/getTeamStatus"],
+      createStatus: ["team/getCreateStatus"],
+    }),
+  },
+  methods: {
+    memberClick() {
+      this.$router.push("/dashboard/member");
+    },
+    joinTeam() {},
+    checkDuplicated() {
+      this.$store.dispatch("team/checkDuplicated", this.teamName);
+    },
+    editTeamName() {
+      this.edit = !this.edit;
+    },
+    async createClick() {
+      await this.$store.dispatch("team/create", this.teamName);
+      if (this.teamStatus.hasTeam) {
+        this.teamName = "";
+      }
+    },
+    ...mapActions({
+      checkTeam: "team/checkTeam",
+      getTeamList: "team/getTeamList",
+    }),
   },
 };
 </script>
@@ -76,6 +166,19 @@ button {
   color: #764a97;
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
   cursor: pointer;
+}
+
+.team-list {
+  margin-top: 10px;
+}
+
+.error-message {
+  margin-bottom: 5px;
+  margin-top: -5px;
+}
+
+#team-input > input {
+  padding: 3px 5px !important;
 }
 
 #team-input {
@@ -117,6 +220,19 @@ button {
   line-height: 20.8px;
 }
 
+.approve-btn {
+  border: 2px solid #764a97;
+  box-sizing: border-box;
+  border-radius: 12px;
+  font-size: 1.75em;
+  color: #ffffff;
+  font-family: "IBM-PLEX-THAI-SEMIBOLD";
+  font-weight: 400;
+  background-color: #764a97;
+  padding: 3px 13px 2px 13px;
+  line-height: 20.8px;
+}
+
 .note {
   font-size: 1.75em;
   font-weight: 500;
@@ -128,10 +244,9 @@ button {
 .teamname-text-l {
   font-size: 2.75em;
   margin: 0;
-  font-weight: 700;
-  color: #303030;
-  font-family: "IBM-PLEX-THAI-SEMIBOLD";
-  color: #764a97;
+  font-weight: 700 !important;
+  font-family: "IBM-PLEX-THAI-SEMIBOLD" !important;
+  color: #764a97 !important;
 }
 
 .edit-btn {
@@ -143,6 +258,7 @@ button {
   box-sizing: border-box;
   border-radius: 12px;
   padding: 6px 7px;
+  background-color: transparent;
 }
 
 .teamname {
@@ -180,6 +296,7 @@ div::-webkit-scrollbar-thumb {
   }
 
   .join-btn,
+  .approve-btn,
   .edit-btn {
     font-size: 1.75em;
   }

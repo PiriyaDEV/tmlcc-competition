@@ -4,7 +4,15 @@
     <div id="dashboard" class="section">
       <div id="dashboard-container" class="page-container">
         <div>
-          <h1 class="header-m">ยินดีต้อนรับเข้าสู่ระบบ</h1>
+          <h1 v-if="roleStatus == `user`" class="header-m">
+            ยินดีต้อนรับเข้าสู่ระบบ
+          </h1>
+          <h1 v-if="roleStatus == `admin`" class="header-m">
+            ยินดีต้อนรับผู้ดูแลระบบ
+          </h1>
+          <h1 v-if="roleStatus == `editor`" class="header-m">
+            ยินดีต้อนรับผู้แก้ไขข้อมูล
+          </h1>
           <h1 class="header-c">
             คุณ <span class="l-grey-text display-name">{{ displayName }}</span>
           </h1>
@@ -41,6 +49,7 @@ export default {
     ...mapGetters({
       displayName: "auth/getDisplayName",
       loginStatus: "auth/getLoginStatus",
+      roleStatus: "auth/getRole",
     }),
   },
   mounted() {

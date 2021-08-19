@@ -27,6 +27,12 @@
           </div>
         </div>
         <div id="nav-right">
+          <a
+            class="text-normal nav-text dashboard-link"
+            href="/dashboard"
+            v-if="loginStatus.isAuthenticated"
+            >กลับหน้าแดชบอร์ด</a
+          >
           <a class="text-normal nav-text" href="/about">เกี่ยวกับโครงการ</a>
           <p v-if="page == `login`" class="text-normal nav-text">Q&A</p>
           <!-- <p v-if="page != `login`" class="text-normal nav-text">Workshops</p> -->
@@ -36,7 +42,9 @@
               class="text-normal display-name nav-text"
               @click="toggleShowLogout()"
             >
-              {{ displayName }}
+              <span v-if="roleStatus == `admin`">Admin </span
+              ><span v-if="roleStatus == `editor`">Editor </span
+              >{{ displayName }}
             </p>
             <img
               id="dropdown-icon"
@@ -136,6 +144,7 @@ export default {
       page: "page/getPage",
       displayName: "auth/getDisplayName",
       loginStatus: "auth/getLoginStatus",
+      roleStatus: "auth/getRole",
     }),
   },
 };
@@ -264,6 +273,10 @@ a {
 }
 @media screen and (max-width: 1100px) {
   #nav-right {
+    display: none;
+  }
+
+  .dashboard-link {
     display: none;
   }
 
