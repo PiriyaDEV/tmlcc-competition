@@ -101,9 +101,7 @@ export default {
     },
     logout() {
       this.$store.dispatch("auth/logout");
-      if (!this.loginStatus.isAuthenticated) {
-        this.$router.push("/login");
-      }
+      window.location.href = "/login";
     },
   },
   computed: {

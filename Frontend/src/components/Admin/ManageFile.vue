@@ -42,9 +42,23 @@
               src="../../assets/icon/file-icon.png"
               alt=""
             />
-            <h1 class="file-name">โจทย์การแข่งขัน.pdf</h1>
+            <h1 class="file-name" v-if="!edit">โจทย์การแข่งขัน.pdf</h1>
+            <input
+              class="input-box file-name"
+              type="text"
+              value="โจทย์การแข่งขัน"
+              v-if="edit"
+            />
           </div>
-          <button class="edit-btn">edit</button>
+          <div>
+            <button class="delete-btn" v-if="edit">delete</button>
+            <button class="edit-btn" v-if="!edit" @click="editClick">
+              edit
+            </button>
+            <button class="edit-btn" v-if="edit" @click="editClick">
+              cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -57,6 +71,7 @@ export default {
     return {
       fileList: 20,
       files: null,
+      edit: false,
     };
   },
   methods: {
@@ -66,6 +81,9 @@ export default {
     },
     uploadFileMethod() {
       console.log(this.files);
+    },
+    editClick() {
+      this.edit = !this.edit;
     },
   },
 };
@@ -109,20 +127,36 @@ export default {
   cursor: pointer;
 }
 
+#file-box > div > div > .input-box {
+  color: #303030 !important;
+  padding: 3px 5px !important;
+}
+
 #file-input {
   display: none;
 }
 
-.edit-btn {
-  color: #f07821;
+.edit-btn,
+.delete-btn {
   font-size: 1.75em;
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
-  border: 2px solid #f07821;
   box-sizing: border-box;
   border-radius: 12px;
-  background-color: transparent;
   padding: 0px 15px;
   cursor: pointer;
+}
+
+.edit-btn {
+  color: #f07821;
+  border: 2px solid #f07821;
+  background-color: transparent;
+}
+
+.delete-btn {
+  color: #ffffff;
+  border: 2px solid #f07821;
+  background-color: #f07821;
+  margin: 0px 10px;
 }
 
 /* File */
@@ -195,8 +229,11 @@ div::-webkit-scrollbar-thumb {
     font-size: 1.75em;
   }
 
-  .edit-btn {
-    font-size: 1.75em;
+  .edit-btn,
+  .delete-btn,
+  .cancel-btn {
+    font-size: 1.5em;
+    padding: 0px 10px;
   }
 
   .add-btn {
@@ -216,8 +253,16 @@ div::-webkit-scrollbar-thumb {
     font-size: 1.5em;
   }
 
-  .edit-btn {
-    font-size: 1.5em;
+  .file-container {
+    padding: 0px 5px 10px 0px;
+  }
+
+  .edit-btn,
+  .delete-btn,
+  .cancel-btn {
+    font-size: 1.25em;
+    padding: 0px 5px;
+    margin: 0px 5px;
   }
 
   #search-grid {

@@ -15,7 +15,21 @@
         </select>
       </div>
       <div>
-        <button class="add-btn">เพิ่มไฟล์</button>
+        <button
+          class="add-btn"
+          onclick="document.getElementById('video-input').click(); return false;"
+        >
+          เพิ่มไฟล์
+        </button>
+        <input
+          type="file"
+          id="video-input"
+          style="visibility: hidden"
+          ref="videoUploader"
+          @change="videoUpload()"
+          multiple
+          accept="application/pdf"
+        />
       </div>
     </div>
     <div>
@@ -39,12 +53,26 @@
                 />
               </div>
               <div>
-                <h1 class="file-name">อ.แดงกีต้าร์ การคิดตามธรรมชาติ</h1>
+                <input
+                  class="input-box file-name"
+                  type="text"
+                  value="อ.แดงกีต้าร์ การคิดตามธรรมชาติ"
+                  v-if="edit"
+                />
+                <h1 class="file-name" v-if="!edit">
+                  อ.แดงกีต้าร์ การคิดตามธรรมชาติ
+                </h1>
                 <p class="file-date">16 กันยายน 2564 เวลา 14.00 น.</p>
               </div>
             </div>
             <div>
-              <button class="edit-btn">edit</button>
+              <button class="delete-btn" v-if="edit">delete</button>
+              <button class="edit-btn" v-if="!edit" @click="editClick">
+                edit
+              </button>
+              <button class="edit-btn" v-if="edit" @click="editClick">
+                cancel
+              </button>
             </div>
           </div>
         </div>
@@ -58,7 +86,21 @@ export default {
   data() {
     return {
       fileList: 20,
+      video: null,
+      edit: false,
     };
+  },
+  methods: {
+    async videoUpload() {
+      this.video = this.$refs.videoUploader.video;
+      await this.uploadVideoMethod();
+    },
+    uploadVideoMethod() {
+      console.log(this.video);
+    },
+    editClick() {
+      this.edit = !this.edit;
+    },
   },
 };
 </script>
@@ -101,16 +143,36 @@ export default {
   cursor: pointer;
 }
 
-.edit-btn {
-  color: #f07821;
+.video-container > div > .input-box {
+  color: #303030 !important;
+  padding: 3px 5px !important;
+}
+
+.edit-btn,
+.delete-btn {
   font-size: 1.75em;
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
-  border: 2px solid #f07821;
   box-sizing: border-box;
   border-radius: 12px;
-  background-color: transparent;
   padding: 0px 15px;
   cursor: pointer;
+}
+
+.edit-btn {
+  color: #f07821;
+  border: 2px solid #f07821;
+  background-color: transparent;
+}
+
+.delete-btn {
+  color: #ffffff;
+  border: 2px solid #f07821;
+  background-color: #f07821;
+  margin: 0px 10px;
+}
+
+#video-input {
+  display: none;
 }
 
 /* Video */
@@ -212,7 +274,8 @@ div::-webkit-scrollbar-thumb {
     font-size: 1.75em;
   }
 
-  .edit-btn {
+  .edit-btn,
+  .delete-btn {
     font-size: 1.75em;
   }
 
@@ -248,7 +311,7 @@ div::-webkit-scrollbar-thumb {
     margin-top: 10px;
   }
 
-  .edit-btn {
+  .edit-btn.delete-btn {
     font-size: 1.5em;
     margin-top: 15px;
   }
@@ -281,7 +344,7 @@ div::-webkit-scrollbar-thumb {
     display: flex;
   }
 
-  .edit-btn {
+  .edit-btn.delete-btn {
     width: 100%;
     margin-top: 0px;
   }

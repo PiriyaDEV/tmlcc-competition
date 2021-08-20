@@ -110,7 +110,6 @@ export default {
     },
     logout({ commit }) {
       commit("clearAuth");
-      commit("resetStatus");
     },
     async fetchRole({ commit, getters }) {
       let user_id = getters.getUserId;

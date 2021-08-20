@@ -59,6 +59,7 @@
               class="file-icon"
               src="../../assets/icon/file-icon.png"
               alt=""
+              @click="viewDoc"
             />
           </td>
         </tr>
@@ -69,12 +70,224 @@
 
 <script>
 import { mapGetters } from "vuex";
+import pdfMake from "pdfmake";
+import pdfFonts from "../../assets/custom-font.js";
 
 export default {
   computed: {
     ...mapGetters({
       userList: "admin/getUserList",
     }),
+  },
+  methods: {
+    viewDoc() {
+      pdfMake.vfs = pdfFonts.pdfMake.vfs; // 2. set vfs pdf font
+      pdfMake.fonts = {
+        // download default Roboto font from cdnjs.com
+        Roboto: {
+          normal:
+            "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf",
+          bold: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf",
+          italics:
+            "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf",
+          bolditalics:
+            "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-MediumItalic.ttf",
+        },
+        // Kanit Font
+        IBMThai: {
+          // 3. set Kanit font
+          normal: "IBMPlexSansThaiLooped-Regular.ttf",
+          bold: "IBMPlexSansThaiLooped-Bold.ttf",
+        },
+      };
+      const docDefinition = {
+        info: {
+          title: "ใบสมัคร - นาย พิริยะ ชัยกุล (Pd.Piriya)",
+        },
+        content: [
+          {
+            image: "photo",
+            width: 200,
+            alignment: "center",
+          },
+          {
+            text: "ใบสมัคร",
+            alignment: "center",
+            fontSize: 15,
+            margin: [0, 20, 0, 8],
+            bold: true,
+          },
+          {
+            text: "Thailand Machine learning for Chemistry (TMLCC)",
+            alignment: "center",
+            fontSize: 15,
+            margin: [0, 0, 0, 8],
+            bold: true,
+          },
+          {
+            text: "ข้อมูลผู้สมัคร",
+            fontSize: 12,
+            margin: [0, 20, 0, 8],
+            bold: true,
+          },
+          {
+            text: [
+              { text: "คำนำหน้า : " },
+              { text: "นาย", decoration: "underline" },
+              { text: "              ชื่อ : " },
+              { text: "พิริยะ", decoration: "underline" },
+              { text: "              นามสกุล : " },
+              { text: "ชัยกุล", decoration: "underline" },
+            ],
+            width: "*",
+            fontSize: 11,
+            margin: [0, 5, 0, 8],
+          },
+          {
+            text: [
+              { text: "ระดับการศึกษาสูงสุด : " },
+              { text: "ปริญญาตรี", decoration: "underline" },
+              { text: "             สถานศึกษา : " },
+              { text: "อัสสัมชัญสมุทรปราการ", decoration: "underline" },
+            ],
+            fontSize: 11,
+            margin: [0, 5, 0, 8],
+          },
+          {
+            text: [
+              { text: "สังกัด : " },
+              { text: "วิทยาศาสตร์ - คณิตศาสตร์", decoration: "underline" },
+            ],
+            fontSize: 11,
+            margin: [0, 5, 0, 8],
+          },
+          {
+            text: [
+              { text: "ที่อยู่ : " },
+              {
+                text: "420-420/1 ม.ทิพวัล 1 ถ.เทพารักษ์ ต.เทพารักษ์ อ.เมือง จ.สมุทรปราการ 10270",
+                decoration: "underline",
+              },
+            ],
+            fontSize: 11,
+            margin: [0, 5, 0, 8],
+          },
+          {
+            text: [
+              { text: "ประเทศ : " },
+              { text: "ประเทศไทย", decoration: "underline" },
+            ],
+            fontSize: 11,
+            margin: [0, 5, 0, 8],
+          },
+          {
+            text: "ช่องทางการติดต่อ",
+            fontSize: 12,
+            margin: [0, 15, 0, 8],
+            bold: true,
+          },
+          {
+            text: [
+              { text: "เบอร์โทรศัพท์ : " },
+              { text: "0896832465", decoration: "underline" },
+              { text: "             Email : " },
+              { text: "pry@mail.kmutt.ac.th", decoration: "underline" },
+            ],
+            fontSize: 11,
+            margin: [0, 5, 0, 8],
+          },
+          { text: "ความสนใจ", fontSize: 13, margin: [0, 15, 0, 8], bold: true },
+          {
+            text: [
+              { text: "ผลงานที่เคยทำ : " },
+              { text: "หลายๆอย่าง", decoration: "underline" },
+            ],
+            fontSize: 11,
+            margin: [0, 5, 0, 8],
+          },
+          {
+            text: [
+              {
+                text: "หากมีข้อเสนอโครงการให้เข้าร่วมทำงาน/ฝึกงานกับบริษัท หรือ องค์กร : ",
+              },
+              { text: "สนใจ", decoration: "underline" },
+            ],
+          },
+          {
+            text: "ประเมิณตนเอง",
+            fontSize: 12,
+            margin: [0, 15, 0, 8],
+            bold: true,
+          },
+          {
+            text: "คิดว่าตัวเองมีทักษะ",
+            fontSize: 11,
+            margin: [0, 5, 0, 8],
+          },
+          {
+            text: [
+              {
+                text: "Programming:     ระดับ : ",
+              },
+              { text: "Beginner", decoration: "underline" },
+              {
+                text: "    ภาษา : ",
+              },
+              { text: "HTML, Vue.js", decoration: "underline" },
+            ],
+            fontSize: 11,
+            margin: [0, 5, 0, 8],
+          },
+          {
+            text: [
+              {
+                text: "Chemistry:     ระดับ : ",
+              },
+              { text: "Beginner", decoration: "underline" },
+              {
+                text: "    เรื่องที่เชี่ยวชาญ : ",
+              },
+              { text: "Isolation, Molecule", decoration: "underline" },
+            ],
+            fontSize: 11,
+            margin: [0, 5, 0, 8],
+          },
+          {
+            text: [
+              {
+                text: "Machine learning:     ระดับ : ",
+              },
+              { text: "Beginner", decoration: "underline" },
+              {
+                text: "    เรื่องที่เชี่ยวชาญ : ",
+              },
+              { text: "ระบบในโรงงาน", decoration: "underline" },
+            ],
+            fontSize: 11,
+            margin: [0, 5, 0, 8],
+          },
+          {
+            text: [
+              {
+                text: "อื่นๆ (โปรดระบุ):     เรื่องที่เชี่ยวชาญ : ",
+              },
+              { text: "นอนหลับพักผ่อน", decoration: "underline" },
+            ],
+            fontSize: 11,
+            margin: [0, 5, 0, 8],
+          },
+        ],
+        images: {
+          photo:
+            "https://scontent.fubp1-1.fna.fbcdn.net/v/t1.6435-9/239874070_4761197243913069_1109602868497192659_n.jpg?_nc_cat=105&ccb=1-5&_nc_sid=730e14&_nc_eui2=AeEZNqxzgIHQXdC7jTumKWNfsLnp63Qlay2wuenrdCVrLfqAiRKrMSDhXQF_Atl_lz1A29345Me63siJKjnXN_bi&_nc_ohc=mR7brVKxq8YAX8PeVcE&tn=02SmQdQFY_dqYu2v&_nc_ht=scontent.fubp1-1.fna&oh=cedd7400a90aba6c90e6a6ad3d288155&oe=6143FDE3",
+        },
+        defaultStyle: {
+          font: "IBMThai",
+        },
+      };
+      // pdfMake.createPdf(docDefinition).open({}, window);
+      pdfMake.createPdf(docDefinition).open();
+    },
   },
 };
 </script>

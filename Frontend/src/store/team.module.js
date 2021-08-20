@@ -11,8 +11,8 @@ export default {
       members: [],
     },
     teamStatus: {
-      status: "",
       hasTeam: false,
+      status: "",
     },
     createStatus: {
       isInvalid: false,
@@ -29,6 +29,11 @@ export default {
     getCurrentTeam(state) {
       return state.currentTeam;
     },
+    getCurrentTeamMemberCount(state) {
+      return state.currentTeam.members.filter(
+        (member) => member.status == "approved"
+      ).length;
+    },
     getTeamStatus(state) {
       return state.teamStatus;
     },
@@ -40,6 +45,16 @@ export default {
     resetCreateStatus(state) {
       state.createStatus.isInvalid = false;
       state.createStatus.message = "";
+    },
+    resetCurrentTeam(state) {
+      state.currentTeam.isLeader = false;
+      state.currentTeam.team_id = "";
+      state.currentTeam.teamName = "";
+      state.currentTeam.members = [];
+    },
+    resetTeamStatus(state) {
+      state.teamStatus.hasTeam = false;
+      state.teamStatus.status = "";
     },
     setInvalidTeamName(state, message) {
       state.createStatus.isInvalid = true;
@@ -54,6 +69,9 @@ export default {
     },
     setTeamList(state, list) {
       state.teamList = list;
+    },
+    setTeamName(state, teamName) {
+      state.currentTeam.teamName = teamName;
     },
   },
   actions: {
@@ -79,9 +97,13 @@ export default {
           });
       }
     },
-    async checkDuplicated({ commit }, teamName) {
+    async checkDuplicated({ state, commit }, teamName) {
       commit("resetCreateStatus");
       if (!teamName) {
+        return;
+      }
+
+      if (state.teamStatus.hasTeam && teamName == state.currentTeam.teamName) {
         return;
       }
 
@@ -91,6 +113,112 @@ export default {
             if (res.data.isFound) {
               commit("setInvalidTeamName", "ชื่อทีมนี้มีผู้ใช้แล้ว");
             }
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    async rename({ state, commit }, teamName) {
+      if (!teamName) {
+        commit("setInvalidTeamName", "โปรดระบุชื่อทีม");
+      }
+
+      if (state.teamStatus.hasTeam && teamName == state.currentTeam.teamName) {
+        return;
+      }
+
+      if (!state.createStatus.isInvalid) {
+        await TeamService.rename({
+          team_id: state.currentTeam.team_id,
+          teamName: teamName,
+        })
+          .then((res) => {
+            if (res.status == 200) {
+              console.log(res.data.message);
+              commit("setTeamName", res.data.teamName);
+              commit("resetCreateStatus");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    async delete({ state, commit, dispatch }) {
+      await TeamService.delete({
+        team_id: state.currentTeam.team_id,
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            console.log(res.data.message);
+            commit("resetCurrentTeam");
+            commit("resetTeamStatus");
+            dispatch("checkTeam");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    async approve({ state, dispatch }, member_id) {
+      await TeamService.approve({
+        team_id: state.currentTeam.team_id,
+        member_id: member_id,
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            console.log(res.data.message);
+            dispatch("checkTeam");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    async reject({ state, dispatch }, member_id) {
+      await TeamService.approve({
+        team_id: state.currentTeam.team_id,
+        member_id: member_id,
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            console.log(res.data.message);
+            dispatch("checkTeam");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    async join({ rootGetters, commit, dispatch }, team_id) {
+      await TeamService.join({
+        team_id: team_id,
+        member_id: rootGetters["auth/getUserId"],
+      })
+        .then((res) => {
+          if (res.status == 201) {
+            console.log(res.data.message);
+            commit("resetCurrentTeam");
+            commit("resetTeamStatus");
+            dispatch("checkTeam");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    async leave({ rootGetters, state, commit, dispatch }) {
+      await TeamService.leave({
+        team_id: state.currentTeam.team_id,
+        member_id: rootGetters["auth/getUserId"],
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            console.log(res.data.message);
+            commit("resetCurrentTeam");
+            commit("resetTeamStatus");
+            dispatch("checkTeam");
           }
         })
         .catch((err) => {

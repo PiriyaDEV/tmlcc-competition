@@ -41,32 +41,105 @@
         </tr>
         <tr v-for="(member, i) in staffList" :key="i">
           <td>
-            <span class="table-hd mb-head">Role</span
-            ><span class="table-info member-role">{{ member.role }}</span>
+            <span class="table-hd mb-head">Role</span>
+            <span
+              class="table-info member-role"
+              v-if="edit != member.user_id"
+              >{{ member.role }}</span
+            >
+            <span>
+              <button
+                class="editor-role-btn table-info"
+                v-if="edit == member.user_id"
+              >
+                เปลี่ยนเป็น Editor
+              </button>
+              <!-- <button class="admin-role-btn table-info" v-if="edit[i]">
+                เปลี่ยนเป็น Admin
+              </button> -->
+            </span>
           </td>
           <td>
             <span class="table-hd mb-head">ชื่อ</span
-            ><span class="table-info">{{ member.firstName }}</span>
+            ><span class="table-info" v-if="edit != member.user_id">{{
+              member.firstName
+            }}</span>
+            <span
+              ><input
+                class="input-box table-info"
+                type="text"
+                v-if="edit == member.user_id"
+                :value="member.firstName"
+            /></span>
           </td>
           <td>
             <span class="table-hd mb-head">นามสกุล</span
-            ><span class="table-info">{{ member.lastName }}</span>
+            ><span class="table-info" v-if="edit != member.user_id">{{
+              member.lastName
+            }}</span>
+            <span
+              ><input
+                class="input-box table-info"
+                type="text"
+                v-if="edit == member.user_id"
+                :value="member.lastName"
+            /></span>
           </td>
           <td>
             <span class="table-hd mb-head">เบอร์โทร</span
-            ><span class="table-info">{{ member.phone }}</span>
+            ><span class="table-info" v-if="edit != member.user_id">{{
+              member.phone
+            }}</span>
+            <span
+              ><input
+                class="input-box table-info"
+                type="text"
+                v-if="edit == member.user_id"
+                :value="member.phone"
+            /></span>
           </td>
           <td>
             <span class="table-hd mb-head">E-mail</span
-            ><span class="table-info">{{ member.email }}</span>
+            ><span class="table-info" v-if="edit != member.user_id">{{
+              member.email
+            }}</span>
+            <span
+              ><input
+                class="input-box table-info"
+                type="text"
+                v-if="edit == member.user_id"
+                :value="member.email"
+            /></span>
           </td>
           <td>
             <span class="table-hd mb-head">สังกัด</span
-            ><span class="table-info">{{ member.organization }}</span>
+            ><span class="table-info" v-if="edit != member.user_id">{{
+              member.organization
+            }}</span>
+            <span
+              ><input
+                class="input-box table-info"
+                type="text"
+                v-if="edit == member.user_id"
+                :value="member.organization"
+            /></span>
           </td>
           <td>
             <span class="table-hd mb-head">แก้ไขข้อมูล</span>
-            <button class="edit-btn">edit</button>
+            <button
+              class="edit-btn"
+              v-if="edit != member.user_id"
+              @click="editClick(member)"
+            >
+              edit
+            </button>
+            <button
+              class="save-btn"
+              v-if="edit == member.user_id"
+              @click="saveClick()"
+            >
+              save
+            </button>
           </td>
         </tr>
       </table>
@@ -82,6 +155,22 @@ export default {
     ...mapGetters({
       staffList: "admin/getStaffList",
     }),
+    // isInArray: function () {
+    //   return this.edit.includes(false);
+    // },
+  },
+  data() {
+    return {
+      edit: "",
+    };
+  },
+  methods: {
+    editClick(value) {
+      this.edit = value.user_id;
+    },
+    saveClick() {
+      this.edit = "";
+    },
   },
 };
 </script>
@@ -130,6 +219,27 @@ export default {
   width: 100%;
 }
 
+.editor-role-btn,
+.admin-role-btn {
+  color: #ffffff !important;
+  padding: 2px 5px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1.65em !important;
+  width: 100%;
+  cursor: pointer;
+}
+
+.admin-role-btn {
+  background-color: #f07821 !important;
+  border: 2px solid #f07821;
+}
+
+.editor-role-btn {
+  background-color: #2f65af !important;
+  border: 2px solid #2f65af;
+}
+
 .table-hd {
   font-size: 2em;
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
@@ -167,6 +277,11 @@ table {
   border-spacing: 0;
 }
 
+td > span > .input-box {
+  padding: 3px 5px !important;
+  color: #303030 !important;
+}
+
 td,
 th {
   border: 1px solid rgba(79, 79, 79, 0.16);
@@ -201,6 +316,18 @@ td:last-child {
   box-sizing: border-box;
   border-radius: 12px;
   background-color: transparent;
+  padding: 0px 15px;
+  cursor: pointer;
+}
+
+.save-btn {
+  color: #ffffff;
+  font-size: 1.75em;
+  font-family: "IBM-PLEX-THAI-SEMIBOLD";
+  border: 2px solid #f07821;
+  box-sizing: border-box;
+  border-radius: 12px;
+  background-color: #f07821;
   padding: 0px 15px;
   cursor: pointer;
 }

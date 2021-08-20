@@ -1,7 +1,11 @@
 <template>
   <div id="materialflex">
     <div id="btn-right">
-      <button v-if="roleStatus != `user`" class="manage-btn">
+      <button
+        v-if="roleStatus != `user`"
+        @click="manageClick()"
+        class="manage-btn"
+      >
         จัดการไฟล์ / Video
       </button>
     </div>
@@ -56,6 +60,11 @@ export default {
     return {
       fileList: 20,
     };
+  },
+  methods: {
+    manageClick() {
+      this.$router.push("/dashboard/file");
+    },
   },
   computed: {
     ...mapGetters({
