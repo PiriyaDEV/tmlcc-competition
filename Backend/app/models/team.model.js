@@ -211,6 +211,7 @@ Team.getInfo = (team_id, result) => {
               WHERE
                   TM.team_id = T.team_id
                   AND TM.status = 'approved'
+              
               ), JSON_ARRAY())
           ) AS result
       FROM

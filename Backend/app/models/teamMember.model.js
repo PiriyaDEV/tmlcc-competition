@@ -45,7 +45,6 @@ TeamMember.update = (teamMember, result) => {
         result(err, null);
         return;
       }
-      console.log(res);
 
       console.log(
         `Result: team member ${teamMember.member_id} updated in -> ${teamMember.team_id}`
@@ -110,6 +109,28 @@ TeamMember.findTeam = (user, result) => {
         `Result: user -> ${user.user_id} has team -> ${res[0].team_id} with status '${res[0].status}'`
       );
       result(null, { isFound: true, ...res[0] });
+      return;
+    }
+  );
+};
+
+TeamMember.teamDelete = (teamMember, result) => {
+  teamMember.updatedAt = Date.now();
+
+  sql.query(
+    `UPDATE TeamMembers SET ? WHERE team_id = '${teamMember.team_id}'`,
+    teamMember,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      console.log(
+        `Result: all members left from team -> ${teamMember.team_id}`
+      );
+      result(null, teamMember);
       return;
     }
   );
