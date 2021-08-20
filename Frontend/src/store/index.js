@@ -3,6 +3,8 @@ import Vuex from "vuex";
 
 import page from "./page.module";
 import auth from "./auth.module";
+import team from "./team.module";
+import admin from "./adminDashboard.module";
 
 Vue.use(Vuex);
 
@@ -10,5 +12,7 @@ export default new Vuex.Store({
   modules: {
     page,
     auth,
+    team,
+    admin,
   },
 });

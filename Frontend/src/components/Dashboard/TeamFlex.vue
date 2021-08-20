@@ -4,42 +4,258 @@
     <hr class="bar-color-p" />
 
     <div>
-      <h1 class="text-normal">สร้างทีม</h1>
-      <div id="team-input">
+      <h1 v-if="role == `user` && !teamStatus.hasTeam" class="text-normal">
+        สร้างทีม
+      </h1>
+      <div v-if="role == `user` && !teamStatus.hasTeam" id="team-input">
         <input
           type="text"
           class="input-box text-normal"
           placeholder="กรอกชื่อทีมที่ต้องการ"
+          v-model="teamName"
+          @blur="checkDuplicated()"
         />
-        <h1 class="add-btn">+</h1>
+        <h1 @click="createTeam()" class="add-btn">+</h1>
+      </div>
+      <p
+        v-if="createStatus.isInvalid && !teamStatus.hasTeam"
+        class="text-normal orange-text error-message"
+      >
+        * {{ createStatus.message }}
+      </p>
+
+      <h1 v-if="teamStatus.hasTeam" class="text-normal">ทีมของคุณ</h1>
+      <div v-if="teamStatus.hasTeam && !edit" id="team-input">
+        <h1 class="teamname-text-l">{{ currentTeam.teamName }}</h1>
+        <button
+          v-if="currentTeam.isLeader"
+          @click="editTeamName"
+          class="edit-btn"
+        >
+          edit
+        </button>
       </div>
 
-      <!-- <h1 class="text-normal">ทีมของคุณ</h1>
-      <div id="team-input">
-        <h1 class="teamname-text-l">Team_DrStone</h1>
-        <h1 class="edit-btn">edit</h1>
-      </div> -->
+      <div v-if="teamStatus.hasTeam && edit" id="team-input">
+        <input
+          class="teamname-text-l input-box"
+          type="text"
+          v-model="teamName"
+          @blur="checkDuplicated()"
+        />
+        <button @click="renameTeam" class="edit-btn">save</button>
+      </div>
 
-      <h1 class="text-normal">เลือกทีมของคุณ</h1>
+      <p
+        v-if="createStatus.isInvalid && teamStatus.hasTeam"
+        class="text-normal orange-text error-message"
+      >
+        * {{ createStatus.message }}
+      </p>
+
+      <h1 class="text-normal" v-if="role == `user` && !teamStatus.hasTeam">
+        เลือกทีมของคุณ
+      </h1>
+      <h1 class="text-normal" v-if="role == `user` && teamStatus.hasTeam">
+        เพื่อนร่วมทีม
+      </h1>
+      <h1 class="text-normal team-list" v-if="role != `user`">
+        รายการทีมทั้งหมด
+      </h1>
       <div id="team-box">
-        <div v-for="(team, i) in teamList" :key="i">
-          <h1 class="text-normal gray-text teamname">Team_StrangerThs</h1>
-          <button class="join-btn">เข้าร่วม</button>
+        <div v-if="!currentTeam.isLeader">
+          <div v-for="(team, i) in teamList" :key="i">
+            <h1 class="text-normal gray-text teamname">{{ team.teamName }}</h1>
+            <button
+              class="join-btn"
+              v-if="
+                role == `user` && team.status != 'pending' && team.members < 5
+              "
+              @click="joinTeam(team.team_id)"
+            >
+              เข้าร่วม
+            </button>
+            <button
+              class="approve-btn"
+              v-if="
+                role == `user` && team.status == 'pending' && team.members < 5
+              "
+            >
+              รออนุญาต
+            </button>
+            <button v-if="team.members == 5" class="full-btn">เต็ม</button>
+            <button class="join-btn" v-if="role != `user`">แสดง</button>
+          </div>
         </div>
+        <div v-if="teamStatus.hasTeam">
+          <div
+            v-for="(member, i) in currentTeam.members.filter(
+              (m) => m.member_id != user_id
+            )"
+            :key="i"
+          >
+            <h1 class="text-normal gray-text teamname">
+              {{ member.fullName }}
+            </h1>
+            <button
+              v-if="currentTeam.isLeader && member.status == 'pending'"
+              @click="approveMember(member.member_id)"
+              class="join-btn"
+            >
+              อนุญาต
+            </button>
+            <button
+              v-if="currentTeam.isLeader && member.status == 'approved'"
+              @click="rejectMember(member.member_id)"
+              class="join-btn leave-btn"
+            >
+              นำออก
+            </button>
+          </div>
+        </div>
+        <h1
+          v-if="
+            !currentTeam.isLeader && !currentTeam.members && !teamList.length
+          "
+          class="text-normal l-grey-text"
+        >
+          ไม่พบทีมในระบบ
+        </h1>
+        <h1
+          v-if="currentTeam.isLeader && currentTeam.members.length == 1"
+          class="text-normal l-grey-text"
+        >
+          คุณยังไม่มีเพื่อนร่วมทีม
+        </h1>
       </div>
 
-      <!-- <p class="note">เมื่อเลือกทีมแล้ว กรุณารอหัวหน้าทีม Approve</p> -->
-      <button class="join-btn show-btn">แสดงรายชื่อผู้ลงทะเบียน</button>
+      <p class="note" v-if="role == `user` && !teamStatus.hasTeam">
+        เมื่อเลือกทีมแล้ว กรุณารอหัวหน้าทีม Approve
+      </p>
+
+      <p
+        class="note"
+        v-if="role == `user` && currentTeam.isLeader && teamStatus.hasTeam"
+      >
+        <span v-if="!deleteCheck"
+          >ต้องการที่จะลบทีมนี้ กดที่นี้เพื่อ
+          <span @click="deleteClick" class="orange-text">Delete</span></span
+        >
+        <span v-if="deleteCheck"
+          >ท่านแน่ใจที่จะลบทีมนี้ใช่หรือไม่
+          <div>
+            <span @click="deleteTeam">ยืนยัน </span>
+            <span @click="deleteClick">ยกเลิก</span>
+          </div>
+        </span>
+      </p>
+
+      <p
+        class="note"
+        v-if="role == `user` && !currentTeam.isLeader && teamStatus.hasTeam"
+      >
+        <span v-if="!leaveCheck"
+          >ต้องการออกจากกลุ่ม กดที่นี้เพื่อ
+          <span @click="leaveClick" class="orange-text">Leave</span></span
+        >
+        <span v-if="leaveCheck"
+          >ท่านแน่ใจที่ออกจากทีมนี้ใช่หรือไม่
+          <div>
+            <span @click="leaveTeam">ยืนยัน </span>
+            <span @click="leaveClick">ยกเลิก</span>
+          </div>
+        </span>
+      </p>
+
+      <button
+        v-if="role != `user`"
+        @click="memberClick"
+        class="join-btn show-btn"
+      >
+        แสดงรายชื่อผู้ลงทะเบียน
+      </button>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   data() {
     return {
-      teamList: 20,
+      teamName: "",
+      edit: false,
+      deleteCheck: false,
+      leaveCheck: false,
     };
+  },
+  mounted() {
+    this.checkTeam();
+  },
+  computed: {
+    ...mapGetters({
+      role: ["auth/getRole"],
+      user_id: ["auth/getUserId"],
+      teamList: ["team/getTeamList"],
+      currentTeam: ["team/getCurrentTeam"],
+      memberCount: ["team/getCurrentTeamMemberCount"],
+      teamStatus: ["team/getTeamStatus"],
+      createStatus: ["team/getCreateStatus"],
+    }),
+  },
+  methods: {
+    memberClick() {
+      this.$router.push("/dashboard/member");
+    },
+    deleteClick() {
+      this.deleteCheck = !this.deleteCheck;
+    },
+    leaveClick() {
+      this.leaveCheck = !this.leaveCheck;
+    },
+    editTeamName() {
+      this.edit = !this.edit;
+      this.teamName = this.currentTeam.teamName;
+    },
+    async createTeam() {
+      await this.$store.dispatch("team/create", this.teamName);
+      if (this.teamStatus.hasTeam) {
+        this.teamName = "";
+      }
+    },
+    async checkDuplicated() {
+      await this.$store.dispatch("team/checkDuplicated", this.teamName);
+    },
+    async renameTeam() {
+      await this.$store.dispatch("team/rename", this.teamName);
+      if (!this.createStatus.isInvalid) {
+        this.edit = !this.edit;
+        this.teamName = "";
+      }
+    },
+    async deleteTeam() {
+      await this.$store.dispatch("team/delete");
+      if (!this.teamStatus.hasTeam) {
+        this.deleteCheck = !this.deleteCheck;
+      }
+    },
+    async approveMember(member_id) {
+      await this.$store.dispatch("team/approve", member_id);
+    },
+    async rejectMember(member_id) {
+      await this.$store.dispatch("team/reject", member_id);
+    },
+    async joinTeam(team_id) {
+      await this.$store.dispatch("team/join", team_id);
+    },
+    async leaveTeam() {
+      await this.$store.dispatch("team/leave");
+    },
+    ...mapActions({
+      checkTeam: "team/checkTeam",
+      getTeamList: "team/getTeamList",
+    }),
   },
 };
 </script>
@@ -78,6 +294,46 @@ button {
   cursor: pointer;
 }
 
+.team-list {
+  margin-top: 10px;
+}
+
+.error-message {
+  margin-bottom: 5px;
+  margin-top: -5px;
+}
+
+.note > span > .orange-text,
+.note > span > .l-grey-text {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.note > span > div > span {
+  cursor: pointer;
+  border-radius: 10px;
+  padding: 2px 20px;
+  margin: 0px 5px;
+}
+
+.note > span > div {
+  margin-top: 5px;
+}
+
+.note > span > div > span:nth-child(1) {
+  background-color: #f07821;
+  color: #ffffff;
+}
+
+.note > span > div > span:nth-child(2) {
+  background-color: #c4c4c4;
+  color: #ffffff;
+}
+
+#team-input > input {
+  padding: 3px 5px !important;
+}
+
 #team-input {
   display: flex;
   justify-content: space-between;
@@ -94,13 +350,13 @@ button {
   overflow-y: scroll;
 }
 
-#team-box > div {
+#team-box > div > div {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-#team-box > div:not(:last-child) {
+#team-box > div > div:not(:last-child) {
   margin: 0px 0px 13px 0px;
 }
 
@@ -117,6 +373,38 @@ button {
   line-height: 20.8px;
 }
 
+.leave-btn {
+  color: #ffffff;
+  background-color: #764a97;
+  padding: 3px 15px 2px 15px;
+}
+
+.full-btn {
+  border: 2px solid #f07821;
+  box-sizing: border-box;
+  border-radius: 12px;
+  font-size: 1.75em;
+  color: #ffffff;
+  font-family: "IBM-PLEX-THAI-SEMIBOLD";
+  font-weight: 400;
+  background-color: #f07821;
+  padding: 3px 13px 2px 13px;
+  line-height: 20.8px;
+}
+
+.approve-btn {
+  border: 2px solid #764a97;
+  box-sizing: border-box;
+  border-radius: 12px;
+  font-size: 1.5em;
+  color: #ffffff;
+  font-family: "IBM-PLEX-THAI-SEMIBOLD";
+  font-weight: 400;
+  background-color: #764a97;
+  padding: 3px 7px 2px 7px;
+  line-height: 20.8px;
+}
+
 .note {
   font-size: 1.75em;
   font-weight: 500;
@@ -128,10 +416,9 @@ button {
 .teamname-text-l {
   font-size: 2.75em;
   margin: 0;
-  font-weight: 700;
-  color: #303030;
-  font-family: "IBM-PLEX-THAI-SEMIBOLD";
-  color: #764a97;
+  font-weight: 700 !important;
+  font-family: "IBM-PLEX-THAI-SEMIBOLD" !important;
+  color: #764a97 !important;
 }
 
 .edit-btn {
@@ -143,9 +430,11 @@ button {
   box-sizing: border-box;
   border-radius: 12px;
   padding: 6px 7px;
+  background-color: transparent;
 }
 
 .teamname {
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 157px;
@@ -180,6 +469,8 @@ div::-webkit-scrollbar-thumb {
   }
 
   .join-btn,
+  .approve-btn,
+  .full-btn,
   .edit-btn {
     font-size: 1.75em;
   }

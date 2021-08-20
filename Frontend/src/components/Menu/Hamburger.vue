@@ -134,6 +134,15 @@
         </div>
       </div>
 
+      <div
+        v-if="page != `dashBoard` && loginStatus.isAuthenticated"
+        class="nav-head nav-link"
+      >
+        <a class="text-normal" @click="hideNav" href="/dashboard"
+          >กลับหน้าแดชบอร์ด</a
+        >
+      </div>
+
       <div v-if="page != `dashBoard`" class="nav-head nav-link">
         <a class="text-normal" @click="hideNav" href="/about"
           >เกี่ยวกับโครงการ</a
@@ -146,13 +155,19 @@
         >
       </div>
 
-      <div v-if="page == `dashBoard`" class="nav-head nav-link">
+      <div
+        v-if="page == `dashBoard` && roleStatus != `user`"
+        class="nav-head nav-link"
+      >
         <a class="text-normal" @click="hideNav" href="/dashboard/member"
           >สมาชิกของระบบ</a
         >
       </div>
 
-      <div v-if="page == `dashBoard`" class="nav-head nav-link">
+      <div
+        v-if="page == `dashBoard` && roleStatus != `user`"
+        class="nav-head nav-link"
+      >
         <a class="text-normal" @click="hideNav" href="/dashboard/file"
           >File Management</a
         >
@@ -167,7 +182,23 @@
         class="nav-head nav-link display-name-box"
       >
         <a class="text-normal display-name" @click="hideNav" href="/dashboard"
-          >harryfer</a
+          ><span v-if="roleStatus == `admin`">Admin </span
+          ><span v-if="roleStatus == `editor`">Editor </span
+          >{{ displayName }}</a
+        >
+      </div>
+      <div
+        v-if="page != `dashBoard` && loginStatus.isAuthenticated"
+        class="nav-head nav-link register-btn"
+      >
+        <a
+          v-if="loginStatus.isAuthenticated"
+          class="text-normal display-name"
+          @click="hideNav"
+          href="/dashboard"
+          ><span v-if="roleStatus == `admin`">Admin </span
+          ><span v-if="roleStatus == `editor`">Editor </span
+          >{{ displayName }}</a
         >
       </div>
       <!-- <div class="nav-head nav-link">
@@ -180,13 +211,24 @@
         <a class="text-normal" href="/register">ลงทะเบียน</a>
       </div> -->
       <div
-        v-if="page != `dashBoard`"
+        v-if="page != `dashBoard` && !loginStatus.isAuthenticated"
         class="nav-head nav-link register-btn blocked"
       >
         <a class="text-normal" @click="hideNav">ลงทะเบียน</a>
       </div>
+      <div
+        v-if="page != `dashBoard` && loginStatus.isAuthenticated"
+        class="nav-head nav-link register-btn"
+      >
+        <a
+          v-if="loginStatus.isAuthenticated"
+          class="text-normal"
+          @click="logoutMainpage"
+          >ออกจากระบบ</a
+        >
+      </div>
       <div v-if="page == `dashBoard`" class="nav-head nav-link register-btn">
-        <a class="text-normal" @click="hideNav">ออกจากระบบ</a>
+        <a class="text-normal" @click="logout">ออกจากระบบ</a>
       </div>
     </Slide>
   </div>
@@ -226,6 +268,14 @@ export default {
     dashboard(value) {
       this.$router.push(value);
     },
+    logout() {
+      this.$store.dispatch("auth/logout");
+      window.location.href = "/login";
+    },
+    logoutMainpage() {
+      this.$store.dispatch("auth/logout");
+      window.location.href = "/";
+    },
   },
   computed: {
     cssDropdown() {
@@ -246,6 +296,9 @@ export default {
     },
     ...mapGetters({
       page: "page/getPage",
+      displayName: "auth/getDisplayName",
+      loginStatus: "auth/getLoginStatus",
+      roleStatus: "auth/getRole",
     }),
   },
 };
@@ -281,6 +334,7 @@ export default {
   font-weight: 700;
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
   padding-right: 6px;
+  text-transform: capitalize;
 }
 
 .display-name-box {

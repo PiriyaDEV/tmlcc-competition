@@ -27,6 +27,32 @@ class UserService {
         return error.response;
       });
   }
+
+  async getAllUsers() {
+    return await http
+      .get("/user/getAllUsers", {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return error.response;
+      });
+  }
+
+  async getAllStaffs() {
+    return await http
+      .get("/user/getAllStaffs", {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return error.response;
+      });
+  }
 }
 
 export default new UserService();

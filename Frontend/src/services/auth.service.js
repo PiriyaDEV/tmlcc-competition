@@ -27,10 +27,6 @@ class AuthService {
         return error.response;
       });
   }
-
-  async logout() {
-    localStorage.removeItem("accessToken");
-  }
 }
 
 export default new AuthService();

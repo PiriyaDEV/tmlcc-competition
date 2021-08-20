@@ -31,7 +31,7 @@
       <img id="deepnote-logo" src="../../assets/sponsors/dnlogo 1.png" alt="" />
     </div>
     <div>
-      <img id="scb-logo" src="../../assets/sponsors/scb-bank 1.png" alt="" />
+      <img id="scb-logo" src="../../assets/sponsors/scb2.png" alt="" />
     </div>
     <div>
       <img id="tw-logo" src="../../assets/sponsors/thoughtworks 1.png" alt="" />

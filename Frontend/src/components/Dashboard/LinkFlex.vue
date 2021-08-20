@@ -62,20 +62,35 @@
       </div>
     </div>
 
-    <div class="section">
+    <!-- <div class="section">
       <button class="edit-btn">Edit Information</button>
-    </div>
+    </div> -->
 
-    <!-- <div class="spacer"></div> -->
+    <div :class="spacerCss"></div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   methods: {
     linkClick(value) {
       window.open(value);
     },
+  },
+  computed: {
+    spacerCss() {
+      let user = "spacer";
+      let admin = "spacer spacer-admin";
+      if (this.roleStatus == "admin") {
+        return admin;
+      }
+      return user;
+    },
+    ...mapGetters({
+      roleStatus: "auth/getRole",
+    }),
   },
 };
 </script>
@@ -117,6 +132,10 @@ export default {
   margin-top: 22px;
 }
 
+.spacer-admin {
+  height: 110px !important;
+}
+
 .edit-btn {
   margin-top: 40px;
   border: 2px solid #f07821;
@@ -134,7 +153,7 @@ export default {
 }
 
 .spacer {
-  height: 70px;
+  height: 50px;
 }
 
 @media screen and (max-width: 1100px) {
@@ -147,6 +166,10 @@ export default {
   .join-btn,
   .edit-btn {
     font-size: 1.75em;
+  }
+
+  .spacer {
+    display: none;
   }
 }
 

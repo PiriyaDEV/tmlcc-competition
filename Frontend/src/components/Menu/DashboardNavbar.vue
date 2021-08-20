@@ -22,7 +22,7 @@
           </div>
         </div>
         <div id="nav-center">
-          <div class="center">
+          <div v-if="roleStatus == `admin`" class="center">
             <p class="text-normal nav-text" @click="dashboardMember()">
               สมาชิกของระบบ
             </p>
@@ -34,17 +34,13 @@
         <div id="nav-right">
           <p class="text-normal nav-text">ติดต่อเรา</p>
           <div class="center">
-            <!-- <p
-              class="text-normal display-name nav-text"
-              @click="toggleShowMenu()"
-            >
-              {{ displayName }}
-            </p> -->
             <p
               class="text-normal display-name nav-text"
               @click="toggleShowMenu()"
             >
-              harryfer
+              <span v-if="roleStatus == `admin`">Admin </span
+              ><span v-if="roleStatus == `editor`">Editor </span
+              >{{ displayName }}
             </p>
             <img
               id="dropdown-icon"
@@ -53,7 +49,7 @@
               @click="toggleShowMenu()"
             />
             <div id="signout-dropdown" :class="SlideMenu" @click="click">
-              <button class="btn-white">ออกจากระบบ</button>
+              <button @click="logout()" class="btn-white">ออกจากระบบ</button>
             </div>
           </div>
         </div>
@@ -73,16 +69,10 @@ export default {
   components: {
     Hamburger,
   },
-  props: ["page"],
   data() {
     return {
       showMenu: false,
     };
-  },
-  mounted() {
-    if (!this.loginStatus.isAuthenticated) {
-      this.$router.push("/login");
-    }
   },
   methods: {
     mainpage() {
@@ -109,10 +99,16 @@ export default {
     click() {
       this.showMenu = !this.showMenu;
     },
+    logout() {
+      this.$store.dispatch("auth/logout");
+      window.location.href = "/login";
+    },
   },
   computed: {
     ...mapGetters({
+      displayName: "auth/getDisplayName",
       loginStatus: "auth/getLoginStatus",
+      roleStatus: "auth/getRole",
     }),
     SlideMenu() {
       let down = "open";
@@ -176,6 +172,7 @@ export default {
   font-weight: 700;
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
   padding-right: 6px;
+  text-transform: capitalize;
 }
 
 #hamburger {

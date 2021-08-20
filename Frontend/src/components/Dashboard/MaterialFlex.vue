@@ -1,7 +1,13 @@
 <template>
   <div id="materialflex">
     <div id="btn-right">
-      <button class="manage-btn">จัดการไฟล์ / Video</button>
+      <button
+        v-if="roleStatus != `user`"
+        @click="manageClick()"
+        class="manage-btn"
+      >
+        จัดการไฟล์ / Video
+      </button>
     </div>
     <h1 class="header-ms">Materials & Videos</h1>
     <hr class="bar-color" />
@@ -47,11 +53,23 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
       fileList: 20,
     };
+  },
+  methods: {
+    manageClick() {
+      this.$router.push("/dashboard/file");
+    },
+  },
+  computed: {
+    ...mapGetters({
+      roleStatus: "auth/getRole",
+    }),
   },
 };
 </script>
