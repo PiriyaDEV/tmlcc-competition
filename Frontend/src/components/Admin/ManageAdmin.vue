@@ -3,17 +3,17 @@
     <div id="search-grid">
       <div>
         <h1 class="text-normal">ค้นหาจาก keyword</h1>
-        <input class="input-box text-normal" type="text" />
+        <input v-model="keyword" class="input-box text-normal" type="text" />
       </div>
       <div>
         <h1 class="text-normal">Role</h1>
         <div id="role-select">
           <div>
-            <input value="Editor" name="Role" type="radio" />
+            <input value="editor" v-model="role" name="Role" type="radio" />
             <label class="text-normal">Editor</label>
           </div>
           <div>
-            <input value="Admin" name="Role" type="radio" />
+            <input value="admin" v-model="role" name="Role" type="radio" />
             <label class="text-normal">Admin</label>
           </div>
         </div>
@@ -39,21 +39,22 @@
           <th class="table-hd">สังกัด</th>
           <th class="table-regis-hd">แก้ไขข้อมูล</th>
         </tr>
-        <tr v-for="(member, i) in staffList" :key="i">
+        <tr v-for="(staff, i) in staffList" :key="i">
           <td>
             <span class="table-hd mb-head">Role</span>
-            <span
+            <!-- <span
               class="table-info member-role"
-              v-if="edit != member.user_id"
-              >{{ member.role }}</span
-            >
+              v-if="edit != staff.user_id"
+              >{{ staff.role }}</span
+            > -->
+            <span class="table-info member-role">{{ staff.role }}</span>
             <span>
-              <button
+              <!-- <button
                 class="editor-role-btn table-info"
-                v-if="edit == member.user_id"
+                v-if="edit == staff.user_id"
               >
                 เปลี่ยนเป็น Editor
-              </button>
+              </button> -->
               <!-- <button class="admin-role-btn table-info" v-if="edit[i]">
                 เปลี่ยนเป็น Admin
               </button> -->
@@ -61,81 +62,116 @@
           </td>
           <td>
             <span class="table-hd mb-head">ชื่อ</span
-            ><span class="table-info" v-if="edit != member.user_id">{{
-              member.firstName
+            ><span class="table-info" v-if="edit != staff.user_id">{{
+              staff.firstName
             }}</span>
             <span
               ><input
                 class="input-box table-info"
                 type="text"
-                v-if="edit == member.user_id"
-                :value="member.firstName"
-            /></span>
+                v-if="edit == staff.user_id"
+                v-model="staff.firstName"
+              />
+              <p
+                v-if="edit == staff.user_id"
+                class="text-normal orange-text error-message"
+              >
+                * ไม่ถูกต้อง
+              </p>
+            </span>
           </td>
           <td>
             <span class="table-hd mb-head">นามสกุล</span
-            ><span class="table-info" v-if="edit != member.user_id">{{
-              member.lastName
+            ><span class="table-info" v-if="edit != staff.user_id">{{
+              staff.lastName
             }}</span>
             <span
               ><input
                 class="input-box table-info"
                 type="text"
-                v-if="edit == member.user_id"
-                :value="member.lastName"
-            /></span>
+                v-if="edit == staff.user_id"
+                v-model="staff.lastName"
+              />
+              <p
+                v-if="edit == staff.user_id"
+                class="text-normal orange-text error-message"
+              >
+                * ไม่ถูกต้อง
+              </p>
+            </span>
           </td>
           <td>
             <span class="table-hd mb-head">เบอร์โทร</span
-            ><span class="table-info" v-if="edit != member.user_id">{{
-              member.phone
+            ><span class="table-info" v-if="edit != staff.user_id">{{
+              staff.phone
             }}</span>
             <span
               ><input
                 class="input-box table-info"
                 type="text"
-                v-if="edit == member.user_id"
-                :value="member.phone"
-            /></span>
+                v-if="edit == staff.user_id"
+                v-model="staff.phone"
+              />
+              <p
+                v-if="edit == staff.user_id"
+                class="text-normal orange-text error-message"
+              >
+                * ไม่ถูกต้อง
+              </p>
+            </span>
           </td>
           <td>
             <span class="table-hd mb-head">E-mail</span
-            ><span class="table-info" v-if="edit != member.user_id">{{
-              member.email
+            ><span class="table-info" v-if="edit != staff.user_id">{{
+              staff.email
             }}</span>
             <span
               ><input
                 class="input-box table-info"
                 type="text"
-                v-if="edit == member.user_id"
-                :value="member.email"
-            /></span>
+                v-if="edit == staff.user_id"
+                v-model="staff.email"
+              />
+              <p
+                v-if="edit == staff.user_id"
+                class="text-normal orange-text error-message"
+              >
+                * ไม่ถูกต้อง
+              </p>
+            </span>
           </td>
           <td>
             <span class="table-hd mb-head">สังกัด</span
-            ><span class="table-info" v-if="edit != member.user_id">{{
-              member.organization
+            ><span class="table-info" v-if="edit != staff.user_id">{{
+              staff.organization
             }}</span>
             <span
               ><input
                 class="input-box table-info"
                 type="text"
-                v-if="edit == member.user_id"
-                :value="member.organization"
-            /></span>
+                v-if="edit == staff.user_id"
+                v-model="staff.organization"
+              />
+              <p
+                v-if="edit == staff.user_id"
+                class="text-normal orange-text error-message"
+              >
+                * ไม่ถูกต้อง
+              </p>
+            </span>
           </td>
           <td>
             <span class="table-hd mb-head">แก้ไขข้อมูล</span>
             <button
               class="edit-btn"
-              v-if="edit != member.user_id"
-              @click="editClick(member)"
+              v-if="edit != staff.user_id"
+              @click="editClick(staff)"
             >
               edit
             </button>
             <button
               class="save-btn"
-              v-if="edit == member.user_id"
+              v-if="edit == staff.user_id"
               @click="saveClick()"
             >
               save
@@ -151,6 +187,13 @@
 import { mapGetters } from "vuex";
 
 export default {
+  data() {
+    return {
+      edit: "",
+      keyword: "",
+      role: "",
+    };
+  },
   computed: {
     ...mapGetters({
       staffList: "admin/getStaffList",
@@ -159,10 +202,13 @@ export default {
     //   return this.edit.includes(false);
     // },
   },
-  data() {
-    return {
-      edit: "",
-    };
+  watch: {
+    keyword: function () {
+      this.$store.dispatch("admin/updateStaffSearch", this.keyword);
+    },
+    role: function () {
+      this.$store.dispatch("admin/updateStaffSearchRole", this.role);
+    },
   },
   methods: {
     editClick(value) {
@@ -217,6 +263,12 @@ export default {
 
 #member-table {
   width: 100%;
+}
+
+.error-message {
+  margin-bottom: 0px;
+  margin-top: 5px;
+  padding-left: 5px;
 }
 
 .editor-role-btn,

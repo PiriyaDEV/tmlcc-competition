@@ -34,6 +34,21 @@ export default {
         (member) => member.status == "approved"
       ).length;
     },
+    getCurrentTeamMember(state, getters, rootState) {
+      return state.currentTeam.members.filter((member) => {
+        if (
+          getters.getCurrentTeamMemberCount == 5 &&
+          state.currentTeam.isLeader
+        ) {
+          return (
+            member.member_id != rootState.auth.user.user_id &&
+            member.status == "approved"
+          );
+        } else {
+          return member.member_id != rootState.auth.user.user_id;
+        }
+      });
+    },
     getTeamStatus(state) {
       return state.teamStatus;
     },
@@ -65,6 +80,21 @@ export default {
       state.teamStatus.status = status;
     },
     setCurrentTeam(state, team) {
+      if (team.isLeader) {
+        team.members = team.members.sort((a, b) => {
+          let memberA = a.status;
+          let memberB = b.status;
+
+          let comparison = 0;
+          if (memberA > memberB) {
+            comparison = 1;
+          } else if (memberA < memberB) {
+            comparison = -1;
+          }
+          return comparison;
+        });
+      }
+
       state.currentTeam = team;
     },
     setTeamList(state, list) {
@@ -177,7 +207,7 @@ export default {
         });
     },
     async reject({ state, dispatch }, member_id) {
-      await TeamService.approve({
+      await TeamService.reject({
         team_id: state.currentTeam.team_id,
         member_id: member_id,
       })
@@ -198,6 +228,23 @@ export default {
       })
         .then((res) => {
           if (res.status == 201) {
+            console.log(res.data.message);
+            commit("resetCurrentTeam");
+            commit("resetTeamStatus");
+            dispatch("checkTeam");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    async cancel({ rootGetters, commit, dispatch }, team_id) {
+      await TeamService.leave({
+        team_id: team_id,
+        member_id: rootGetters["auth/getUserId"],
+      })
+        .then((res) => {
+          if (res.status == 200) {
             console.log(res.data.message);
             commit("resetCurrentTeam");
             commit("resetTeamStatus");

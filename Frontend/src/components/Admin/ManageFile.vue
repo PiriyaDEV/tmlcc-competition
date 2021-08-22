@@ -19,9 +19,9 @@
           class="add-btn"
           onclick="document.getElementById('file-input').click(); return false;"
         >
-          เพิ่มไฟล์
+          เพิ่มเอกสาร
         </button>
-        <input
+        <!-- <input
           type="file"
           id="file-input"
           style="visibility: hidden"
@@ -29,7 +29,7 @@
           @change="fileUpload()"
           multiple
           accept="application/pdf"
-        />
+        /> -->
       </div>
     </div>
     <div>
@@ -37,6 +37,26 @@
       <div id="file-box">
         <div class="file-container" v-for="(file, i) in fileList" :key="i">
           <div>
+            <div>
+              <img
+                class="folder-icon"
+                src="../../assets/icon/folder-icon.png"
+                alt=""
+              />
+              <h1 class="file-name file-head">เอกสารประจำวันที่ 01/09/2564</h1>
+            </div>
+            <div>
+              <button class="delete-btn" v-if="edit">delete</button>
+              <button class="edit-btn" v-if="!edit" @click="editClick">
+                edit
+              </button>
+              <button class="edit-btn" v-if="edit" @click="editClick">
+                cancel
+              </button>
+            </div>
+          </div>
+
+          <div id="icon-list" v-for="(file, i) in fileList" :key="i">
             <img
               class="file-icon"
               src="../../assets/icon/file-icon.png"
@@ -50,15 +70,6 @@
               v-if="edit"
             />
           </div>
-          <div>
-            <button class="delete-btn" v-if="edit">delete</button>
-            <button class="edit-btn" v-if="!edit" @click="editClick">
-              edit
-            </button>
-            <button class="edit-btn" v-if="edit" @click="editClick">
-              cancel
-            </button>
-          </div>
         </div>
       </div>
     </div>
@@ -69,19 +80,19 @@
 export default {
   data() {
     return {
-      fileList: 20,
+      fileList: 5,
       files: null,
       edit: false,
     };
   },
   methods: {
-    async fileUpload() {
-      this.files = this.$refs.fileUploader.files;
-      await this.uploadFileMethod();
-    },
-    uploadFileMethod() {
-      console.log(this.files);
-    },
+    // async fileUpload() {
+    //   this.files = this.$refs.fileUploader.files;
+    //   await this.uploadFileMethod();
+    // },
+    // uploadFileMethod() {
+    //   console.log(this.files);
+    // },
     editClick() {
       this.edit = !this.edit;
     },
@@ -166,16 +177,32 @@ export default {
 }
 
 .file-container {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
   margin-top: 15px;
   padding: 0px 20px;
 }
 
-.file-container > div {
+.file-container > div:first-child {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+
+.file-container > div > div,
+#icon-list {
+  display: flex;
+  align-items: center;
+}
+
+.folder-icon {
+  width: 22px;
+  margin-right: 8px;
+}
+
+#icon-list {
+  margin-top: 10px;
+  margin-left: 25px;
+  margin-bottom: 10px;
 }
 
 .file-icon {
@@ -190,6 +217,10 @@ export default {
   color: #303030;
   margin: 0;
   cursor: pointer;
+}
+
+.file-head {
+  font-weight: 800;
 }
 
 .file-date {
@@ -245,6 +276,10 @@ div::-webkit-scrollbar-thumb {
   .file-icon {
     width: 18px;
     margin-right: 12px;
+  }
+
+  .folder-icon {
+    width: 16px;
   }
 }
 

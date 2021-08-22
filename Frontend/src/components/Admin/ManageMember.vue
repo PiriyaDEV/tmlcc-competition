@@ -3,7 +3,7 @@
     <div id="search-grid">
       <div>
         <h1 class="text-normal">ค้นหาจาก keyword</h1>
-        <input class="input-box text-normal" type="text" />
+        <input v-model="keyword" class="input-box text-normal" type="text" />
       </div>
       <div>
         <h1 class="text-normal">เรียงลำดับ</h1>
@@ -26,32 +26,30 @@
           <th class="table-hd">ระดับการศึกษา</th>
           <th class="table-regis-hd">แสดงใบสมัคร</th>
         </tr>
-        <tr v-for="(member, i) in userList" :key="i">
+        <tr v-for="(user, i) in userList" :key="i">
           <td>
             <span class="table-hd mb-head">Display Name</span
-            ><span class="table-info display-name">{{
-              member.displayName
-            }}</span>
+            ><span class="table-info display-name">{{ user.displayName }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">ชื่อ</span
-            ><span class="table-info">{{ member.firstName }}</span>
+            ><span class="table-info">{{ user.firstName }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">นามสกุล</span
-            ><span class="table-info">{{ member.lastName }}</span>
+            ><span class="table-info">{{ user.lastName }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">Team</span
-            ><span class="table-info">{{ member.teamName }}</span>
+            ><span class="table-info">{{ user.teamName }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">E-mail</span
-            ><span class="table-info">{{ member.email }}</span>
+            ><span class="table-info">{{ user.email }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">ระดับการศึกษา</span
-            ><span class="table-info">{{ member.education }}</span>
+            ><span class="table-info">{{ user.education }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">แสดงใบสมัคร</span>
@@ -59,7 +57,7 @@
               class="file-icon"
               src="../../assets/icon/file-icon.png"
               alt=""
-              @click="viewDoc"
+              @click="viewDoc(user.user_id)"
             />
           </td>
         </tr>
@@ -74,13 +72,55 @@ import pdfMake from "pdfmake";
 import pdfFonts from "../../assets/custom-font.js";
 
 export default {
+  data() {
+    return {
+      keyword: "",
+    };
+  },
   computed: {
     ...mapGetters({
       userList: "admin/getUserList",
+      userInfo: "admin/getUserSelect",
     }),
   },
+  watch: {
+    keyword: function () {
+      this.$store.dispatch("admin/updateUserSearch", this.keyword);
+    },
+  },
   methods: {
-    viewDoc() {
+    async viewDoc(user_id) {
+      await this.$store.dispatch("admin/getUserInfo", user_id);
+
+      if (this.userInfo.isWorkInterest == false) {
+        this.userInfo.isWorkInterest = "ไม่สนใจ";
+      } else {
+        this.userInfo.isWorkInterest = "สนใจ";
+      }
+
+      if (!this.userInfo.interestField) {
+        this.userInfo.interestField = "ไม่สนใจ";
+      }
+
+      if (this.userInfo.hasProgSkill == false) {
+        this.userInfo.progSkillLevel = "ไม่มี";
+        this.userInfo.progSkillList = "ไม่มี";
+      }
+
+      if (this.userInfo.hasChemSkill == false) {
+        this.userInfo.chemSkillLevel = "ไม่มี";
+        this.userInfo.chemSkillList = "ไม่มี";
+      }
+
+      if (this.userInfo.hasMachineLSkill == false) {
+        this.userInfo.machineLSkillLevel = "ไม่มี";
+        this.userInfo.machineLSkillList = "ไม่มี";
+      }
+
+      if (this.userInfo.hasOtherSkill == false) {
+        this.userInfo.otherSkillList = "ไม่มี";
+      }
+
       pdfMake.vfs = pdfFonts.pdfMake.vfs; // 2. set vfs pdf font
       pdfMake.fonts = {
         // download default Roboto font from cdnjs.com
@@ -102,7 +142,16 @@ export default {
       };
       const docDefinition = {
         info: {
-          title: "ใบสมัคร - นาย พิริยะ ชัยกุล (Pd.Piriya)",
+          title:
+            "ใบสมัคร - " +
+            this.userInfo.titleName +
+            " " +
+            this.userInfo.firstName +
+            " " +
+            this.userInfo.lastName +
+            " (" +
+            this.userInfo.displayName +
+            ")",
         },
         content: [
           {
@@ -133,11 +182,11 @@ export default {
           {
             text: [
               { text: "คำนำหน้า : " },
-              { text: "นาย", decoration: "underline" },
+              { text: this.userInfo.titleName, decoration: "underline" },
               { text: "              ชื่อ : " },
-              { text: "พิริยะ", decoration: "underline" },
+              { text: this.userInfo.firstName, decoration: "underline" },
               { text: "              นามสกุล : " },
-              { text: "ชัยกุล", decoration: "underline" },
+              { text: this.userInfo.lastName, decoration: "underline" },
             ],
             width: "*",
             fontSize: 11,
@@ -146,9 +195,9 @@ export default {
           {
             text: [
               { text: "ระดับการศึกษาสูงสุด : " },
-              { text: "ปริญญาตรี", decoration: "underline" },
+              { text: this.userInfo.education, decoration: "underline" },
               { text: "             สถานศึกษา : " },
-              { text: "อัสสัมชัญสมุทรปราการ", decoration: "underline" },
+              { text: this.userInfo.institution, decoration: "underline" },
             ],
             fontSize: 11,
             margin: [0, 5, 0, 8],
@@ -156,7 +205,7 @@ export default {
           {
             text: [
               { text: "สังกัด : " },
-              { text: "วิทยาศาสตร์ - คณิตศาสตร์", decoration: "underline" },
+              { text: this.userInfo.organization, decoration: "underline" },
             ],
             fontSize: 11,
             margin: [0, 5, 0, 8],
@@ -165,7 +214,7 @@ export default {
             text: [
               { text: "ที่อยู่ : " },
               {
-                text: "420-420/1 ม.ทิพวัล 1 ถ.เทพารักษ์ ต.เทพารักษ์ อ.เมือง จ.สมุทรปราการ 10270",
+                text: this.userInfo.address,
                 decoration: "underline",
               },
             ],
@@ -175,7 +224,7 @@ export default {
           {
             text: [
               { text: "ประเทศ : " },
-              { text: "ประเทศไทย", decoration: "underline" },
+              { text: this.userInfo.country, decoration: "underline" },
             ],
             fontSize: 11,
             margin: [0, 5, 0, 8],
@@ -189,9 +238,9 @@ export default {
           {
             text: [
               { text: "เบอร์โทรศัพท์ : " },
-              { text: "0896832465", decoration: "underline" },
+              { text: this.userInfo.phone, decoration: "underline" },
               { text: "             Email : " },
-              { text: "pry@mail.kmutt.ac.th", decoration: "underline" },
+              { text: this.userInfo.email, decoration: "underline" },
             ],
             fontSize: 11,
             margin: [0, 5, 0, 8],
@@ -200,7 +249,7 @@ export default {
           {
             text: [
               { text: "ผลงานที่เคยทำ : " },
-              { text: "หลายๆอย่าง", decoration: "underline" },
+              { text: this.userInfo.works, decoration: "underline" },
             ],
             fontSize: 11,
             margin: [0, 5, 0, 8],
@@ -210,8 +259,20 @@ export default {
               {
                 text: "หากมีข้อเสนอโครงการให้เข้าร่วมทำงาน/ฝึกงานกับบริษัท หรือ องค์กร : ",
               },
-              { text: "สนใจ", decoration: "underline" },
+              { text: this.userInfo.isWorkInterest, decoration: "underline" },
             ],
+            fontSize: 11,
+            margin: [0, 5, 0, 8],
+          },
+          {
+            text: [
+              {
+                text: "สาขาที่สนใจ : ",
+              },
+              { text: this.userInfo.interestField, decoration: "underline" },
+            ],
+            fontSize: 11,
+            margin: [0, 5, 0, 8],
           },
           {
             text: "ประเมิณตนเอง",
@@ -229,11 +290,11 @@ export default {
               {
                 text: "Programming:     ระดับ : ",
               },
-              { text: "Beginner", decoration: "underline" },
+              { text: this.userInfo.progSkillLevel, decoration: "underline" },
               {
                 text: "    ภาษา : ",
               },
-              { text: "HTML, Vue.js", decoration: "underline" },
+              { text: this.userInfo.progSkillList, decoration: "underline" },
             ],
             fontSize: 11,
             margin: [0, 5, 0, 8],
@@ -243,11 +304,11 @@ export default {
               {
                 text: "Chemistry:     ระดับ : ",
               },
-              { text: "Beginner", decoration: "underline" },
+              { text: this.userInfo.chemSkillLevel, decoration: "underline" },
               {
                 text: "    เรื่องที่เชี่ยวชาญ : ",
               },
-              { text: "Isolation, Molecule", decoration: "underline" },
+              { text: this.userInfo.chemSkillList, decoration: "underline" },
             ],
             fontSize: 11,
             margin: [0, 5, 0, 8],
@@ -257,11 +318,17 @@ export default {
               {
                 text: "Machine learning:     ระดับ : ",
               },
-              { text: "Beginner", decoration: "underline" },
+              {
+                text: this.userInfo.machineLSkillLevel,
+                decoration: "underline",
+              },
               {
                 text: "    เรื่องที่เชี่ยวชาญ : ",
               },
-              { text: "ระบบในโรงงาน", decoration: "underline" },
+              {
+                text: this.userInfo.machineLSkillList,
+                decoration: "underline",
+              },
             ],
             fontSize: 11,
             margin: [0, 5, 0, 8],
@@ -271,7 +338,7 @@ export default {
               {
                 text: "อื่นๆ (โปรดระบุ):     เรื่องที่เชี่ยวชาญ : ",
               },
-              { text: "นอนหลับพักผ่อน", decoration: "underline" },
+              { text: this.userInfo.otherSkillList, decoration: "underline" },
             ],
             fontSize: 11,
             margin: [0, 5, 0, 8],

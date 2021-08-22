@@ -80,21 +80,35 @@
               v-if="
                 role == `user` && team.status == 'pending' && team.members < 5
               "
+              @click="cancelTeam(team.team_id)"
             >
               รออนุญาต
             </button>
             <button v-if="team.members == 5" class="full-btn">เต็ม</button>
-            <button class="join-btn" v-if="role != `user`">แสดง</button>
+            <button
+              class="join-btn"
+              @click="showMember(team.teamName)"
+              v-if="role != `user`"
+            >
+              แสดง
+            </button>
           </div>
         </div>
         <div v-if="teamStatus.hasTeam">
-          <div
-            v-for="(member, i) in currentTeam.members.filter(
-              (m) => m.member_id != user_id
-            )"
-            :key="i"
-          >
-            <h1 class="text-normal gray-text teamname">
+          <div v-for="(member, i) in teamMember" :key="i">
+            <h1
+              v-if="member.status == 'approved'"
+              class="text-normal purple-d-text teamname bold"
+            >
+              {{ member.fullName }}
+            </h1>
+            <h1
+              v-else-if="member.status == 'pending'"
+              class="text-normal gray-text teamname"
+            >
+              {{ member.fullName }}
+            </h1>
+            <h1 v-else class="text-normal purple-d-text teamname bold">
               {{ member.fullName }}
             </h1>
             <button
@@ -200,12 +214,17 @@ export default {
       teamList: ["team/getTeamList"],
       currentTeam: ["team/getCurrentTeam"],
       memberCount: ["team/getCurrentTeamMemberCount"],
+      teamMember: ["team/getCurrentTeamMember"],
       teamStatus: ["team/getTeamStatus"],
       createStatus: ["team/getCreateStatus"],
     }),
   },
   methods: {
     memberClick() {
+      this.$router.push("/dashboard/member");
+    },
+    showMember(teamName) {
+      this.$store.dispatch("admin/updateUserSearch", teamName);
       this.$router.push("/dashboard/member");
     },
     deleteClick() {
@@ -249,6 +268,9 @@ export default {
     async joinTeam(team_id) {
       await this.$store.dispatch("team/join", team_id);
     },
+    async cancelTeam(team_id) {
+      await this.$store.dispatch("team/cancel", team_id);
+    },
     async leaveTeam() {
       await this.$store.dispatch("team/leave");
     },
@@ -279,6 +301,10 @@ button {
 .input-box {
   width: 100%;
   margin: 0;
+}
+
+.bold {
+  font-weight: 600;
 }
 
 .add-btn {

@@ -27,7 +27,9 @@
           อบรมเชิงปฏิบัติการออนไลน์โดยผู้เชี่ยวชาญด้านปัญญาประดิษฐ์และเคมี
         </li>
         <li>สิทธิพิเศษในการเข้าใช้งาน GPU resource สำหรับการแข่งขัน</li>
-        <li>License และ 1 Year Software Subscription</li>
+        <li>
+          License และ 1 Year Software Subscription (ตามเกณฑ์ที่ผู้จัดกำหนด)
+        </li>
       </ul>
 
       <h1 id="event-info" class="header-s">กำหนดการ</h1>
@@ -111,7 +113,13 @@
           ต้องไม่เป็นผู้ปฏิบัติหน้าที่ใดหน้าที่หนึ่งในการดำเนินการ
           และ/หรือให้คำปรึกษาการจัดการแข่งขัน
         </li>
-        <!-- <li>เจ้าหน้าที่หรือบุคคลใดก็ตามที่เกี่ยวข้องกับการจัดงานการแข่งขัน</li> -->
+        <li>
+          ชาวต่างชาติที่กำลังศึกษาอยู่ในประเทศไทย สามารถเข้าร่วมการแข่งขันได้
+          <span class="frn-line"
+            >แต่ต้องมีคนไทยอย่างน้อย 1 คนเป็นสมาชิกของทีม</span
+          >
+        </li>
+        <li class="no-bullet">แต่ต้องมีคนไทยอย่างน้อย 1 คนเป็นสมาชิกของทีม</li>
       </ul>
 
       <h1 id="rules-info" class="header-s">เกณฑ์การตัดสิน</h1>
@@ -422,6 +430,10 @@ export default {
   height: 45px;
 }
 
+.frn-line {
+  display: none;
+}
+
 #contact-section {
   margin-top: 15px;
   margin-bottom: 25px;
@@ -517,6 +529,10 @@ export default {
   margin-left: 80px;
 }
 
+.no-bullet:before {
+  display: none;
+}
+
 @media screen and (max-width: 1100px) {
   .rg-btn {
     width: 650px;
@@ -588,6 +604,13 @@ export default {
     margin: 70px 0px 40px 0px;
   }
 
+  .no-bullet {
+    display: none;
+  }
+
+  .frn-line {
+    display: initial;
+  }
   .donut-bullet li {
     padding-left: 25px;
     margin-left: 10px;

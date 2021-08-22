@@ -53,6 +53,19 @@ class UserService {
         return error.response;
       });
   }
+
+  async getInfo(user) {
+    return await http
+      .get(`/user/getInfo?user_id=${user.user_id}`, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return error.response;
+      });
+  }
 }
 
 export default new UserService();

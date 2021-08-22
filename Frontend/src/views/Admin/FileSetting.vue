@@ -18,6 +18,8 @@
           </div>
           <ManageFile v-if="choice == `file`" />
           <ManageVideo v-if="choice == `video`" />
+          <FileUpload v-if="choice == `file`" />
+          <VideoUpload v-if="choice == `video`" />
         </div>
       </div>
     </div>
@@ -25,6 +27,8 @@
 </template>
 
 <script>
+import FileUpload from "../../components/Admin/UploadMaterial/FileUpload.vue";
+import VideoUpload from "../../components/Admin/UploadMaterial/VideoUpload.vue";
 import ManageFile from "../../components/Admin/ManageFile.vue";
 import ManageVideo from "../../components/Admin/ManageVideo.vue";
 import DashboardNavbar from "../../components/Menu/DashboardNavbar.vue";
@@ -38,6 +42,8 @@ export default {
     DashboardNavbar,
     ManageFile,
     ManageVideo,
+    VideoUpload,
+    FileUpload,
   },
   computed: {
     cssbarFile() {
