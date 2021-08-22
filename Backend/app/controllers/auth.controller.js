@@ -46,24 +46,10 @@ exports.register = (req, res) => {
             err.message || "Some error occurred while creating the new user!",
         });
       }
-
-      let token = jwt.sign(
-        {
-          user_id: result.user_id,
-          displayName: result.displayName,
-          lastLogin: result.lastLogin,
-        },
-        authConfig.secretKey,
-        { expiresIn: 86400 }
-      );
-
-      res.cookie("user", token, { httpOnly: true, maxAge: 900000 });
-
+      
       return res.status(201).send({
         user_id: result.user_id,
-        displayName: result.displayName,
-        lastLogin: result.lastLogin,
-        token: token,
+        message: "Registered successfully!",
       });
     });
   });
@@ -113,6 +99,7 @@ exports.login = (req, res) => {
           let token = jwt.sign(
             {
               user_id: result.user_id,
+              displayName: result.displayName,
               lastLogin: update_result.lastLogin,
             },
             authConfig.secretKey,
@@ -123,6 +110,7 @@ exports.login = (req, res) => {
 
           return res.status(200).send({
             user_id: result.user_id,
+            displayName: result.displayName,
             lastLogin: update_result.lastLogin,
             token: token,
           });

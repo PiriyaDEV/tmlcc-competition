@@ -129,7 +129,7 @@ User.getAllUsers = (result) => {
               TM.member_id = U.user_id
               AND TM.status = 'approved'),
               '-'
-      ) AS team
+      ) AS teamName
      FROM
          Users U
      WHERE

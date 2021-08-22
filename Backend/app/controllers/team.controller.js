@@ -54,6 +54,7 @@ exports.create = (req, res) => {
 
         return res.status(201).send({
           team_id: result.team_id,
+          status: result.status,
           message: "Team created!",
         });
       });
@@ -102,6 +103,7 @@ exports.rename = (req, res) => {
 
     return res.status(200).send({
       team_id: result.team_id,
+      teamName: result.teamName,
       message: "Team renamed!",
     });
   });
@@ -125,9 +127,24 @@ exports.delete = (req, res) => {
       });
     }
 
-    return res.status(200).send({
+    let teamMember = {
       team_id: result.team_id,
-      message: "Team deleted!",
+      status: "left"
+    }
+
+    TeamMember.teamDelete(teamMember, (err, result) => {
+      if (err) {
+        return res.status(500).send({
+          message:
+            err.message ||
+            "Some error occurred while removing member from the team!",
+        });
+      }
+  
+      return res.status(200).send({
+        team_id: result.team_id,
+        message: "Team deleted!",
+      });
     });
   });
 };
@@ -152,7 +169,7 @@ exports.approve = (req, res) => {
       });
     }
 
-    return res.status(201).send({
+    return res.status(200).send({
       team_id: result.team_id,
       member_id: result.member_id,
       message: "Approved to the team!",
@@ -180,7 +197,7 @@ exports.reject = (req, res) => {
       });
     }
 
-    return res.status(201).send({
+    return res.status(200).send({
       team_id: result.team_id,
       member_id: result.member_id,
       message: "Rejected from the team!",
@@ -244,6 +261,95 @@ exports.leave = (req, res) => {
   });
 };
 
+exports.checkTeam = (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Content can not be empty!",
+    });
+  }
+
+  let user = req.body;
+
+  TeamMember.findTeam(user, (err, result) => {
+    if (err) {
+      return res.status(500).send({
+        message:
+          err.message || "Some error occurred while finding team for user!",
+      });
+    }
+
+    if (result.isFound) {
+      Team.checkLeader(user, (err, isLeader) => {
+        if (err) {
+          return res.status(500).send({
+            message:
+              err.message || "Some error occurred while checking team leader!",
+          });
+        }
+
+        if (isLeader) {
+          Team.getInfoForLeader(result.team_id, (err, teamInfo) => {
+            if (err) {
+              return res.status(500).send({
+                message:
+                  err.message ||
+                  "Some error occurred while getting team information!",
+              });
+            }
+
+            return res.status(200).send({
+              teamStatus: {
+                hasTeam: result.isFound,
+                status: result.status,
+              },
+              team: {
+                isLeader,
+                ...teamInfo,
+              },
+            });
+          });
+        } else {
+          Team.getInfo(result.team_id, (err, teamInfo) => {
+            if (err) {
+              return res.status(500).send({
+                message:
+                  err.message ||
+                  "Some error occurred while getting team information!",
+              });
+            }
+
+            return res.status(200).send({
+              teamStatus: {
+                hasTeam: result.isFound,
+                status: result.status,
+              },
+              team: {
+                isLeader: isLeader,
+                ...teamInfo,
+              },
+            });
+          });
+        }
+      });
+    } else {
+      Team.getAllWithStatus(user, (err, teamList) => {
+        if (err) {
+          return res.status(500).send({
+            message:
+              err.message || "Some error occurred while getting all teams!",
+          });
+        }
+        return res.status(200).send({
+          teamStatus: {
+            hasTeam: result.isFound,
+          },
+          teamList: teamList,
+        });
+      });
+    }
+  });
+};
+
 exports.getAll = (req, res) => {
   Team.getAll((err, result) => {
     if (err) {
@@ -268,7 +374,8 @@ exports.getInfo = (req, res) => {
   Team.getInfo(team_id, (err, result) => {
     if (err) {
       return res.status(500).send({
-        message: err.message || "Some error occurred while getting team information!",
+        message:
+          err.message || "Some error occurred while getting team information!",
       });
     }
 
