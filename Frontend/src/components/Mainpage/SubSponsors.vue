@@ -1,3 +1,4 @@
+`
 <template>
   <div id="sponsors" class="section">
     <div>
@@ -88,7 +89,7 @@ img {
     width: calc(180px - 30px);
   }
   #cv-logo {
-    width: calc(80px - 30px);
+    width: calc(80px - 20px);
   }
 }
 

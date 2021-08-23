@@ -9,9 +9,9 @@
         <h1 class="text-normal">เรียงลำดับ</h1>
         <select name="sorting" id="sorting" class="input-box text-normal">
           <option value="มัธยมศึกษา">ชื่อ ก - ฮ</option>
-          <option value="มัธยมศึกษา">ชื่อ ก - ฮ</option>
-          <option value="มัธยมศึกษา">ชื่อ ก - ฮ</option>
-          <option value="มัธยมศึกษา">ชื่อ ก - ฮ</option>
+          <option value="มัธยมศึกษา">อีเมล a - z</option>
+          <option value="มัธยมศึกษา">ชื่อทีม ก - z</option>
+          <option value="มัธยมศึกษา">ระดับการศึกษา ก - z</option>
         </select>
       </div>
     </div>
@@ -69,7 +69,7 @@
 <script>
 import { mapGetters } from "vuex";
 import pdfMake from "pdfmake";
-import pdfFonts from "../../assets/custom-font.js";
+import pdfFonts from "../../assets/custom-fonts.js";
 
 export default {
   data() {
@@ -77,10 +77,14 @@ export default {
       keyword: "",
     };
   },
+  mounted() {
+    this.keyword = this.userSearch;
+  },
   computed: {
     ...mapGetters({
       userList: "admin/getUserList",
       userInfo: "admin/getUserSelect",
+      userSearch: "admin/getUserSearch",
     }),
   },
   watch: {
@@ -123,21 +127,11 @@ export default {
 
       pdfMake.vfs = pdfFonts.pdfMake.vfs; // 2. set vfs pdf font
       pdfMake.fonts = {
-        // download default Roboto font from cdnjs.com
-        Roboto: {
-          normal:
-            "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf",
-          bold: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf",
-          italics:
-            "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf",
-          bolditalics:
-            "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-MediumItalic.ttf",
-        },
         // Kanit Font
-        IBMThai: {
+        Sarabun: {
           // 3. set Kanit font
-          normal: "IBMPlexSansThaiLooped-Regular.ttf",
-          bold: "IBMPlexSansThaiLooped-Bold.ttf",
+          normal: "Sarabun-Regular.ttf",
+          bold: "Sarabun-Medium.ttf",
         },
       };
       const docDefinition = {
@@ -349,7 +343,7 @@ export default {
             "https://scontent.fubp1-1.fna.fbcdn.net/v/t1.6435-9/239874070_4761197243913069_1109602868497192659_n.jpg?_nc_cat=105&ccb=1-5&_nc_sid=730e14&_nc_eui2=AeEZNqxzgIHQXdC7jTumKWNfsLnp63Qlay2wuenrdCVrLfqAiRKrMSDhXQF_Atl_lz1A29345Me63siJKjnXN_bi&_nc_ohc=mR7brVKxq8YAX8PeVcE&tn=02SmQdQFY_dqYu2v&_nc_ht=scontent.fubp1-1.fna&oh=cedd7400a90aba6c90e6a6ad3d288155&oe=6143FDE3",
         },
         defaultStyle: {
-          font: "IBMThai",
+          font: "Sarabun",
         },
       };
       // pdfMake.createPdf(docDefinition).open({}, window);

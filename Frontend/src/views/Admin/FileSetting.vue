@@ -16,10 +16,22 @@
               <hr :class="cssbarVideo" />
             </div>
           </div>
-          <ManageFile v-if="choice == `file`" />
-          <ManageVideo v-if="choice == `video`" />
-          <FileUpload v-if="choice == `file`" />
-          <VideoUpload v-if="choice == `video`" />
+          <ManageFile
+            @fileClickUpload="fileClickUpload"
+            v-if="choice == `file` && clickFile == false"
+          />
+          <ManageVideo
+            @videoClickUpload="videoClickUpload"
+            v-if="choice == `video` && clickVideo == false"
+          />
+          <FileUpload
+            @fileClickUpload="fileClickUpload"
+            v-if="clickFile == true"
+          />
+          <VideoUpload
+            @videoClickUpload="videoClickUpload"
+            v-if="clickVideo == true"
+          />
         </div>
       </div>
     </div>
@@ -32,10 +44,13 @@ import VideoUpload from "../../components/Admin/UploadMaterial/VideoUpload.vue";
 import ManageFile from "../../components/Admin/ManageFile.vue";
 import ManageVideo from "../../components/Admin/ManageVideo.vue";
 import DashboardNavbar from "../../components/Menu/DashboardNavbar.vue";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
       choice: "file",
+      clickFile: false,
+      clickVideo: false,
     };
   },
   components: {
@@ -80,15 +95,29 @@ export default {
     },
   },
   methods: {
+    ...mapActions({
+      getVideoList: "video/getVideoList",
+    }),
     fileChoice() {
       this.choice = "file";
+      this.clickFile = false;
+      this.clickVideo = false;
     },
     videoChoice() {
       this.choice = "video";
+      this.clickFile = false;
+      this.clickVideo = false;
+    },
+    fileClickUpload(value) {
+      this.clickFile = value;
+    },
+    videoClickUpload(value) {
+      this.clickVideo = value;
     },
   },
   mounted() {
     this.$store.dispatch("page/setPage", "dashBoard");
+    this.getVideoList();
   },
 };
 </script>

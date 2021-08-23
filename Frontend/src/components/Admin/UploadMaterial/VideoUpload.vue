@@ -2,7 +2,9 @@
   <div id="video-upload">
     <div class="center page-change-left">
       <i class="fa fa-angle-left" aria-hidden="true"></i>
-      <h1 class="text-normal purple-text">หน้าหลักการจัดการไฟล์วิดิโอ</h1>
+      <h1 @click="clickUpload()" class="text-normal purple-text">
+        หน้าหลักการจัดการไฟล์วิดิโอ
+      </h1>
     </div>
 
     <div id="video-upload-box">
@@ -12,66 +14,146 @@
 
     <div class="search-grid">
       <h1 class="text-normal">ชื่อวิดีโอ</h1>
-      <input
-        class="input-box text-normal"
-        type="text"
-        placeholder="กรอกชื่อวิดิโอ"
-      />
+      <div>
+        <input
+          class="input-box text-normal"
+          type="text"
+          placeholder="กรอกชื่อวิดิโอ"
+          v-model="video.videoName"
+        />
+        <p
+          v-if="createStatus.videoName.isInvalid"
+          class="text-normal orange-text error-message"
+        >
+          * {{ createStatus.videoName.message }}
+        </p>
+      </div>
     </div>
 
     <div class="search-grid seach-no-btn">
       <h1 class="text-normal">Video Link</h1>
-      <input
-        class="input-box text-normal"
-        type="text"
-        placeholder="กรอก url ของ video"
-      />
+      <div>
+        <input
+          class="input-box text-normal"
+          type="text"
+          placeholder="กรอก url ของ video"
+          v-model="video.link"
+        />
+        <p
+          v-if="createStatus.link.isInvalid"
+          class="text-normal orange-text error-message"
+        >
+          * {{ createStatus.link.message }}
+        </p>
+      </div>
     </div>
 
     <div class="info-grid seach-no-btn">
       <h1 class="text-normal">ข้อมูลเพิ่มเติม</h1>
       <h1 class="text-normal date-info">วัน/เดือน/ปี ที่เผยแพร่</h1>
-      <input
-        class="input-box text-normal"
-        type="text"
-        placeholder="เลือกวัน/เดือน/ปี (Default คือ วันที่่เปิดหน้าที่นี้)"
-      />
+      <div>
+        <input
+          class="input-box text-normal"
+          type="text"
+          placeholder="เลือกวัน/เดือน/ปี (Default คือ วันที่่เปิดหน้าที่นี้)"
+          v-model="video.date"
+        />
+        <p
+          v-if="createStatus.date.isInvalid"
+          class="text-normal orange-text error-message"
+        >
+          * {{ createStatus.date.message }}
+        </p>
+      </div>
     </div>
 
     <div class="info-grid seach-no-btn">
       <span></span>
       <h1 class="text-normal">เวลา ที่เผยแพร่</h1>
-      <input
-        class="input-box text-normal"
-        type="text"
-        placeholder="เลือกเวลาในการเผยแพร่ (Default คือ เวลาที่เปิดหน้าที่นี้)"
-      />
+      <div>
+        <input
+          class="input-box text-normal"
+          type="text"
+          placeholder="เลือกเวลาในการเผยแพร่ (Default คือ เวลาที่เปิดหน้าที่นี้)"
+          v-model="video.time"
+        />
+        <p
+          v-if="createStatus.time.isInvalid"
+          class="text-normal orange-text error-message"
+        >
+          * {{ createStatus.time.message }}
+        </p>
+      </div>
     </div>
 
     <div class="info-grid seach-no-btn">
       <span></span>
       <h1 class="text-normal">รายละเอียดวิดิโอ</h1>
-      <input
-        class="input-box text-normal"
-        type="text"
-        placeholder="กรอกรายละเอียดเพิ่มเติมของวิดิโอ  (สามารถเว้นว่างได้)"
-      />
+      <div>
+        <input
+          class="input-box text-normal"
+          type="text"
+          placeholder="กรอกรายละเอียดเพิ่มเติมของวิดิโอ  (สามารถเว้นว่างได้)"
+          v-model="video.description"
+        />
+      </div>
     </div>
 
     <hr class="bar-color orange-bar" />
 
     <div class="center">
-      <button class="btn-white">บันทึกข้อมูล</button>
+      <button @click="save()" class="btn-white">บันทึกข้อมูล</button>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
-      fileList: 2,
+      video: {
+        videoName: "",
+        link: "",
+        date: "",
+        time: "",
+        description: "",
+      },
     };
+  },
+  mounted() {
+    this.$store.dispatch("video/resetCreateStatus");
+
+    let currentTime = new Date();
+    this.video.date =
+      currentTime.getDate() +
+      "/" +
+      (currentTime.getMonth() + 1) +
+      "/" +
+      currentTime.getFullYear();
+    this.video.time =
+      currentTime.getHours().toString().padStart(2, "0") +
+      ":" +
+      currentTime.getMinutes().toString().padStart(2, "0") +
+      " น.";
+  },
+  computed: {
+    ...mapGetters({
+      createStatus: "video/getCreateStatus",
+    }),
+  },
+  methods: {
+    clickUpload() {
+      this.$emit("videoClickUpload", false);
+    },
+    async save() {
+      await this.$store.dispatch("video/create", this.video);
+      if (this.createStatus.isSuccess) {
+        this.$store.dispatch("video/resetCreateStatus");
+        this.$emit("videoClickUpload", false);
+      }
+    },
   },
 };
 </script>
@@ -122,6 +204,10 @@ export default {
   margin-top: 50px;
 }
 
+.error-message {
+  margin-top: 5px;
+}
+
 #file-content {
   margin-top: 20px;
 }
@@ -131,7 +217,7 @@ export default {
   grid-template-columns: 1fr 3.5fr;
   grid-gap: 25px;
   grid-auto-rows: auto;
-  align-items: center;
+  align-items: top;
   margin-top: 30px;
 }
 
@@ -140,7 +226,7 @@ export default {
   grid-template-columns: 1fr 1fr 2.5fr;
   grid-gap: 25px;
   grid-auto-rows: auto;
-  align-items: center;
+  align-items: top;
   margin-top: 30px;
 }
 

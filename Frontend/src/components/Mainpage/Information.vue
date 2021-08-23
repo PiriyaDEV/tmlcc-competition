@@ -185,14 +185,14 @@
         ชิงรางวัลมูลค่ารวมกว่า 100,000 บาท !
       </p>
 
-      <div class="center">
-        <!-- <button @click="registerClick()" class="btn-white rg-btn">
+      <!-- <div class="center">
+        <button @click="registerClick()" class="btn-white rg-btn">
           ลงทะเบียนเข้าร่วมการแข่งขัน
-        </button> -->
+        </button>
         <button class="btn-grey rg-btn">ลงทะเบียนเข้าร่วมการแข่งขัน</button>
-      </div>
+      </div> -->
 
-      <!-- <div :class="cssSubBox">
+      <div :class="cssSubBox">
         <div>
           <h1 class="header-s purple-text">สมัครรับข่าวสารการแข่งขัน</h1>
         </div>
@@ -219,7 +219,7 @@
             Subscribe
           </button>
         </div>
-      </div> -->
+      </div>
 
       <div id="contact-box">
         <div>

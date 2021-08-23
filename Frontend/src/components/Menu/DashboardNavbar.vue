@@ -7,16 +7,16 @@
             id="tmlcc-icon"
             src="../../assets/navbar/TMLCC_color.png"
             alt=""
-            @click="mainpage()"
+            @click="dashboard()"
           />
           <img
             id="tmlcc-logo"
             src="../../assets/navbar/TMLCC.png"
             alt=""
-            @click="mainpage()"
+            @click="dashboard()"
           />
           <div class="center">
-            <p class="text-normal nav-text" @click="dashboard()">
+            <p class="text-normal nav-text" @click="mainpage()">
               หน้าหลักการแข่งขัน
             </p>
           </div>
@@ -32,7 +32,12 @@
           </div>
         </div>
         <div id="nav-right">
-          <p class="text-normal nav-text">ติดต่อเรา</p>
+          <router-link
+            v-if="roleStatus == `user`"
+            to="/#contact-box"
+            class="text-normal nav-text"
+            >ติดต่อเรา</router-link
+          >
           <div class="center">
             <p
               class="text-normal display-name nav-text"
@@ -78,11 +83,11 @@ export default {
     mainpage() {
       this.$router.push("/");
     },
-    dashboardMember() {
-      this.$router.push("/dashboard/member");
-    },
     dashboard() {
       this.$router.push("/dashboard");
+    },
+    dashboardMember() {
+      this.$router.push("/dashboard/member");
     },
     dashboardFile() {
       this.$router.push("/dashboard/file");
@@ -126,6 +131,11 @@ export default {
 #navbar {
   position: relative;
 }
+
+a {
+  text-decoration: none;
+}
+
 #navbar-menu {
   background-color: #ffffff;
   padding: 17px 0px;

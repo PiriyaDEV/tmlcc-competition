@@ -8,19 +8,12 @@
       <div>
         <h1 class="text-normal">เรียงลำดับ</h1>
         <select name="sorting" id="sorting" class="input-box text-normal">
-          <option value="มัธยมศึกษา">ชื่อ ก - ฮ</option>
-          <option value="มัธยมศึกษา">ชื่อ ก - ฮ</option>
-          <option value="มัธยมศึกษา">ชื่อ ก - ฮ</option>
-          <option value="มัธยมศึกษา">ชื่อ ก - ฮ</option>
+          <option value="มัธยมศึกษา">ชื่อโฟลเดอร์ ก - ฮ</option>
+          <option value="มัธยมศึกษา">วันที่อัพโหลด</option>
         </select>
       </div>
       <div>
-        <button
-          class="add-btn"
-          onclick="document.getElementById('file-input').click(); return false;"
-        >
-          เพิ่มเอกสาร
-        </button>
+        <button class="add-btn" @click="clickUpload()">เพิ่มเอกสาร</button>
         <!-- <input
           type="file"
           id="file-input"
@@ -35,6 +28,7 @@
     <div>
       <h1 class="text-normal b-header">รายการเอกสาร (Materials)</h1>
       <div id="file-box">
+        <h1 class="text-normal l-grey-text notfound">ไม่มีไฟล์ในระบบ</h1>
         <div class="file-container" v-for="(file, i) in fileList" :key="i">
           <div>
             <div>
@@ -46,16 +40,20 @@
               <h1 class="file-name file-head">เอกสารประจำวันที่ 01/09/2564</h1>
             </div>
             <div>
-              <button class="delete-btn" v-if="edit">delete</button>
+              <button class="delete-btn" v-if="edit">
+                <img src="../../assets/icon/icon-trash.png" alt="" />Delete
+              </button>
               <button class="edit-btn" v-if="!edit" @click="editClick">
                 edit
               </button>
-              <button class="edit-btn" v-if="edit" @click="editClick">
-                cancel
+              <button class="edit-btn save-btn" v-if="edit" @click="editClick">
+                save
               </button>
             </div>
           </div>
-
+          <h1 class="file-name folder-description">
+            เอกสารเพื่อการเตรียมความพร้อม ก่อนเริ่มการอบรม
+          </h1>
           <div id="icon-list" v-for="(file, i) in fileList" :key="i">
             <img
               class="file-icon"
@@ -69,6 +67,13 @@
               value="โจทย์การแข่งขัน"
               v-if="edit"
             />
+            <button class="delete-btn" v-if="edit">
+              <img
+                class="trash-icon"
+                src="../../assets/icon/icon-trash.png"
+                alt=""
+              />
+            </button>
           </div>
         </div>
       </div>
@@ -95,6 +100,9 @@ export default {
     // },
     editClick() {
       this.edit = !this.edit;
+    },
+    clickUpload() {
+      this.$emit("fileClickUpload", true);
     },
   },
 };
@@ -138,6 +146,20 @@ export default {
   cursor: pointer;
 }
 
+.save-btn {
+  color: #ffffff !important;
+  background-color: #f07821 !important;
+}
+
+.notfound {
+  margin-top: 25px;
+}
+
+.trash-icon {
+  padding: 3px;
+  margin: 0px !important;
+}
+
 #file-box > div > div > .input-box {
   color: #303030 !important;
   padding: 3px 5px !important;
@@ -164,16 +186,23 @@ export default {
 }
 
 .delete-btn {
-  color: #ffffff;
-  border: 2px solid #f07821;
-  background-color: #f07821;
+  color: #bf2e7e;
+  border: 2px solid #bf2e7e;
+  background-color: transparent;
   margin: 0px 10px;
+  display: flex;
+  align-items: center;
+}
+
+.delete-btn > img {
+  width: 13px;
+  margin-right: 4px;
 }
 
 /* File */
 #file-box {
   overflow-y: scroll;
-  height: 522px;
+  max-height: 522px;
 }
 
 .file-container {
@@ -203,6 +232,12 @@ export default {
   margin-top: 10px;
   margin-left: 25px;
   margin-bottom: 10px;
+}
+
+.folder-description {
+  padding-left: 25px;
+  padding-top: 10px;
+  color: #7f7f7f !important;
 }
 
 .file-icon {
@@ -281,6 +316,10 @@ div::-webkit-scrollbar-thumb {
   .folder-icon {
     width: 16px;
   }
+
+  .delete-btn > img {
+    width: 10px;
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -298,6 +337,10 @@ div::-webkit-scrollbar-thumb {
     font-size: 1.25em;
     padding: 0px 5px;
     margin: 0px 5px;
+  }
+
+  .delete-btn > img {
+    width: 7px;
   }
 
   #search-grid {

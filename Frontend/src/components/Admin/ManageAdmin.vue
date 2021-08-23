@@ -22,9 +22,8 @@
         <h1 class="text-normal">เรียงลำดับ</h1>
         <select name="sorting" id="sorting" class="input-box text-normal">
           <option value="มัธยมศึกษา">ชื่อ ก - ฮ</option>
-          <option value="มัธยมศึกษา">ชื่อ ก - ฮ</option>
-          <option value="มัธยมศึกษา">ชื่อ ก - ฮ</option>
-          <option value="มัธยมศึกษา">ชื่อ ก - ฮ</option>
+          <option value="มัธยมศึกษา">อีเมล ก - z</option>
+          <option value="มัธยมศึกษา">สังกัด ก - z</option>
         </select>
       </div>
     </div>
@@ -194,9 +193,13 @@ export default {
       role: "",
     };
   },
+  mounted() {
+    this.keyword = this.staffSearch;
+  },
   computed: {
     ...mapGetters({
       staffList: "admin/getStaffList",
+      staffSearch: "admin/getStaffSearch",
     }),
     // isInArray: function () {
     //   return this.edit.includes(false);

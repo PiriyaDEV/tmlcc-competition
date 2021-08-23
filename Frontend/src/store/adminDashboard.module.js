@@ -64,6 +64,12 @@ export default {
     getUserSelect(state) {
       return state.user.select;
     },
+    getUserSearch(state) {
+      return state.user.search;
+    },
+    getStaffSearch(state) {
+      return state.staff.search;
+    },
   },
   mutations: {
     resetUserSelect(state) {
