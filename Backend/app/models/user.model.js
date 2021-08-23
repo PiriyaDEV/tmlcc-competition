@@ -176,4 +176,56 @@ User.getAllStaffs = (result) => {
   );
 };
 
+User.getInfo = (user, result) => {
+  sql.query(
+    `SELECT email,
+      user_id,
+      displayName,
+      titleName,
+      firstName,
+      lastName,
+      phone,
+      address,
+      education,
+      institution,
+      organization,
+      country,
+      works,
+      isWorkInterest,
+      interestField,
+      hasProgSkill,
+      progSkillLevel,
+      progSkillList,
+      hasChemSkill,
+      chemSkillLevel,
+      chemSkillList,
+      hasMachineLSkill,
+      machineLSkillLevel,
+      machineLSkillList,
+      hasOtherSkill,
+      otherSkillList
+     FROM Users WHERE
+      user_id = '${user.user_id}' OR
+      email = '${user.email}' OR
+      displayName = '${user.displayName}'`,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      if (!res.length) {
+        console.log("Result: user not found");
+        result(null, { isFound: false });
+        return;
+      }
+
+      console.log(`Result: user found -> ${res[0].user_id}`);
+      result(null, { isFound: true, user: res[0] });
+      return;
+    }
+  );
+};
+
 module.exports = User;

@@ -9,4 +9,6 @@ module.exports = (app) => {
   app.get("/api/user/getAllUsers", auth, controller.getAllUsers);
 
   app.get("/api/user/getAllStaffs", auth, controller.getAllStaffs);
+
+  app.get("/api/user/getInfo", auth, controller.getInfo);
 };
