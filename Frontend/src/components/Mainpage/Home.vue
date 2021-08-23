@@ -74,13 +74,13 @@
     </div>
 
     <div id="sponsors-section">
-      <Sponsors />
+      <MainSponsors />
     </div>
   </div>
 </template>
 
 <script>
-import Sponsors from "../Mainpage/Sponsors.vue";
+import MainSponsors from "../Mainpage/MainSponsors.vue";
 export default {
   data() {
     return {
@@ -99,7 +99,7 @@ export default {
     };
   },
   components: {
-    Sponsors,
+    MainSponsors,
   },
   mounted() {
     setInterval(() => {
@@ -263,6 +263,10 @@ export default {
 
   .number-box > h1 {
     line-height: 60px;
+  }
+
+  #sponsors-section {
+    margin-top: 20px;
   }
 }
 
