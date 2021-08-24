@@ -22,11 +22,22 @@
           </div>
         </div>
         <div id="nav-center">
-          <div v-if="roleStatus == `admin`" class="center">
-            <p class="text-normal nav-text" @click="dashboardMember()">
+          <div
+            v-if="roleStatus == `admin` || roleStatus == `editor`"
+            class="center"
+          >
+            <p
+              class="text-normal nav-text"
+              v-if="roleStatus == `admin`"
+              @click="dashboardMember()"
+            >
               สมาชิกของระบบ
             </p>
-            <p class="text-normal nav-text" @click="dashboardFile()">
+            <p
+              class="text-normal nav-text"
+              v-if="roleStatus != `user`"
+              @click="dashboardFile()"
+            >
               File Management
             </p>
           </div>

@@ -27,30 +27,30 @@
           <option value="นางสาว">นางสาว</option>
         </select>
         <p
-          v-if="isInvalid.titleName"
+          v-if="registerStatus.titleName.isInvalid"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุคำนำหน้า
+          * {{ registerStatus.titleName.message }}
         </p>
       </div>
       <div>
         <h1 class="text-normal">ชื่อ</h1>
         <input v-model="user.firstName" :class="cssFirstName" type="text" />
         <p
-          v-if="isInvalid.firstName"
+          v-if="registerStatus.firstName.isInvalid"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุชื่อ
+          * {{ registerStatus.firstName.message }}
         </p>
       </div>
       <div>
         <h1 class="text-normal">นามสกุล</h1>
         <input v-model="user.lastName" :class="cssLastName" type="text" />
         <p
-          v-if="isInvalid.lastName"
+          v-if="registerStatus.lastName.isInvalid"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุนามสกุล
+          * {{ registerStatus.lastName.message }}
         </p>
       </div>
     </div>
@@ -70,20 +70,20 @@
           <option value="ปริญญาเอก">ปริญญาเอก</option>
         </select>
         <p
-          v-if="isInvalid.education"
+          v-if="registerStatus.education.isInvalid"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุระดับการศึกษา
+          * {{ registerStatus.education.message }}
         </p>
       </div>
       <div>
         <h1 class="text-normal">สถานศึกษา</h1>
         <input v-model="user.institution" :class="cssInstitution" type="text" />
         <p
-          v-if="isInvalid.institution"
+          v-if="registerStatus.institution.isInvalid"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุสถานศึกษา
+          * {{ registerStatus.institution.message }}
         </p>
       </div>
     </div>
@@ -102,10 +102,10 @@
           type="text"
         />
         <p
-          v-if="isInvalid.organization"
+          v-if="registerStatus.organization.isInvalid"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุสังกัด
+          * {{ registerStatus.organization.message }}
         </p>
       </div>
     </div>
@@ -115,20 +115,20 @@
         <h1 class="text-normal">ที่อยู่</h1>
         <input v-model="user.address" :class="cssAddress" type="text" />
         <p
-          v-if="isInvalid.address"
+          v-if="registerStatus.address.isInvalid"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุที่อยู่
+          * {{ registerStatus.address.message }}
         </p>
       </div>
       <div>
         <h1 class="text-normal">ประเทศ</h1>
         <input v-model="user.country" :class="cssCountry" type="text" />
         <p
-          v-if="isInvalid.country"
+          v-if="registerStatus.country.isInvalid"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุประเทศ
+          * {{ registerStatus.country.message }}
         </p>
       </div>
     </div>
@@ -139,20 +139,21 @@
       <div>
         <h1 class="text-normal">เบอร์โทรศัพท์</h1>
         <input v-model="user.phone" :class="cssPhone" type="text" />
-        <p v-if="isInvalid.phone" class="text-normal orange-text error-message">
-          * โปรดระบุเบอร์โทรศัพท์
+        <p
+          v-if="registerStatus.phone.isInvalid"
+          class="text-normal orange-text error-message"
+        >
+          * {{ registerStatus.phone.message }}
         </p>
       </div>
       <div>
         <h1 class="text-normal">E-mail</h1>
-        <input
-          v-model="user.email"
-          @blur="checkDuplicated()"
-          :class="cssEmail"
-          type="text"
-        />
-        <p v-if="isInvalid.email" class="text-normal orange-text error-message">
-          * โปรดระบุ E-mail
+        <input v-model="user.email" :class="cssEmail" type="text" />
+        <p
+          v-if="registerStatus.email.isInvalid"
+          class="text-normal orange-text error-message"
+        >
+          * {{ registerStatus.email.message }}
         </p>
       </div>
     </div>
@@ -171,8 +172,11 @@
           :class="cssWorks"
           placeholder="Publication/github/ อื่นๆ"
         ></textarea>
-        <p v-if="isInvalid.works" class="text-normal orange-text error-message">
-          * โปรดระบุผลงานที่เคยทำ
+        <p
+          v-if="registerStatus.works.isInvalid"
+          class="text-normal orange-text error-message"
+        >
+          * {{ registerStatus.works.message }}
         </p>
       </div>
     </div>
@@ -212,10 +216,10 @@
             placeholder="โปรดระบุสาขาที่สนใจ"
           />
           <p
-            v-if="isInvalid.workInterest"
+            v-if="registerStatus.workInterest.isInvalid"
             class="text-normal orange-text error-message"
           >
-            * โปรดระบุความสนใจ
+            * {{ registerStatus.workInterest.message }}
           </p>
         </div>
       </div>
@@ -396,10 +400,10 @@
             placeholder="ระบุเรื่องที่เชี่ยวชาญ โดยใช้ , กั้น"
           />
           <p
-            v-if="isInvalid.skill"
+            v-if="registerStatus.skill.isInvalid"
             class="text-normal orange-text error-message"
           >
-            * โปรดระบุเรื่องที่เชี่ยวชาญ
+            * {{ registerStatus.skill.message }}
           </p>
         </div>
       </div>
@@ -414,34 +418,32 @@
 </template>
 
 <script>
-import User from "../../models/user.model";
-import UserService from "../../services/user.service";
+import { mapGetters } from "vuex";
 
 export default {
   props: ["user"],
   data() {
     return {
-      isFormFilled: false,
-      isInvalid: {
-        ...new User(false),
-        workInterest: false,
-        skill: false,
-      },
+      readyToNext: false,
     };
   },
   computed: {
+    ...mapGetters({
+      registerStatus: "auth/getRegisterStatus",
+      checkStatus: "auth/getCheckStatus",
+    }),
     cssNextT() {
-      return this.checkForm()
+      return this.checkStatus
         ? "text-normal purple-text"
         : "text-normal l-grey-text";
     },
     cssNextB() {
-      return this.checkForm() ? "btn-white" : "btn-grey";
+      return this.checkStatus ? "btn-white" : "btn-grey";
     },
     cssTitleName() {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
-      if (this.isInvalid.titleName) {
+      if (this.registerStatus.titleName.isInvalid) {
         return error;
       }
       return complete;
@@ -449,7 +451,7 @@ export default {
     cssFirstName() {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
-      if (this.isInvalid.firstName) {
+      if (this.registerStatus.firstName.isInvalid) {
         return error;
       }
       return complete;
@@ -457,7 +459,7 @@ export default {
     cssLastName() {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
-      if (this.isInvalid.lastName) {
+      if (this.registerStatus.lastName.isInvalid) {
         return error;
       }
       return complete;
@@ -465,7 +467,7 @@ export default {
     cssEducation() {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
-      if (this.isInvalid.education) {
+      if (this.registerStatus.education.isInvalid) {
         return error;
       }
       return complete;
@@ -473,7 +475,7 @@ export default {
     cssInstitution() {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
-      if (this.isInvalid.institution) {
+      if (this.registerStatus.institution.isInvalid) {
         return error;
       }
       return complete;
@@ -481,7 +483,7 @@ export default {
     cssOrganization() {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
-      if (this.isInvalid.organization) {
+      if (this.registerStatus.organization.isInvalid) {
         return error;
       }
       return complete;
@@ -489,7 +491,7 @@ export default {
     cssAddress() {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
-      if (this.isInvalid.address) {
+      if (this.registerStatus.address.isInvalid) {
         return error;
       }
       return complete;
@@ -497,7 +499,7 @@ export default {
     cssCountry() {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
-      if (this.isInvalid.country) {
+      if (this.registerStatus.country.isInvalid) {
         return error;
       }
       return complete;
@@ -505,7 +507,7 @@ export default {
     cssPhone() {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
-      if (this.isInvalid.phone) {
+      if (this.registerStatus.phone.isInvalid) {
         return error;
       }
       return complete;
@@ -513,7 +515,7 @@ export default {
     cssEmail() {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
-      if (this.isInvalid.email) {
+      if (this.registerStatus.email.isInvalid) {
         return error;
       }
       return complete;
@@ -521,7 +523,7 @@ export default {
     cssWorks() {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
-      if (this.isInvalid.works) {
+      if (this.registerStatus.works.isInvalid) {
         return error;
       }
       return complete;
@@ -530,9 +532,8 @@ export default {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
       if (
-        this.isInvalid.workInterest &&
-        this.user.isWorkInterest &&
-        !this.user.interestField
+        this.registerStatus.workInterest.isInvalid &&
+        this.user.isWorkInterest
       ) {
         return error;
       }
@@ -541,11 +542,7 @@ export default {
     cssProgSkill() {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
-      if (
-        this.isInvalid.skill &&
-        this.user.hasProgSkill &&
-        !this.user.progSkillList
-      ) {
+      if (this.registerStatus.skill.prog.isInvalid && this.user.hasProgSkill) {
         return error;
       }
       return complete;
@@ -553,11 +550,7 @@ export default {
     cssChemSkill() {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
-      if (
-        this.isInvalid.skill &&
-        this.user.hasChemSkill &&
-        !this.user.chemSkillList
-      ) {
+      if (this.registerStatus.skill.chem.isInvalid && this.user.hasChemSkill) {
         return error;
       }
       return complete;
@@ -566,9 +559,8 @@ export default {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
       if (
-        this.isInvalid.skill &&
-        this.user.hasMachineLSkill &&
-        !this.user.machineLSkillList
+        this.registerStatus.skill.machine.isInvalid &&
+        this.user.hasMachineLSkill
       ) {
         return error;
       }
@@ -578,9 +570,8 @@ export default {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
       if (
-        this.isInvalid.skill &&
-        this.user.hasOtherSkill &&
-        !this.user.otherSkillList
+        this.registerStatus.skill.other.isInvalid &&
+        this.user.hasOtherSkill
       ) {
         return error;
       }
@@ -589,50 +580,49 @@ export default {
   },
   watch: {
     "user.firstName": function () {
-      this.isInvalid.firstName = false;
-      let reg = /[0-9๐-๙!-/:-@[-`{-~]/;
-      if (reg.test(this.user.firstName)) {
-        this.isInvalid.firstName = true;
-      }
+      this.$store.dispatch("auth/checkInput", this.user);
     },
     "user.lastName": function () {
-      this.isInvalid.lastName = false;
-      let reg = /[0-9๐-๙!-/:-@[-`{-~]/;
-      if (reg.test(this.user.lastName)) {
-        this.isInvalid.lastName = true;
-      }
+      this.$store.dispatch("auth/checkInput", this.user);
+    },
+    "user.education": function () {
+      this.$store.dispatch("auth/checkInput", this.user);
     },
     "user.institution": function () {
-      this.isInvalid.institution = false;
+      this.$store.dispatch("auth/checkInput", this.user);
     },
     "user.organization": function () {
-      this.isInvalid.organization = false;
+      this.$store.dispatch("auth/checkInput", this.user);
     },
     "user.address": function () {
-      this.isInvalid.address = false;
+      this.$store.dispatch("auth/checkInput", this.user);
     },
     "user.country": function () {
-      this.isInvalid.country = false;
-      let reg = /[0-9๐-๙!-/:-@[-`{-~]/;
-      if (reg.test(this.user.country)) {
-        this.isInvalid.country = true;
-      }
+      this.$store.dispatch("auth/checkInput", this.user);
     },
     "user.phone": function () {
-      this.isInvalid.phone = false;
-      let reg = /[^0-9]/;
-      if (reg.test(this.user.phone)) {
-        this.isInvalid.phone = true;
-      }
+      this.$store.dispatch("auth/checkInput", this.user);
     },
     "user.email": function () {
-      this.isInvalid.email = false;
+      this.$store.dispatch("auth/checkInput", this.user);
     },
     "user.works": function () {
-      this.isInvalid.works = false;
+      this.$store.dispatch("auth/checkInput", this.user);
+    },
+    "user.progSkillList": function () {
+      this.$store.dispatch("auth/checkInput", this.user);
+    },
+    "user.chemSkillList": function () {
+      this.$store.dispatch("auth/checkInput", this.user);
+    },
+    "user.machineLSkillList": function () {
+      this.$store.dispatch("auth/checkInput", this.user);
+    },
+    "user.otherSkillList": function () {
+      this.$store.dispatch("auth/checkInput", this.user);
     },
     "user.isWorkInterest": function () {
-      this.isInvalid.workInterest = false;
+      this.$store.dispatch("auth/checkInput", this.user);
       if (this.user.isWorkInterest == "true") {
         this.user.isWorkInterest = true;
         document.getElementById("workInterestBox").disabled = false;
@@ -642,10 +632,8 @@ export default {
         document.getElementById("workInterestBox").disabled = true;
       }
     },
-    "user.interestField": function () {
-      this.isInvalid.workInterest = false;
-    },
     "user.hasProgSkill": function () {
+      this.$store.dispatch("auth/checkInput", this.user);
       if (this.user.hasProgSkill) {
         this.user.progSkillLevel = "Beginner";
         document.getElementById("programBox").disabled = false;
@@ -662,6 +650,7 @@ export default {
       }
     },
     "user.hasChemSkill": function () {
+      this.$store.dispatch("auth/checkInput", this.user);
       if (this.user.hasChemSkill) {
         this.user.chemSkillLevel = "Beginner";
         document.getElementById("chemBox").disabled = false;
@@ -678,6 +667,7 @@ export default {
       }
     },
     "user.hasMachineLSkill": function () {
+      this.$store.dispatch("auth/checkInput", this.user);
       if (this.user.hasMachineLSkill) {
         this.user.machineLSkillLevel = "Beginner";
         document.getElementById("machineBox").disabled = false;
@@ -694,6 +684,7 @@ export default {
       }
     },
     "user.hasOtherSkill": function () {
+      this.$store.dispatch("auth/checkInput", this.user);
       if (this.user.hasOtherSkill) {
         document.getElementById("otherBox").disabled = false;
       } else {
@@ -706,160 +697,17 @@ export default {
     agreementClick() {
       this.$store.dispatch("page/setPage", "agreement");
     },
-    registerNext() {
-      if (this.validateForm() && !this.isInvalid.email) {
+    async registerNext() {
+      if (this.checkStatus) {
+        this.$store.dispatch("auth/validateProfile", this.user);
+        await this.validateProfile();
+      }
+    },
+    validateProfile() {
+      this.readyToNext = this.registerStatus.readyToNext;
+      if (this.readyToNext) {
         this.$store.dispatch("page/setPage", "info");
       }
-    },
-    checkDuplicated() {
-      let reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/;
-      if (reg.test(this.user.email)) {
-        UserService.checkDuplicated({ email: this.user.email }).then((res) => {
-          if (res.status == 200) {
-            this.isInvalid.email = res.data.isFound;
-          } else {
-            console.log("Something wrong!");
-          }
-        });
-      } else {
-        this.isInvalid.email = true;
-      }
-    },
-    checkForm() {
-      let check = !this.user.titleName
-        ? false
-        : !this.user.firstName
-        ? false
-        : !this.user.lastName
-        ? false
-        : !this.user.education
-        ? false
-        : !this.user.institution
-        ? false
-        : !this.user.organization
-        ? false
-        : !this.user.address
-        ? false
-        : !this.user.country
-        ? false
-        : !this.user.phone
-        ? false
-        : !this.user.email
-        ? false
-        : !this.user.works
-        ? false
-        : this.user.isWorkInterest == null
-        ? false
-        : this.user.isWorkInterest && !this.user.interestField
-        ? false
-        : !this.user.hasProgSkill &&
-          !this.user.hasChemSkill &&
-          !this.user.hasMachineLSkill &&
-          !this.user.hasOtherSkill
-        ? false
-        : this.user.hasProgSkill &&
-          (!this.user.progSkillLevel || !this.user.progSkillList)
-        ? false
-        : this.user.hasChemSkill &&
-          (!this.user.chemSkillLevel || !this.user.chemSkillList)
-        ? false
-        : this.user.hasMachineLSkill &&
-          (!this.user.machineLSkillLevel || !this.user.machineLSkillList)
-        ? false
-        : this.user.hasOtherSkill && !this.user.otherSkillList
-        ? false
-        : true;
-      return check;
-    },
-    validateForm() {
-      this.isFormFilled = true;
-      if (!this.user.titleName) {
-        this.isInvalid.titleName = true;
-        this.isFormFilled = false;
-      }
-      if (!this.user.firstName) {
-        this.isInvalid.firstName = true;
-        this.isFormFilled = false;
-      }
-      if (!this.user.lastName) {
-        this.isInvalid.lastName = true;
-        this.isFormFilled = false;
-      }
-      if (!this.user.education) {
-        this.isInvalid.education = true;
-        this.isFormFilled = false;
-      }
-      if (!this.user.institution) {
-        this.isInvalid.institution = true;
-        this.isFormFilled = false;
-      }
-      if (!this.user.organization) {
-        this.isInvalid.organization = true;
-        this.isFormFilled = false;
-      }
-      if (!this.user.address) {
-        this.isInvalid.address = true;
-        this.isFormFilled = false;
-      }
-      if (!this.user.country) {
-        this.isInvalid.country = true;
-        this.isFormFilled = false;
-      }
-      if (!this.user.phone) {
-        this.isInvalid.phone = true;
-        this.isFormFilled = false;
-      }
-      if (!this.user.email) {
-        this.isInvalid.email = true;
-        this.isFormFilled = false;
-      }
-      if (!this.user.works) {
-        this.isInvalid.works = true;
-        this.isFormFilled = false;
-      }
-      if (this.user.isWorkInterest == null) {
-        this.isInvalid.workInterest = true;
-        this.isFormFilled = false;
-      }
-      if (this.user.isWorkInterest && !this.user.interestField) {
-        this.isInvalid.workInterest = true;
-        this.isFormFilled = false;
-      }
-      if (
-        !this.user.hasProgSkill &&
-        !this.user.hasChemSkill &&
-        !this.user.hasMachineLSkill &&
-        !this.user.hasOtherSkill
-      ) {
-        this.isInvalid.skill = true;
-        this.isFormFilled = false;
-      }
-      if (
-        this.user.hasProgSkill &&
-        (!this.user.progSkillLevel || !this.user.progSkillList)
-      ) {
-        this.isInvalid.skill = true;
-        this.isFormFilled = false;
-      }
-      if (
-        this.user.hasChemSkill &&
-        (!this.user.chemSkillLevel || !this.user.chemSkillList)
-      ) {
-        this.isInvalid.skill = true;
-        this.isFormFilled = false;
-      }
-      if (
-        this.user.hasMachineLSkill &&
-        (!this.user.machineLSkillLevel || !this.user.machineLSkillList)
-      ) {
-        this.isInvalid.skill = true;
-        this.isFormFilled = false;
-      }
-      if (this.user.hasOtherSkill && !this.user.otherSkillList) {
-        this.isInvalid.skill = true;
-        this.isFormFilled = false;
-      }
-      return this.isFormFilled;
     },
   },
 };

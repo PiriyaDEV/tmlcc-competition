@@ -7,11 +7,16 @@
       </div>
       <div>
         <h1 class="text-normal">เรียงลำดับ</h1>
-        <select name="sorting" id="sorting" class="input-box text-normal">
-          <option value="มัธยมศึกษา">ชื่อ ก - ฮ</option>
-          <option value="มัธยมศึกษา">อีเมล a - z</option>
-          <option value="มัธยมศึกษา">ชื่อทีม ก - z</option>
-          <option value="มัธยมศึกษา">ระดับการศึกษา ก - z</option>
+        <select
+          v-model="sort"
+          name="sorting"
+          id="sorting"
+          class="input-box text-normal"
+        >
+          <option value="name">ชื่อ ก - ฮ</option>
+          <option value="email">อีเมล a - ฮ</option>
+          <option value="team">ชื่อทีม ก - ฮ</option>
+          <option value="education">ระดับการศึกษา ก - ฮ</option>
         </select>
       </div>
     </div>
@@ -75,10 +80,12 @@ export default {
   data() {
     return {
       keyword: "",
+      sort: "name",
     };
   },
   mounted() {
     this.keyword = this.userSearch;
+    this.$store.dispatch("admin/updateUserSort", this.sort);
   },
   computed: {
     ...mapGetters({
@@ -90,6 +97,9 @@ export default {
   watch: {
     keyword: function () {
       this.$store.dispatch("admin/updateUserSearch", this.keyword);
+    },
+    sort: function () {
+      this.$store.dispatch("admin/updateUserSort", this.sort);
     },
   },
   methods: {

@@ -22,10 +22,10 @@
           </div>
         </div>
         <p
-          v-if="isInvalid.hasTeam"
+          v-if="registerStatus.hasTeam.isInvalid"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุคำตอบ
+          * {{ registerStatus.hasTeam.message }}
         </p>
 
         <div id="note">
@@ -63,10 +63,10 @@
           />
         </div>
         <p
-          v-if="isInvalid.displayName"
+          v-if="registerStatus.displayName.isInvalid"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุชื่อผู้ใช้งาน
+          * {{ registerStatus.displayName.message }}
         </p>
 
         <div>
@@ -80,10 +80,10 @@
           />
         </div>
         <p
-          v-if="isInvalid.password"
+          v-if="registerStatus.password.isInvalid"
           class="text-normal orange-text error-message"
         >
-          * โปรดตั้งรหัสผ่าน
+          * {{ registerStatus.password.message }}
         </p>
 
         <div>
@@ -97,11 +97,11 @@
           />
         </div>
         <p
-          v-if="isInvalid.confirmPassword"
+          v-if="registerStatus.confirmPassword.isInvalid"
           maxlength="16"
           class="text-normal orange-text error-message"
         >
-          * โปรดยืนยันรหัสผ่าน
+          * {{ registerStatus.confirmPassword.message }}
         </p>
       </div>
     </div>
@@ -115,30 +115,26 @@
 </template>
 
 <script>
-import AuthService from "../../services/auth.service";
-import UserService from "../../services/user.service";
-import User from "../../models/user.model";
+import { mapGetters } from "vuex";
 
 export default {
   props: ["user"],
   data() {
     return {
-      isFormFilled: false,
-      confirmPassword: "",
-      isInvalid: {
-        ...new User(false),
-        confirmPassword: false,
-      },
+      readyToCreate: false,
     };
   },
   computed: {
+    ...mapGetters({
+      registerStatus: "auth/getRegisterStatus",
+    }),
     cssBtn() {
-      return this.checkForm() ? "btn-white" : "btn-grey";
+      return this.readyToCreate ? "btn-white" : "btn-grey";
     },
     cssDisplayName() {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
-      if (this.isInvalid.displayName) {
+      if (this.registerStatus.displayName.isInvalid) {
         return error;
       }
       return complete;
@@ -146,7 +142,7 @@ export default {
     cssPassword() {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
-      if (this.isInvalid.password) {
+      if (this.registerStatus.password.isInvalid) {
         return error;
       }
       return complete;
@@ -154,114 +150,87 @@ export default {
     cssConfirmPassword() {
       let error = "input-box text-normal error-input-box";
       let complete = "input-box text-normal";
-      if (this.isInvalid.confirmPassword) {
+      if (this.registerStatus.confirmPassword.isInvalid) {
         return error;
       }
       return complete;
     },
   },
   watch: {
-    "user.hasTeam": function () {
-      this.isInvalid.hasTeam = false;
-      if (this.user.hasTeam == "true") {
-        this.user.hasTeam = true;
-      } else if (this.user.hasTeam == "false") {
-        this.user.hasTeam = false;
-      }
-    },
-    "user.displayName": function () {
-      this.isInvalid.displayName = false;
-      let reg = /[^A-Za-z0-9_.ก-๛]/;
-      if (this.user.displayName.length < 3) {
-        this.isInvalid.displayName = true;
-      } else if (reg.test(this.user.displayName)) {
-        this.isInvalid.displayName = true;
-      } else if (this.user.displayName == ".") {
-        this.isInvalid.displayName = true;
-      } else if (
-        this.user.displayName[this.user.displayName.length - 1] == "."
-      ) {
-        this.isInvalid.displayName = true;
-      }
-    },
-    "user.password": function () {
-      this.isInvalid.password = false;
-      if (this.user.password.length < 8) {
-        this.isInvalid.password = true;
-      }
-    },
-    confirmPassword: function () {
-      this.isInvalid.confirmPassword = false;
-      if (this.user.password != this.confirmPassword) {
-        this.isInvalid.confirmPassword = true;
-      }
-    },
+    // "user.hasTeam": function () {
+    //   if (this.user.hasTeam == "true") {
+    //     this.user.hasTeam = true;
+    //   } else if (this.user.hasTeam == "false") {
+    //     this.user.hasTeam = false;
+    //   }
+    // },
+    // "user.displayName": function () {
+    //   let reg = /[^A-Za-z0-9_.ก-๛]/;
+    //   if (this.user.displayName.length < 3) {
+    //     this.isInvalid.displayName = true;
+    //   } else if (reg.test(this.user.displayName)) {
+    //     this.isInvalid.displayName = true;
+    //   } else if (this.user.displayName == ".") {
+    //     this.isInvalid.displayName = true;
+    //   } else if (
+    //     this.user.displayName[this.user.displayName.length - 1] == "."
+    //   ) {
+    //     this.isInvalid.displayName = true;
+    //   }
+    // },
+    // "user.password": function () {
+    //   if (this.user.password.length < 8) {
+    //     this.isInvalid.password = true;
+    //   }
+    // },
+    // confirmPassword: function () {
+    //   if (this.user.password != this.confirmPassword) {
+    //     this.isInvalid.confirmPassword = true;
+    //   }
+    // },
   },
   methods: {
     applicantClick() {
       this.$store.dispatch("page/setPage", "applicant");
     },
-    register() {
-      if (this.validateForm() && !this.isInvalid.displayName) {
-        AuthService.register(this.user).then((res) => {
-          if (res.status == 201) {
-            console.log("Register success!");
-            this.$router.push("/login");
-          } else {
-            console.log("Something wrong!");
-          }
-        });
+    async register() {
+      await this.$store.dispatch("auth/register", this.user);
+      if (this.registerStatus.isSuccess) {
+        this.$router.push("/login");
       }
     },
-    checkDuplicated() {
-      if (this.user.displayName) {
-        UserService.checkDuplicated({
-          displayName: this.user.displayName,
-        }).then((res) => {
-          if (res.status == 200) {
-            this.isInvalid.displayName = res.data.isFound;
-          } else {
-            console.log("Something wrong!");
-          }
-        });
-      } else {
-        this.isInvalid.displayName = true;
-      }
-    },
-    checkForm() {
-      let check =
-        this.user.hasTeam == null
-          ? false
-          : !this.user.displayName
-          ? false
-          : !this.user.password
-          ? false
-          : !this.confirmPassword
-          ? false
-          : true;
+    // checkDuplicated() {
+    //   if (this.user.displayName) {
+    //     UserService.checkDuplicated({
+    //       displayName: this.user.displayName,
+    //     }).then((res) => {
+    //       if (res.status == 200) {
+    //         this.isInvalid.displayName = res.data.isFound;
+    //       } else {
+    //         console.log("Something wrong!");
+    //       }
+    //     });
+    //   } else {
+    //     this.isInvalid.displayName = true;
+    //   }
+    // },
+    // checkForm() {
+    //   let check =
+    //     this.user.hasTeam == null
+    //       ? false
+    //       : !this.user.displayName
+    //       ? false
+    //       : !this.user.password
+    //       ? false
+    //       : !this.confirmPassword
+    //       ? false
+    //       : true;
 
-      return check;
-    },
-    validateForm() {
-      this.isFormFilled = true;
-      if (this.user.hasTeam == null) {
-        this.isInvalid.hasTeam = true;
-        this.isFormFilled = false;
-      }
-      if (!this.user.displayName) {
-        this.isInvalid.displayName = true;
-        this.isFormFilled = false;
-      }
-      if (!this.user.password) {
-        this.isInvalid.password = true;
-        this.isFormFilled = false;
-      }
-      if (!this.confirmPassword) {
-        this.isInvalid.confirmPassword = true;
-        this.isFormFilled = false;
-      }
-
-      return this.isFormFilled;
+    //   return check;
+    // },
+    async validateAccount() {
+      await this.$store.dispatch("auth/validateAccount", this.user);
+      this.readyToCreate = this.registerStatus.readyToCreate;
     },
   },
 };

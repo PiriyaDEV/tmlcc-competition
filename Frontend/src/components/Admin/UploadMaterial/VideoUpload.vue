@@ -16,7 +16,7 @@
       <h1 class="text-normal">ชื่อวิดีโอ</h1>
       <div>
         <input
-          class="input-box text-normal"
+          :class="cssVideoName"
           type="text"
           placeholder="กรอกชื่อวิดิโอ"
           v-model="video.videoName"
@@ -34,7 +34,7 @@
       <h1 class="text-normal">Video Link</h1>
       <div>
         <input
-          class="input-box text-normal"
+          :class="cssVideoLink"
           type="text"
           placeholder="กรอก url ของ video"
           v-model="video.link"
@@ -53,7 +53,7 @@
       <h1 class="text-normal date-info">วัน/เดือน/ปี ที่เผยแพร่</h1>
       <div>
         <input
-          class="input-box text-normal"
+          :class="cssVideoDate"
           type="text"
           placeholder="เลือกวัน/เดือน/ปี (Default คือ วันที่่เปิดหน้าที่นี้)"
           v-model="video.date"
@@ -72,7 +72,7 @@
       <h1 class="text-normal">เวลา ที่เผยแพร่</h1>
       <div>
         <input
-          class="input-box text-normal"
+          :class="cssVideoTime"
           type="text"
           placeholder="เลือกเวลาในการเผยแพร่ (Default คือ เวลาที่เปิดหน้าที่นี้)"
           v-model="video.time"
@@ -142,6 +142,38 @@ export default {
     ...mapGetters({
       createStatus: "video/getCreateStatus",
     }),
+    cssVideoName() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.createStatus.videoName.isInvalid) {
+        return error;
+      }
+      return complete;
+    },
+    cssVideoLink() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.createStatus.link.isInvalid) {
+        return error;
+      }
+      return complete;
+    },
+    cssVideoDate() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.createStatus.date.isInvalid) {
+        return error;
+      }
+      return complete;
+    },
+    cssVideoTime() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.createStatus.time.isInvalid) {
+        return error;
+      }
+      return complete;
+    },
   },
   methods: {
     clickUpload() {

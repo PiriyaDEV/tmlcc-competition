@@ -45,19 +45,15 @@
       <h1 class="text-normal material-header">Videos</h1>
 
       <div id="video-box">
-        <div class="video-container" v-for="(file, i) in fileList" :key="i">
-          <div class="video-image-container">
-            <img
-              class="video-image"
-              src="https://i.ytimg.com/vi/fz7Jxg7Hbkg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAz1DCKNQJt-7CFu7tnglRTcF45DQ"
-              alt=""
-            />
+        <div class="video-container" v-for="(video, i) in videoList" :key="i">
+          <div class="video-image-container" @click="clickLink(video)">
+            <img class="video-image" :src="video.thumbnail" alt="" />
             <img class="play-btn" src="../../assets/icon/play-btn.png" alt="" />
           </div>
           <div>
-            <h1 class="file-name">อ.แดงกีต้าร์ การคิดตามธรรมชาติ</h1>
-            <p class="file-description">16 กันยายน 2564 เวลา 14.00 น.</p>
-            <p class="file-date">16 กันยายน 2564 เวลา 14.00 น.</p>
+            <h1 class="file-name">{{ video.videoName }}</h1>
+            <p class="file-description">{{ video.description }}</p>
+            <p class="file-date">{{ video.publicTime }}</p>
           </div>
         </div>
       </div>
@@ -78,10 +74,14 @@ export default {
     manageClick() {
       this.$router.push("/dashboard/file");
     },
+    clickLink(value) {
+      window.open(value.link);
+    },
   },
   computed: {
     ...mapGetters({
       roleStatus: "auth/getRole",
+      videoList: "video/getUserVideoList",
     }),
   },
 };

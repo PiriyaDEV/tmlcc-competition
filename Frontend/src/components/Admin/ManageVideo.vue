@@ -7,9 +7,15 @@
       </div>
       <div>
         <h1 class="text-normal">เรียงลำดับ</h1>
-        <select name="sorting" id="sorting" class="input-box text-normal">
-          <option value="มัธยมศึกษา">ชื่อวิดีโอ ก - z</option>
-          <option value="มัธยมศึกษา">วันที่อัพโหลด</option>
+        <select
+          v-model="sort"
+          name="sorting"
+          id="sorting"
+          class="input-box text-normal"
+        >
+          <option value="name">ชื่อวิดีโอ ก - ฮ</option>
+          <option value="new">วันที่อัพโหลด ใหม่ - เก่า</option>
+          <option value="old">วันที่อัพโหลด เก่า - ใหม่</option>
         </select>
       </div>
       <div>
@@ -39,7 +45,7 @@
               </div>
               <div>
                 <input
-                  class="input-box file-name"
+                  :class="cssVideoName"
                   type="text"
                   v-model="video.videoName"
                   v-if="checkEdit == video.video_id"
@@ -48,7 +54,8 @@
                   class="input-box file-description description-box"
                   type="text"
                   v-model="video.description"
-                  v-if="checkEdit == video.video_id && video.description"
+                  v-if="checkEdit == video.video_id"
+                  placeholder="ไม่มีรายละเอียดวิดีโอ"
                 />
                 <p
                   v-if="
@@ -70,7 +77,7 @@
                   {{ video.description }}
                 </p>
                 <p class="file-date">
-                  {{ video.date }} เวลา {{ video.time }} น.
+                  {{ video.publicTime }}
                 </p>
               </div>
             </div>
@@ -113,14 +120,19 @@ export default {
       edit: false,
       checkEdit: "",
       keyword: "",
+      sort: "name",
     };
   },
   mounted() {
     this.keyword = this.videoSearch;
+    this.$store.dispatch("video/updateVideoSort", this.sort);
   },
   watch: {
     keyword: function () {
       this.$store.dispatch("video/updateVideoSearch", this.keyword);
+    },
+    sort: function () {
+      this.$store.dispatch("video/updateVideoSort", this.sort);
     },
   },
   methods: {
@@ -162,6 +174,14 @@ export default {
       videoList: "video/getVideoList",
       videoSearch: "video/getVideoSearch",
     }),
+    cssVideoName() {
+      let error = "input-box file-name error-input-box";
+      let complete = "input-box file-name";
+      if (this.createStatus.videoName.isInvalid) {
+        return error;
+      }
+      return complete;
+    },
   },
 };
 </script>

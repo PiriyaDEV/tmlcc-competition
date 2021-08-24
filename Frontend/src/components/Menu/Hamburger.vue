@@ -145,7 +145,7 @@
       </div>
 
       <div
-        v-if="page == `dashBoard` && roleStatus != `user`"
+        v-if="page == `dashBoard` && roleStatus == `admin`"
         class="nav-head nav-link"
       >
         <a class="text-normal" @click="hideNav" href="/dashboard/member"

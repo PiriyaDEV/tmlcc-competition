@@ -8,8 +8,9 @@
       <div>
         <h1 class="text-normal">เรียงลำดับ</h1>
         <select name="sorting" id="sorting" class="input-box text-normal">
-          <option value="มัธยมศึกษา">ชื่อโฟลเดอร์ ก - ฮ</option>
-          <option value="มัธยมศึกษา">วันที่อัพโหลด</option>
+          <option value="name">ชื่อโฟลเดอร์ ก - ฮ</option>
+          <option value="new">วันที่อัพโหลด ใหม่ - เก่า</option>
+          <option value="old">วันที่อัพโหลด เก่า - ใหม่</option>
         </select>
       </div>
       <div>

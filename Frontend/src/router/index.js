@@ -49,7 +49,7 @@ const routes = [
     component: () => import("../views/Admin/FileSetting.vue"),
     meta: {
       requiresAuth: true,
-      requiresAdmin: true,
+      requiresEditor: true,
     },
   },
   {
@@ -76,10 +76,18 @@ router.beforeEach(async (to, from, next) => {
     } else if (to.matched.some((record) => record.meta.requiresAdmin)) {
       let role = store.getters["auth/getRole"];
 
-      if (role != "admin") {
-        next({ name: "Dashboard" });
-      } else {
+      if (role == "admin") {
         next();
+      } else {
+        next({ name: "Dashboard" });
+      }
+    } else if (to.matched.some((record) => record.meta.requiresEditor)) {
+      let role = store.getters["auth/getRole"];
+
+      if (role == "editor" || role == "admin") {
+        next();
+      } else {
+        next({ name: "Dashboard" });
       }
     } else {
       next();

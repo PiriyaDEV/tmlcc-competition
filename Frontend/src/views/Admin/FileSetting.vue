@@ -44,7 +44,6 @@ import VideoUpload from "../../components/Admin/UploadMaterial/VideoUpload.vue";
 import ManageFile from "../../components/Admin/ManageFile.vue";
 import ManageVideo from "../../components/Admin/ManageVideo.vue";
 import DashboardNavbar from "../../components/Menu/DashboardNavbar.vue";
-import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -95,9 +94,6 @@ export default {
     },
   },
   methods: {
-    ...mapActions({
-      getVideoList: "video/getVideoList",
-    }),
     fileChoice() {
       this.choice = "file";
       this.clickFile = false;
@@ -117,7 +113,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("page/setPage", "dashBoard");
-    this.getVideoList();
+    this.$store.dispatch("video/getVideoList");
   },
 };
 </script>

@@ -1,5 +1,15 @@
 import UserService from "../services/user.service";
 
+function compare(a, b) {
+  let comparison = 0;
+  if (a > b) {
+    comparison = 1;
+  } else if (a < b) {
+    comparison = -1;
+  }
+  return comparison;
+}
+
 export default {
   namespaced: true,
   state: {
@@ -8,16 +18,19 @@ export default {
     user: {
       select: {},
       search: "",
+      sort: "",
     },
     staff: {
       role: "",
       search: "",
+      sort: "",
     },
   },
   getters: {
     getUserList(state) {
+      let list = state.userList;
       if (state.user.search) {
-        return state.userList.filter((user) => {
+        list = list.filter((user) => {
           let keyword = state.user.search.toLowerCase().trim();
 
           return (
@@ -29,13 +42,27 @@ export default {
             user.education.toLowerCase().trim().includes(keyword)
           );
         });
-      } else {
-        return state.userList;
+      }
+      if (state.user.sort == "name") {
+        return (list = list.sort((userA, userB) =>
+          compare(userA.firstName, userB.firstName)
+        ));
+      } else if (state.user.sort == "email") {
+        return list.sort((userA, userB) => compare(userA.email, userB.email));
+      } else if (state.user.sort == "team") {
+        return list.sort((userA, userB) =>
+          compare(userA.teamName, userB.teamName)
+        );
+      } else if (state.user.sort == "education") {
+        return list.sort((userA, userB) =>
+          compare(userA.education, userB.education)
+        );
       }
     },
     getStaffList(state) {
+      let list = state.staffList;
       if (state.staff.search || state.staff.role) {
-        return state.staffList.filter((staff) => {
+        list = list.filter((staff) => {
           let keyword = state.staff.search.toLowerCase().trim();
 
           if (state.staff.role) {
@@ -57,8 +84,19 @@ export default {
             staff.organization.toLowerCase().trim().includes(keyword)
           );
         });
-      } else {
-        return state.staffList;
+      }
+      if (state.staff.sort == "name") {
+        return (list = list.sort((staffA, staffB) =>
+          compare(staffA.firstName, staffB.firstName)
+        ));
+      } else if (state.staff.sort == "email") {
+        return list.sort((staffA, staffB) =>
+          compare(staffA.email, staffB.email)
+        );
+      } else if (state.staff.sort == "organization") {
+        return list.sort((staffA, staffB) =>
+          compare(staffA.organization, staffB.organization)
+        );
       }
     },
     getUserSelect(state) {
@@ -87,8 +125,14 @@ export default {
     setUserSearch(state, keyword) {
       state.user.search = keyword;
     },
+    setUserSort(state, sort) {
+      state.user.sort = sort;
+    },
     setStaffSearch(state, keyword) {
       state.staff.search = keyword;
+    },
+    setStaffSort(state, sort) {
+      state.staff.sort = sort;
     },
     setStaffSearchRole(state, role) {
       state.staff.role = role;
@@ -134,8 +178,14 @@ export default {
     updateUserSearch({ commit }, keyword) {
       commit("setUserSearch", keyword);
     },
+    updateUserSort({ commit }, sort) {
+      commit("setUserSort", sort);
+    },
     updateStaffSearch({ commit }, keyword) {
       commit("setStaffSearch", keyword);
+    },
+    updateStaffSort({ commit }, sort) {
+      commit("setStaffSort", sort);
     },
     updateStaffSearchRole({ commit }, role) {
       commit("setStaffSearchRole", role);
