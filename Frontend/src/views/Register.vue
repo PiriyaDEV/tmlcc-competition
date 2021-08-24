@@ -10,7 +10,7 @@
           <h1 class="header-c">สมัครเข้าร่วมการแข่งขัน</h1>
 
           <div>
-            <AgreementBox v-if="page == `agreement`" />
+            <AgreementBox v-show="page == `agreement`" />
 
             <ApplicantBox v-if="page == `applicant`" :user="user" />
 

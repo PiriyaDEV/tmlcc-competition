@@ -62,21 +62,7 @@
     <hr class="bar-color" />
 
     <div id="agreement-tick" class="center">
-      <input
-        v-if="agree"
-        :value="agree"
-        type="checkbox"
-        checked
-        id="agreement"
-        @change="updateAgreeCheck"
-      />
-      <input
-        v-if="!agree"
-        :value="agree"
-        type="checkbox"
-        id="agreement"
-        @change="updateAgreeCheck"
-      />
+      <input v-model="agree" type="checkbox" id="agreement" />
       <label class="text-normal" for="agreement"
         >ข้าพเจ้าขอยินยอมปฏิบัติตามเงื่อนไขการแข่งขัน</label
       >
@@ -92,22 +78,18 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 export default {
+  data() {
+    return {
+      agree: false,
+    };
+  },
   mounted() {
     this.$store.dispatch("page/setPage", "agreement");
-  },
-  computed: {
-    ...mapGetters({
-      agree: "auth/getAgreeCheck",
-    }),
   },
   methods: {
     register() {
       this.$store.dispatch("page/setPage", "applicant");
-    },
-    updateAgreeCheck() {
-      this.$store.dispatch("auth/setAgreeCheck", !this.agree);
     },
   },
 };
