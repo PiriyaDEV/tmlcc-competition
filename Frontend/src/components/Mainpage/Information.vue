@@ -272,19 +272,30 @@
       <hr class="bar-color-o bar-color-l" />
 
       <div id="sponsors-section">
-        <Sponsors />
+        <SubSponsors />
+        <div id="download-section" class="center">
+          <img src="../../assets/icon/Group 31.png" alt="" />
+          <h1 class="text-medium">
+            ต้องการสนับสนุนโครงการ (<a
+              class="download-link"
+              href="https://drive.google.com/file/d/1GbOyLJVhw99oSLQw7ZXlmAOjGk_VwbI3/view?usp=sharing"
+              target="_blank"
+              >ดาวน์โหลด</a
+            >)
+          </h1>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Sponsors from "../Mainpage/Sponsors.vue";
+import SubSponsors from "../Mainpage/SubSponsors.vue";
 import subscribeService from "../../services/subscribe.service";
 
 export default {
   components: {
-    Sponsors,
+    SubSponsors,
   },
   data() {
     return {
@@ -370,6 +381,25 @@ export default {
   position: relative;
 }
 
+#download-section {
+  margin-top: 20px;
+}
+
+#download-section > img {
+  width: 40px;
+  padding-right: 15px;
+}
+
+#download-section > .text-medium {
+  margin: 0px;
+}
+
+.download-link {
+  text-decoration: underline;
+  color: #2f65af !important;
+  cursor: pointer;
+}
+
 .bar-color-l {
   width: 120px;
 }
@@ -450,7 +480,7 @@ export default {
 }
 
 #sponsors-section {
-  margin: 20px 0px 130px 0px;
+  margin: 20px 0px 60px 0px;
 }
 
 #timeline {
@@ -544,7 +574,7 @@ export default {
   }
 
   #sponsors-section {
-    margin: 20px 0px 70px 0px;
+    margin: 20px 0px 40px 0px;
   }
 
   .subscribe-box {
@@ -562,6 +592,10 @@ export default {
     justify-content: center;
     align-items: center;
     margin-top: 0px;
+  }
+
+  #download-section > img {
+    width: 30px;
   }
 
   .subscribe-box > div:first-child,
@@ -606,6 +640,10 @@ export default {
 
   .no-bullet {
     display: none;
+  }
+
+  #download-section > img {
+    width: 20px;
   }
 
   .frn-line {

@@ -27,41 +27,36 @@
           </div>
         </div>
         <div id="nav-right">
-          <a
-            class="text-normal nav-text dashboard-link"
-            href="/dashboard"
-            v-if="loginStatus.isAuthenticated"
-            >กลับหน้าแดชบอร์ด</a
-          >
           <a class="text-normal nav-text" href="/about">เกี่ยวกับโครงการ</a>
-          <p v-if="page == `login`" class="text-normal nav-text">Q&A</p>
+          <!-- <p v-if="page == `login`" class="text-normal nav-text">Q&A</p> -->
           <!-- <p v-if="page != `login`" class="text-normal nav-text">Workshops</p> -->
-          <!-- <p class="text-normal nav-text">ติดต่อเรา</p> -->
-          <div v-if="loginStatus.isAuthenticated" class="center">
-            <p
-              class="text-normal display-name nav-text"
-              @click="toggleShowLogout()"
+          <a
+            v-if="page == `mainpage`"
+            class="text-normal nav-text"
+            href="#contact-box"
+            v-smooth-scroll="{
+              duration: 1000,
+              offset: 0,
+              updateHistory: true,
+            }"
+            >ติดต่อเรา</a
+          >
+
+          <router-link
+            v-if="page != `mainpage`"
+            to="/#contact-box"
+            class="text-normal nav-text"
+            >ติดต่อเรา</router-link
+          >
+          <div class="center">
+            <!-- <button v-if="page != `agreement`" class="btn-white blocked">
+              ลงทะเบียน
+            </button> -->
+            <button
+              v-if="page != `agreement`"
+              @click="registerClick()"
+              class="btn-white"
             >
-              <span v-if="roleStatus == `admin`">Admin </span
-              ><span v-if="roleStatus == `editor`">Editor </span
-              >{{ displayName }}
-            </p>
-            <img
-              id="dropdown-icon"
-              src="../../assets/navbar/dropdown.png"
-              alt=""
-              @click="toggleShowLogout()"
-            />
-            <div
-              id="signout-dropdown"
-              :class="SlideLogout"
-              @click="toggleShowLogout()"
-            >
-              <button @click="logout()" class="btn-white">ออกจากระบบ</button>
-            </div>
-          </div>
-          <div v-else class="center">
-            <button v-if="page != `agreement`" class="btn-white blocked">
               ลงทะเบียน
             </button>
             <button

@@ -20,11 +20,15 @@
       </div>
       <div>
         <h1 class="text-normal">เรียงลำดับ</h1>
-        <select name="sorting" id="sorting" class="input-box text-normal">
-          <option value="มัธยมศึกษา">ชื่อ ก - ฮ</option>
-          <option value="มัธยมศึกษา">ชื่อ ก - ฮ</option>
-          <option value="มัธยมศึกษา">ชื่อ ก - ฮ</option>
-          <option value="มัธยมศึกษา">ชื่อ ก - ฮ</option>
+        <select
+          v-model="sort"
+          name="sorting"
+          id="sorting"
+          class="input-box text-normal"
+        >
+          <option value="name">ชื่อ ก - ฮ</option>
+          <option value="email">อีเมล ก - ฮ</option>
+          <option value="organization">สังกัด ก - ฮ</option>
         </select>
       </div>
     </div>
@@ -192,11 +196,18 @@ export default {
       edit: "",
       keyword: "",
       role: "",
+      sort: "name",
     };
+  },
+  mounted() {
+    this.keyword = this.staffSearch;
+    this.$store.dispatch("admin/updateStaffSort", this.sort);
+    this.$store.dispatch("admin/updateStaffSearchRole", this.role);
   },
   computed: {
     ...mapGetters({
       staffList: "admin/getStaffList",
+      staffSearch: "admin/getStaffSearch",
     }),
     // isInArray: function () {
     //   return this.edit.includes(false);
@@ -208,6 +219,9 @@ export default {
     },
     role: function () {
       this.$store.dispatch("admin/updateStaffSearchRole", this.role);
+    },
+    sort: function () {
+      this.$store.dispatch("admin/updateStaffSort", this.sort);
     },
   },
   methods: {

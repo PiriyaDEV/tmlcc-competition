@@ -2,7 +2,9 @@
   <div id="file-upload">
     <div class="center page-change-left">
       <i class="fa fa-angle-left" aria-hidden="true"></i>
-      <h1 class="text-normal purple-text">หน้าหลักการจัดการไฟล์</h1>
+      <h1 @click="clickUpload()" class="text-normal purple-text">
+        หน้าหลักการจัดการไฟล์
+      </h1>
     </div>
 
     <div id="file-upload-box">
@@ -12,21 +14,31 @@
 
     <div class="search-grid">
       <h1 class="text-normal">ชื่อโฟลเดอร์</h1>
-      <input
-        class="input-box text-normal"
-        type="text"
-        placeholder="กรอกชื่อโฟลเดอร์ที่ต้องการ"
-      />
-      <button class="add-btn">เพิ่มเอกสาร</button>
+      <div>
+        <input
+          class="input-box text-normal"
+          type="text"
+          placeholder="กรอกชื่อโฟลเดอร์ที่ต้องการ"
+        />
+        <p class="text-normal orange-text error-message">
+          * โปรดระบุชื่อโฟลเดอร์
+        </p>
+      </div>
+      <div>
+        <button class="add-btn">เพิ่มเอกสาร</button>
+      </div>
     </div>
 
     <div class="search-grid seach-no-btn">
-      <h1 class="text-normal">รายละเอียดวิดิโอ</h1>
-      <input
-        class="input-box text-normal"
-        type="text"
-        placeholder="กรอกรายละเอียดเพิ่มเติมของโฟลเดอร์ (สามารถเว้นว่างได้)"
-      />
+      <h1 class="text-normal">รายละเอียดเอกสาร</h1>
+      <div>
+        <input
+          class="input-box text-normal"
+          type="text"
+          placeholder="กรอกรายละเอียดเพิ่มเติมของโฟลเดอร์ (สามารถเว้นว่างได้)"
+        />
+        <p class="text-normal orange-text error-message">* โปรดระบุคำนำหน้า</p>
+      </div>
     </div>
 
     <div id="file-content">
@@ -66,7 +78,13 @@ export default {
   data() {
     return {
       fileList: 2,
+      edit: false,
     };
+  },
+  methods: {
+    clickUpload() {
+      this.$emit("fileClickUpload", false);
+    },
   },
 };
 </script>
@@ -106,6 +124,10 @@ export default {
   width: 71px;
 }
 
+.error-message {
+  margin-top: 5px;
+}
+
 .orange-bar {
   color: #f07821;
   background-color: #f07821;
@@ -125,7 +147,7 @@ export default {
   grid-template-columns: 1fr 3.5fr 1fr;
   grid-gap: 25px;
   grid-auto-rows: auto;
-  align-items: center;
+  align-items: top;
   margin-top: 30px;
 }
 

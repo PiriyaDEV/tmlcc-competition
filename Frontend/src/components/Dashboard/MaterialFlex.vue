@@ -17,6 +17,19 @@
       <div id="file-box">
         <div class="file-container" v-for="(file, i) in fileList" :key="i">
           <div>
+            <div>
+              <img
+                class="folder-icon"
+                src="../../assets/icon/folder-icon.png"
+                alt=""
+              />
+              <h1 class="file-name file-head">เอกสารประจำวันที่ 01/09/2564</h1>
+            </div>
+          </div>
+          <h1 class="file-name folder-description">
+            เอกสารเพื่อการเตรียมความพร้อม ก่อนเริ่มการอบรม
+          </h1>
+          <div id="icon-list" v-for="(file, i) in fileList" :key="i">
             <img
               class="file-icon"
               src="../../assets/icon/file-icon.png"
@@ -24,7 +37,6 @@
             />
             <h1 class="file-name">โจทย์การแข่งขัน.pdf</h1>
           </div>
-          <p class="file-date">16 กันยายน 2564 เวลา 14.00 น.</p>
         </div>
       </div>
     </div>
@@ -33,18 +45,15 @@
       <h1 class="text-normal material-header">Videos</h1>
 
       <div id="video-box">
-        <div class="video-container" v-for="(file, i) in fileList" :key="i">
-          <div class="video-image-container">
-            <img
-              class="video-image"
-              src="https://i.ytimg.com/vi/fz7Jxg7Hbkg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAz1DCKNQJt-7CFu7tnglRTcF45DQ"
-              alt=""
-            />
+        <div class="video-container" v-for="(video, i) in videoList" :key="i">
+          <div class="video-image-container" @click="clickLink(video)">
+            <img class="video-image" :src="video.thumbnail" alt="" />
             <img class="play-btn" src="../../assets/icon/play-btn.png" alt="" />
           </div>
           <div>
-            <h1 class="file-name">อ.แดงกีต้าร์ การคิดตามธรรมชาติ</h1>
-            <p class="file-date">16 กันยายน 2564 เวลา 14.00 น.</p>
+            <h1 class="file-name">{{ video.videoName }}</h1>
+            <p class="file-description">{{ video.description }}</p>
+            <p class="file-date">{{ video.publicTime }}</p>
           </div>
         </div>
       </div>
@@ -58,17 +67,21 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      fileList: 20,
+      fileList: 5,
     };
   },
   methods: {
     manageClick() {
       this.$router.push("/dashboard/file");
     },
+    clickLink(value) {
+      window.open(value.link);
+    },
   },
   computed: {
     ...mapGetters({
       roleStatus: "auth/getRole",
+      videoList: "video/getUserVideoList",
     }),
   },
 };
@@ -100,17 +113,50 @@ export default {
   height: 232px;
 }
 
-.file-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.file-head {
+  font-weight: 800 !important;
+}
+
+#icon-list {
   margin-top: 10px;
+  margin-left: 25px;
+  margin-bottom: 10px;
+}
+
+.folder-description {
+  padding-left: 25px;
+  padding-top: 10px;
+  color: #7f7f7f !important;
+}
+
+.file-description {
+  font-size: 1.5em;
+  font-weight: 500;
+  margin: 0;
+  color: #7f7f7f;
+}
+
+.file-container {
+  align-items: center;
+  margin-top: 15px;
   padding: 0px 20px;
 }
 
-.file-container > div {
+.file-container > div:first-child {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+
+.file-container > div > div,
+#icon-list {
+  display: flex;
+  align-items: center;
+}
+
+.folder-icon {
+  width: 22px;
+  margin-right: 8px;
 }
 
 .file-icon {
@@ -255,6 +301,14 @@ div::-webkit-scrollbar-thumb {
     display: flex;
     justify-content: flex-end;
     padding-bottom: 20px;
+  }
+
+  #icon-list {
+    margin-left: 15px;
+  }
+
+  .folder-description {
+    padding-left: 15px;
   }
 
   .play-btn {

@@ -16,10 +16,22 @@
               <hr :class="cssbarVideo" />
             </div>
           </div>
-          <ManageFile v-if="choice == `file`" />
-          <ManageVideo v-if="choice == `video`" />
-          <FileUpload v-if="choice == `file`" />
-          <VideoUpload v-if="choice == `video`" />
+          <ManageFile
+            @fileClickUpload="fileClickUpload"
+            v-if="choice == `file` && clickFile == false"
+          />
+          <ManageVideo
+            @videoClickUpload="videoClickUpload"
+            v-if="choice == `video` && clickVideo == false"
+          />
+          <FileUpload
+            @fileClickUpload="fileClickUpload"
+            v-if="clickFile == true"
+          />
+          <VideoUpload
+            @videoClickUpload="videoClickUpload"
+            v-if="clickVideo == true"
+          />
         </div>
       </div>
     </div>
@@ -36,6 +48,8 @@ export default {
   data() {
     return {
       choice: "file",
+      clickFile: false,
+      clickVideo: false,
     };
   },
   components: {
@@ -82,13 +96,24 @@ export default {
   methods: {
     fileChoice() {
       this.choice = "file";
+      this.clickFile = false;
+      this.clickVideo = false;
     },
     videoChoice() {
       this.choice = "video";
+      this.clickFile = false;
+      this.clickVideo = false;
+    },
+    fileClickUpload(value) {
+      this.clickFile = value;
+    },
+    videoClickUpload(value) {
+      this.clickVideo = value;
     },
   },
   mounted() {
     this.$store.dispatch("page/setPage", "dashBoard");
+    this.$store.dispatch("video/getVideoList");
   },
 };
 </script>

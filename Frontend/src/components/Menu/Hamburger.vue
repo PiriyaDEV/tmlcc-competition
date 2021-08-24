@@ -134,15 +134,6 @@
         </div>
       </div>
 
-      <div
-        v-if="page != `dashBoard` && loginStatus.isAuthenticated"
-        class="nav-head nav-link"
-      >
-        <a class="text-normal" @click="hideNav" href="/dashboard"
-          >กลับหน้าแดชบอร์ด</a
-        >
-      </div>
-
       <div v-if="page != `dashBoard`" class="nav-head nav-link">
         <a class="text-normal" @click="hideNav" href="/about"
           >เกี่ยวกับโครงการ</a
@@ -150,13 +141,11 @@
       </div>
 
       <div v-if="page == `dashBoard`" class="nav-head nav-link">
-        <a class="text-normal" @click="hideNav" href="/dashboard"
-          >หน้าหลักการแข่งขัน</a
-        >
+        <a class="text-normal" @click="hideNav" href="/">หน้าหลักการแข่งขัน</a>
       </div>
 
       <div
-        v-if="page == `dashBoard` && roleStatus != `user`"
+        v-if="page == `dashBoard` && roleStatus == `admin`"
         class="nav-head nav-link"
       >
         <a class="text-normal" @click="hideNav" href="/dashboard/member"
@@ -173,8 +162,32 @@
         >
       </div>
 
-      <div v-if="page == `dashBoard`" class="nav-head nav-link">
-        <a class="text-normal" @click="hideNav" href="/dashboard">ติดต่อเรา</a>
+      <!-- <div class="nav-head nav-link">
+        <a class="text-normal" @click="hideNav">Workshop</a>
+      </div> -->
+      <!-- <div v-if="page == `login`" class="nav-head nav-link">
+        <p class="text-normal nav-text">Q&A</p>
+      </div> -->
+      <div class="nav-head nav-link">
+        <router-link
+          v-if="page != `mainpage`"
+          to="/#contact-box"
+          click="hideNav"
+          class="text-normal nav-text"
+          >ติดต่อเรา</router-link
+        >
+
+        <a
+          v-if="page == `mainpage`"
+          class="text-normal nav-text"
+          href="#contact-box"
+          v-smooth-scroll="{
+            duration: 1000,
+            offset: 0,
+            updateHistory: true,
+          }"
+          >ติดต่อเรา</a
+        >
       </div>
 
       <div
@@ -187,44 +200,18 @@
           >{{ displayName }}</a
         >
       </div>
-      <div
-        v-if="page != `dashBoard` && loginStatus.isAuthenticated"
-        class="nav-head nav-link register-btn"
-      >
-        <a
-          v-if="loginStatus.isAuthenticated"
-          class="text-normal display-name"
-          @click="hideNav"
-          href="/dashboard"
-          ><span v-if="roleStatus == `admin`">Admin </span
-          ><span v-if="roleStatus == `editor`">Editor </span
-          >{{ displayName }}</a
-        >
-      </div>
-      <!-- <div class="nav-head nav-link">
-        <a class="text-normal" @click="hideNav">Workshop</a>
-      </div>
-      <div class="nav-head nav-link">
-        <a class="text-normal" @click="hideNav">ติดต่อเรา</a>
-      </div> -->
       <!-- <div class="nav-head nav-link register-btn">
         <a class="text-normal" href="/register">ลงทะเบียน</a>
       </div> -->
-      <div
-        v-if="page != `dashBoard` && !loginStatus.isAuthenticated"
-        class="nav-head nav-link register-btn blocked"
-      >
-        <a class="text-normal" @click="hideNav">ลงทะเบียน</a>
-      </div>
-      <div
-        v-if="page != `dashBoard` && loginStatus.isAuthenticated"
-        class="nav-head nav-link register-btn"
-      >
+      <div v-if="page != `dashBoard`" class="nav-head nav-link register-btn">
         <a
-          v-if="loginStatus.isAuthenticated"
           class="text-normal"
-          @click="logoutMainpage"
-          >ออกจากระบบ</a
+          v-if="page != `agreement`"
+          @click="registerClick()"
+          >ลงทะเบียน</a
+        >
+        <a class="text-normal" v-if="page == `agreement`" @click="loginClick()"
+          >เข้าสู่ระบบ</a
         >
       </div>
       <div v-if="page == `dashBoard`" class="nav-head nav-link register-btn">
@@ -264,6 +251,12 @@ export default {
         x[i].style.width = "0px";
         this.dropdown = true;
       }
+    },
+    registerClick() {
+      this.$router.push("/register");
+    },
+    loginClick() {
+      this.$router.push("/login");
     },
     dashboard(value) {
       this.$router.push(value);

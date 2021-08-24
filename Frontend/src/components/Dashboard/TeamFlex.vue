@@ -32,6 +32,11 @@
           @click="editTeamName"
           class="edit-btn"
         >
+          <img
+            class="edit-icon"
+            src="../../assets/icon/edit-icon-o.png"
+            alt=""
+          />
           edit
         </button>
       </div>
@@ -153,7 +158,13 @@
       >
         <span v-if="!deleteCheck"
           >ต้องการที่จะลบทีมนี้ กดที่นี้เพื่อ
-          <span @click="deleteClick" class="orange-text">Delete</span></span
+          <span @click="deleteClick" class="orange-text"
+            ><img
+              class="trash-icon"
+              src="../../assets/icon/icon-trash-o.png"
+              alt=""
+            />Delete</span
+          ></span
         >
         <span v-if="deleteCheck"
           >ท่านแน่ใจที่จะลบทีมนี้ใช่หรือไม่
@@ -170,7 +181,13 @@
       >
         <span v-if="!leaveCheck"
           >ต้องการออกจากกลุ่ม กดที่นี้เพื่อ
-          <span @click="leaveClick" class="orange-text">Leave</span></span
+          <span @click="leaveClick" class="orange-text"
+            ><img
+              class="leave-icon"
+              src="../../assets/icon/leave-icon.png"
+              alt=""
+            />Leave</span
+          ></span
         >
         <span v-if="leaveCheck"
           >ท่านแน่ใจที่ออกจากทีมนี้ใช่หรือไม่
@@ -305,6 +322,19 @@ button {
 
 .bold {
   font-weight: 600;
+}
+
+.trash-icon,
+.leave-icon {
+  width: 10px;
+  margin-right: 4px;
+  margin-left: 5px;
+}
+
+.edit-icon {
+  width: 15px;
+  margin-right: 4px;
+  margin-left: 5px;
 }
 
 .add-btn {
@@ -457,6 +487,8 @@ button {
   border-radius: 12px;
   padding: 6px 7px;
   background-color: transparent;
+  display: flex;
+  align-items: center;
 }
 
 .teamname {
@@ -502,10 +534,30 @@ div::-webkit-scrollbar-thumb {
   }
 }
 
+@media screen and (max-width: 980px) {
+  .trash-icon,
+  .leave-icon {
+    width: 8px;
+  }
+
+  .edit-icon {
+    width: 10px;
+  }
+}
+
 @media screen and (max-width: 767px) {
   #teamflex {
     width: calc(100% - 60px);
     margin-right: 0px;
+  }
+
+  .trash-icon,
+  .leave-icon {
+    width: 7px;
+  }
+
+  .edit-icon {
+    width: 9px;
   }
 }
 
