@@ -32,7 +32,7 @@ require("./app/routes/user.routes")(app);
 // team service routes
 require("./app/routes/team.routes")(app);
 // material service routes
-require("./app/routes/material.routes")(app);
+//require("./app/routes/material.routes")(app);
 // video service routes
 require("./app/routes/video.routes")(app);
 // subscribe service routes

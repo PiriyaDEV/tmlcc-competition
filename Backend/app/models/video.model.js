@@ -71,7 +71,8 @@ Video.getAll = (result) => {
      FROM
          Videos
      WHERE
-         status = 'active'`,
+         status = 'active'
+     ORDER BY time`,
     (err, res) => {
       if (err) {
         console.log("Error: ", err);

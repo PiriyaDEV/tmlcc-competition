@@ -228,4 +228,40 @@ User.getInfo = (user, result) => {
   );
 };
 
+User.updateHasTeam = (team_id, result) => {
+  let user = {
+    hasTeam: false,
+    updatedAt: Date.now(),
+  };
+
+  sql.query(
+    `UPDATE
+        Users
+     SET
+         ?
+     WHERE
+         user_id IN (
+             SELECT
+                 member_id
+             FROM
+                 TeamMembers
+             WHERE
+                 team_id = '${team_id}'
+                 AND status = 'approved'
+         )`,
+    user,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      console.log(`Result: users from team -> ${team_id} have been updated to no team`);
+      result(null, team_id);
+      return;
+    }
+  );
+};
+
 module.exports = User;

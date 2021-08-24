@@ -114,6 +114,23 @@ TeamMember.findTeam = (user, result) => {
   );
 };
 
+TeamMember.countMember = (team_id, result) => {
+  sql.query(
+    `SELECT COUNT(*) AS count FROM TeamMembers WHERE team_id = '${team_id}' AND status = 'approved'`,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+  
+      console.log(`Result: ${res[0].count} member(s)`);
+      result(null, res[0].count);
+      return;
+    }
+  );
+};
+
 TeamMember.teamDelete = (teamMember, result) => {
   teamMember.updatedAt = Date.now();
 
@@ -129,6 +146,36 @@ TeamMember.teamDelete = (teamMember, result) => {
 
       console.log(
         `Result: all members left from team -> ${teamMember.team_id}`
+      );
+      result(null, teamMember);
+      return;
+    }
+  );
+};
+
+TeamMember.clearOtherPending = (teamMember, result) => {
+  teamMember.status = 'left';
+  teamMember.updatedAt = Date.now();
+
+  sql.query(
+    `UPDATE
+      TeamMembers
+     SET
+         status = '${teamMember.status}',
+         updatedAt = ${teamMember.updatedAt}
+     WHERE
+         member_id = '${teamMember.member_id}'
+         AND team_id != '${teamMember.team_id}'
+         AND status = 'pending'`,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      console.log(
+        `Result: clear other pending of user -> ${teamMember.member_id}`
       );
       result(null, teamMember);
       return;
