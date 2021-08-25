@@ -58,16 +58,38 @@ CREATE TABLE IF NOT EXISTS TeamMembers(
   PRIMARY KEY (team_id, member_id)
 );
 
--- Create Files Table
-CREATE TABLE IF NOT EXISTS Files(
-  file_id                 VARCHAR(8)      NOT NULL,
-  fileName                VARCHAR(255)    NOT NULL,
+-- Create Materials Table
+CREATE TABLE IF NOT EXISTS Materials(
+  material_id             VARCHAR(8)      NOT NULL,
+  folder_id               VARCHAR(8)      NOT NULL,
   filePath                VARCHAR(255)    NOT NULL,
-  type                    VARCHAR(8)      NOT NULL,
+  description             VARCHAR(255)    NULL,
   status                  VARCHAR(8)      NOT NULL,
   createdAt               BIGINT          NOT NULL,
   updatedAt               BIGINT          NOT NULL,
-  PRIMARY KEY (file_id)
+  PRIMARY KEY (material_id)
+);
+
+-- Create Videos Table
+CREATE TABLE IF NOT EXISTS Videos(
+  video_id                VARCHAR(8)      NOT NULL,
+  videoName               VARCHAR(64)     NOT NULL,
+  link                    VARCHAR(255)    NOT NULL,
+  time                    BIGINT          NOT NULL,
+  description             VARCHAR(255)    NULL,
+  status                  VARCHAR(8)      NOT NULL,
+  createdAt               BIGINT          NOT NULL,
+  updatedAt               BIGINT          NOT NULL,
+  PRIMARY KEY (video_id)
+);
+
+-- Create Folders Table
+CREATE TABLE IF NOT EXISTS Folders(
+  folder_id               VARCHAR(8)      NOT NULL,
+  folderName              VARCHAR(64)     NOT NULL,
+  createdAt               BIGINT          NOT NULL,
+  updatedAt               BIGINT          NOT NULL,
+  PRIMARY KEY (folder_id)
 );
 
 -- Create Subscribe Table

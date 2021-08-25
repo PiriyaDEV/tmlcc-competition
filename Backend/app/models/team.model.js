@@ -189,13 +189,10 @@ Team.getAllWithStatus = (user, result) => {
 Team.getInfo = (team_id, result) => {
   sql.query(
     `SELECT
-      JSON_OBJECT(
-        'team_id',
-        T.team_id,
-        'teamName',
-        T.teamName,
-        'members',
-          IFNULL((
+      T.team_id,
+      T.teamName,
+      IFNULL(
+          (
               SELECT
                   JSON_ARRAYAGG(
                       JSON_OBJECT(
@@ -211,13 +208,13 @@ Team.getInfo = (team_id, result) => {
               WHERE
                   TM.team_id = T.team_id
                   AND TM.status = 'approved'
-              
-              ), JSON_ARRAY())
-          ) AS result
-      FROM
-          Teams T
-      WHERE
-          T.team_id = '${team_id}'`,
+          ),
+          JSON_ARRAY()
+      ) AS members
+     FROM
+         Teams T
+     WHERE
+         T.team_id = '${team_id}'`,
     (err, res) => {
       if (err) {
         console.log("Error: ", err);
@@ -225,10 +222,8 @@ Team.getInfo = (team_id, result) => {
         return;
       }
 
-      let data = JSON.parse(res[0].result);
-
-      console.log(`team found -> ${data.team_id}`);
-      result(null, data);
+      console.log(`team found -> ${res[0].team_id}`);
+      result(null, res[0]);
       return;
     }
   );
@@ -237,13 +232,10 @@ Team.getInfo = (team_id, result) => {
 Team.getInfoForLeader = (team_id, result) => {
   sql.query(
     `SELECT
-      JSON_OBJECT(
-        'team_id',
-        T.team_id,
-        'teamName',
-        T.teamName,
-        'members',
-          IFNULL((
+      T.team_id,
+      T.teamName,
+      IFNULL(
+          (
               SELECT
                   JSON_ARRAYAGG(
                       JSON_OBJECT(
@@ -261,12 +253,13 @@ Team.getInfoForLeader = (team_id, result) => {
               WHERE
                   TM.team_id = T.team_id
                   AND TM.status IN ('approved', 'pending')
-              ), JSON_ARRAY())
-          ) AS result
-      FROM
-          Teams T
-      WHERE
-          T.team_id = '${team_id}'`,
+          ),
+          JSON_ARRAY()
+      ) AS members
+    FROM
+         Teams T
+    WHERE
+         T.team_id = '${team_id}'`,
     (err, res) => {
       if (err) {
         console.log("Error: ", err);
@@ -274,10 +267,8 @@ Team.getInfoForLeader = (team_id, result) => {
         return;
       }
 
-      let data = JSON.parse(res[0].result);
-
-      console.log(`team found -> ${data.team_id}`);
-      result(null, data);
+      console.log(`team found -> ${res[0].team_id}`);
+      result(null, res[0]);
       return;
     }
   );

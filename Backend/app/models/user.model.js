@@ -176,4 +176,92 @@ User.getAllStaffs = (result) => {
   );
 };
 
+User.getInfo = (user, result) => {
+  sql.query(
+    `SELECT email,
+      user_id,
+      displayName,
+      titleName,
+      firstName,
+      lastName,
+      phone,
+      address,
+      education,
+      institution,
+      organization,
+      country,
+      works,
+      isWorkInterest,
+      interestField,
+      hasProgSkill,
+      progSkillLevel,
+      progSkillList,
+      hasChemSkill,
+      chemSkillLevel,
+      chemSkillList,
+      hasMachineLSkill,
+      machineLSkillLevel,
+      machineLSkillList,
+      hasOtherSkill,
+      otherSkillList
+     FROM Users WHERE
+      user_id = '${user.user_id}' OR
+      email = '${user.email}' OR
+      displayName = '${user.displayName}'`,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      if (!res.length) {
+        console.log("Result: user not found");
+        result(null, { isFound: false });
+        return;
+      }
+
+      console.log(`Result: user found -> ${res[0].user_id}`);
+      result(null, { isFound: true, user: res[0] });
+      return;
+    }
+  );
+};
+
+User.updateHasTeam = (team_id, result) => {
+  let user = {
+    hasTeam: false,
+    updatedAt: Date.now(),
+  };
+
+  sql.query(
+    `UPDATE
+        Users
+     SET
+         ?
+     WHERE
+         user_id IN (
+             SELECT
+                 member_id
+             FROM
+                 TeamMembers
+             WHERE
+                 team_id = '${team_id}'
+                 AND status = 'approved'
+         )`,
+    user,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      console.log(`Result: users from team -> ${team_id} have been updated to no team`);
+      result(null, team_id);
+      return;
+    }
+  );
+};
+
 module.exports = User;

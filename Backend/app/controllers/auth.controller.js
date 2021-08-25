@@ -25,7 +25,7 @@ exports.register = (req, res) => {
 
     let user = req.body;
 
-    if (!user.email || !user.password) {
+    if (!user.email || !user.displayName || !user.password || !user.firstName || !user.lastName || !user.organization) {
       return res.status(400).send({
         message: "Content can not be empty!",
       });
@@ -33,7 +33,11 @@ exports.register = (req, res) => {
 
     user.user_id = "US" + count.padStart(6, "0");
     user.email = user.email.toLowerCase();
+    user.displayName = user.displayName.toLowerCase();
     user.password = bcrypt.hashSync(user.password, 8);
+    user.firstName = user.firstName.toLowerCase();
+    user.lastName = user.lastName.toLowerCase();
+    user.organization = user.organization.toLowerCase();
     user.role = "user";
     user.lastLogin = Date.now();
     user.createdAt = Date.now();

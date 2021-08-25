@@ -11,3 +11,8 @@ ALTER TABLE TeamMembers
     ON UPDATE CASCADE ON DELETE CASCADE,
   ADD FOREIGN KEY (member_id) REFERENCES Users(user_id)
     ON UPDATE CASCADE ON DELETE CASCADE;
+
+-- Add Foreign Key To Materials Table
+ALTER TABLE Materials
+  ADD FOREIGN KEY (folder_id) REFERENCES Folders(folder_id)
+    ON UPDATE CASCADE ON DELETE CASCADE;
