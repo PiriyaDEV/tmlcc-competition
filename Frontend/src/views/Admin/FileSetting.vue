@@ -44,6 +44,7 @@ import VideoUpload from "../../components/Admin/UploadMaterial/VideoUpload.vue";
 import ManageFile from "../../components/Admin/ManageFile.vue";
 import ManageVideo from "../../components/Admin/ManageVideo.vue";
 import DashboardNavbar from "../../components/Menu/DashboardNavbar.vue";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -92,17 +93,25 @@ export default {
       }
       return unselect;
     },
+    ...mapGetters({
+      editingVideo: "video/getEditing",
+      editingMaterial: "material/getEditing",
+    }),
   },
   methods: {
     fileChoice() {
-      this.choice = "file";
-      this.clickFile = false;
-      this.clickVideo = false;
+      if (this.editingVideo == false) {
+        this.choice = "file";
+        this.clickFile = false;
+        this.clickVideo = false;
+      }
     },
     videoChoice() {
-      this.choice = "video";
-      this.clickFile = false;
-      this.clickVideo = false;
+      if (this.editingMaterial == false) {
+        this.choice = "video";
+        this.clickFile = false;
+        this.clickVideo = false;
+      }
     },
     fileClickUpload(value) {
       this.clickFile = value;
@@ -114,6 +123,7 @@ export default {
   mounted() {
     this.$store.dispatch("page/setPage", "dashBoard");
     this.$store.dispatch("video/getVideoList");
+    this.$store.dispatch("material/getMaterialList");
   },
 };
 </script>

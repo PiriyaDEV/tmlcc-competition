@@ -9,11 +9,27 @@
         <h1 class="text-normal">Role</h1>
         <div id="role-select">
           <div>
-            <input value="editor" v-model="role" name="Role" type="radio" />
+            <input
+              id="checkEditor"
+              value="editor"
+              v-model="role"
+              @click="uncheck('editor')"
+              checked
+              name="Role"
+              type="radio"
+            />
             <label class="text-normal">Editor</label>
           </div>
           <div>
-            <input value="admin" v-model="role" name="Role" type="radio" />
+            <input
+              id="checkAdmin"
+              value="admin"
+              v-model="role"
+              @click="uncheck('admin')"
+              checked
+              name="Role"
+              type="radio"
+            />
             <label class="text-normal">Admin</label>
           </div>
         </div>
@@ -66,7 +82,7 @@
           </td>
           <td>
             <span class="table-hd mb-head">ชื่อ</span
-            ><span class="table-info" v-if="edit != staff.user_id">{{
+            ><span class="table-info capital" v-if="edit != staff.user_id">{{
               staff.firstName
             }}</span>
             <span
@@ -77,16 +93,16 @@
                 v-model="staff.firstName"
               />
               <p
-                v-if="edit == staff.user_id"
+                v-if="edit == staff.user_id && updateStatus.firstName.isInvalid"
                 class="text-normal orange-text error-message"
               >
-                * ไม่ถูกต้อง
+                * {{ updateStatus.firstName.message }}
               </p>
             </span>
           </td>
           <td>
             <span class="table-hd mb-head">นามสกุล</span
-            ><span class="table-info" v-if="edit != staff.user_id">{{
+            ><span class="table-info capital" v-if="edit != staff.user_id">{{
               staff.lastName
             }}</span>
             <span
@@ -97,10 +113,10 @@
                 v-model="staff.lastName"
               />
               <p
-                v-if="edit == staff.user_id"
+                v-if="edit == staff.user_id && updateStatus.lastName.isInvalid"
                 class="text-normal orange-text error-message"
               >
-                * ไม่ถูกต้อง
+                * {{ updateStatus.lastName.message }}
               </p>
             </span>
           </td>
@@ -117,10 +133,10 @@
                 v-model="staff.phone"
               />
               <p
-                v-if="edit == staff.user_id"
+                v-if="edit == staff.user_id && updateStatus.phone.isInvalid"
                 class="text-normal orange-text error-message"
               >
-                * ไม่ถูกต้อง
+                * {{ updateStatus.phone.message }}
               </p>
             </span>
           </td>
@@ -137,16 +153,16 @@
                 v-model="staff.email"
               />
               <p
-                v-if="edit == staff.user_id"
+                v-if="edit == staff.user_id && updateStatus.email.isInvalid"
                 class="text-normal orange-text error-message"
               >
-                * ไม่ถูกต้อง
+                * {{ updateStatus.email.message }}
               </p>
             </span>
           </td>
           <td>
             <span class="table-hd mb-head">สังกัด</span
-            ><span class="table-info" v-if="edit != staff.user_id">{{
+            ><span class="table-info capital" v-if="edit != staff.user_id">{{
               staff.organization
             }}</span>
             <span
@@ -157,10 +173,12 @@
                 v-model="staff.organization"
               />
               <p
-                v-if="edit == staff.user_id"
+                v-if="
+                  edit == staff.user_id && updateStatus.organization.isInvalid
+                "
                 class="text-normal orange-text error-message"
               >
-                * ไม่ถูกต้อง
+                * {{ updateStatus.organization.message }}
               </p>
             </span>
           </td>
@@ -176,7 +194,7 @@
             <button
               class="save-btn"
               v-if="edit == staff.user_id"
-              @click="saveClick()"
+              @click="saveClick(staff)"
             >
               save
             </button>
@@ -203,11 +221,15 @@ export default {
     this.keyword = this.staffSearch;
     this.$store.dispatch("admin/updateStaffSort", this.sort);
     this.$store.dispatch("admin/updateStaffSearchRole", this.role);
+    this.$store.dispatch("admin/resetStatusUpdate");
+    this.$store.dispatch("admin/updateEditing", false);
   },
   computed: {
     ...mapGetters({
+      updateStatus: "admin/getUpdateStatus",
       staffList: "admin/getStaffList",
       staffSearch: "admin/getStaffSearch",
+      editing: "admin/getEditing",
     }),
     // isInArray: function () {
     //   return this.edit.includes(false);
@@ -226,10 +248,38 @@ export default {
   },
   methods: {
     editClick(value) {
-      this.edit = value.user_id;
+      if (this.editing == false) {
+        this.edit = value.user_id;
+        this.$store.dispatch("admin/updateEditing", true);
+      }
     },
-    saveClick() {
-      this.edit = "";
+    async saveClick(staff) {
+      await this.$store.dispatch("admin/updateStaff", {
+        user_id: staff.user_id,
+        firstName: staff.firstName,
+        lastName: staff.lastName,
+        phone: staff.phone,
+        email: staff.email,
+        organization: staff.organization,
+        role: staff.role,
+      });
+      if (this.updateStatus.isSuccess) {
+        this.$store.dispatch("admin/resetStatusUpdate");
+        this.$store.dispatch("admin/updateEditing", false);
+        this.edit = "";
+      }
+    },
+    uncheck(value) {
+      if (this.role == value) {
+        if (value == "admin") {
+          document.getElementById("checkAdmin").checked = false;
+          this.role = "";
+        }
+        if (value == "editor") {
+          document.getElementById("checkEditor").checked = false;
+          this.role = "";
+        }
+      }
     },
   },
 };
@@ -336,6 +386,10 @@ export default {
   font-weight: 500;
   color: #303030;
   margin: 0;
+}
+
+table > tr {
+  vertical-align: text-top;
 }
 
 table {

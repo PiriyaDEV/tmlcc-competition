@@ -15,22 +15,22 @@
       </div>
       <div>
         <button class="add-btn" @click="clickUpload()">เพิ่มเอกสาร</button>
-        <!-- <input
-          type="file"
-          id="file-input"
-          style="visibility: hidden"
-          ref="fileUploader"
-          @change="fileUpload()"
-          multiple
-          accept="application/pdf"
-        /> -->
       </div>
     </div>
-    <div>
+    <div id="file-information">
       <h1 class="text-normal b-header">รายการเอกสาร (Materials)</h1>
+      <h1
+        v-if="materialList && materialList.length == 0"
+        class="text-normal l-grey-text notfound"
+      >
+        ไม่มีไฟล์ในระบบ
+      </h1>
       <div id="file-box">
-        <h1 class="text-normal l-grey-text notfound">ไม่มีไฟล์ในระบบ</h1>
-        <div class="file-container" v-for="(file, i) in fileList" :key="i">
+        <div
+          class="file-container"
+          v-for="(folder, i) in materialList"
+          :key="i"
+        >
           <div>
             <div>
               <img
@@ -38,37 +38,95 @@
                 src="../../assets/icon/folder-icon.png"
                 alt=""
               />
-              <h1 class="file-name file-head">เอกสารประจำวันที่ 01/09/2564</h1>
+              <h1 class="file-name file-head" v-if="edit != folder.material_id">
+                {{ folder.folderName }}
+              </h1>
+              <input
+                class="input-box file-name file-head foldername"
+                type="text"
+                v-model="folder.folderName"
+                v-if="edit == folder.material_id"
+              />
             </div>
-            <div>
-              <button class="delete-btn" v-if="edit">
-                <img src="../../assets/icon/icon-trash.png" alt="" />Delete
+            <div id="file-btn-section">
+              <button class="edit-btn center" v-if="edit == folder.material_id">
+                <img
+                  class="add-icon"
+                  src="../../assets/icon/icon-add.png"
+                  alt=""
+                />Add
               </button>
-              <button class="edit-btn" v-if="!edit" @click="editClick">
+              <button
+                class="delete-btn"
+                v-if="edit == folder.material_id"
+                @click="deleteFolder(folder.folder_id)"
+              >
+                <img
+                  class="delete-icon"
+                  src="../../assets/icon/icon-trash.png"
+                  alt=""
+                />Delete
+              </button>
+              <button
+                class="edit-btn"
+                v-if="edit != folder.material_id"
+                @click="editClick(folder)"
+              >
                 edit
               </button>
-              <button class="edit-btn save-btn" v-if="edit" @click="editClick">
+              <button
+                class="edit-btn save-btn"
+                v-if="edit == folder.material_id"
+                @click="saveClick()"
+              >
                 save
               </button>
             </div>
           </div>
-          <h1 class="file-name folder-description">
-            เอกสารเพื่อการเตรียมความพร้อม ก่อนเริ่มการอบรม
+          <h1
+            v-if="folder.description && edit != folder.material_id"
+            class="file-name folder-description"
+          >
+            {{ folder.description }}
           </h1>
-          <div id="icon-list" v-for="(file, i) in fileList" :key="i">
+          <input
+            class="input-box file-name folder-description"
+            type="text"
+            v-model="folder.description"
+            placeholder="ไม่มีรายละเอียดโฟลเดอร์"
+            v-if="edit == folder.material_id"
+          />
+          <div
+            id="icon-list"
+            v-for="(material, i) in folder.materials"
+            :key="i"
+          >
             <img
               class="file-icon"
               src="../../assets/icon/file-icon.png"
               alt=""
             />
-            <h1 class="file-name" v-if="!edit">โจทย์การแข่งขัน.pdf</h1>
+            <a
+              target="_blank"
+              :href="link"
+              class="file-name"
+              @click="
+                downloadFile({
+                  folderName: folder.folderName,
+                  fileName: material.fileName,
+                })
+              "
+              v-if="edit != folder.material_id"
+            >
+              {{ material.fileName }}
+            </a>
             <input
               class="input-box file-name"
               type="text"
-              value="โจทย์การแข่งขัน"
-              v-if="edit"
+              v-model="material.fileName"
+              v-if="edit == folder.material_id"
             />
-            <button class="delete-btn" v-if="edit">
+            <button class="delete-btn" v-if="edit == folder.material_id">
               <img
                 class="trash-icon"
                 src="../../assets/icon/icon-trash.png"
@@ -83,13 +141,18 @@
 </template>
 
 <script>
+import url from "../../api-url";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      fileList: 5,
       files: null,
-      edit: false,
+      edit: "",
+      link: "",
     };
+  },
+  mounted() {
+    this.$store.dispatch("material/updateEditing", false);
   },
   methods: {
     // async fileUpload() {
@@ -99,12 +162,35 @@ export default {
     // uploadFileMethod() {
     //   console.log(this.files);
     // },
-    editClick() {
-      this.edit = !this.edit;
+    editClick(value) {
+      if (this.editing == false) {
+        this.edit = value.material_id;
+        this.$store.dispatch("material/updateEditing", true);
+      }
+    },
+    saveClick() {
+      this.edit = "";
+      this.$store.dispatch("material/updateEditing", false);
     },
     clickUpload() {
       this.$emit("fileClickUpload", true);
     },
+    downloadFile(query) {
+      this.link =
+        url +
+        `/material/download?folder=${query.folderName}&fileName=${query.fileName}`;
+    },
+    async deleteFolder(folder_id) {
+      await this.$store.dispatch("material/deleteFolder", {
+        folder_id: folder_id,
+      });
+    },
+  },
+  computed: {
+    ...mapGetters({
+      materialList: "material/getMaterialList",
+      editing: "material/getEditing",
+    }),
   },
 };
 </script>
@@ -131,6 +217,20 @@ export default {
 
 .b-header {
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
+}
+
+#file-btn-section > button:nth-child(2) {
+  margin-right: 10px;
+}
+
+.foldername {
+  color: #303030 !important;
+  min-width: 300px;
+}
+
+.add-icon {
+  width: 15px;
+  margin-right: 5px;
 }
 
 .add-btn {
@@ -212,6 +312,10 @@ export default {
   padding: 0px 20px;
 }
 
+.file-container:not(:first-child) {
+  margin-top: 25px;
+}
+
 .file-container > div:first-child {
   display: flex;
   align-items: center;
@@ -236,9 +340,10 @@ export default {
 }
 
 .folder-description {
-  padding-left: 25px;
-  padding-top: 10px;
+  margin-left: 25px !important;
+  margin-top: 10px !important;
   color: #7f7f7f !important;
+  width: calc(100% - 100px);
 }
 
 .file-icon {
@@ -253,6 +358,7 @@ export default {
   color: #303030;
   margin: 0;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .file-head {
@@ -288,6 +394,10 @@ div::-webkit-scrollbar-thumb {
     padding: 30px;
   }
 
+  #file-information {
+    margin-top: 15px;
+  }
+
   .file-container {
     padding: 0px 15px 10px 0px;
   }
@@ -297,10 +407,15 @@ div::-webkit-scrollbar-thumb {
   }
 
   .edit-btn,
+  .add-btn,
   .delete-btn,
   .cancel-btn {
     font-size: 1.5em;
     padding: 0px 10px;
+  }
+
+  .folder-description {
+    width: calc(100% - 85px);
   }
 
   .add-btn {
@@ -321,6 +436,10 @@ div::-webkit-scrollbar-thumb {
   .delete-btn > img {
     width: 10px;
   }
+
+  .add-icon {
+    width: 10px;
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -328,11 +447,40 @@ div::-webkit-scrollbar-thumb {
     font-size: 1.5em;
   }
 
+  .file-container > div:first-child {
+    display: block;
+  }
+
+  #file-btn-section > .edit-btn,
+  #file-btn-section > .delete-btn {
+    width: 100%;
+  }
+
+  #file-btn-section {
+    margin-top: 10px;
+  }
+
+  .folder-description {
+    margin-left: 0px !important;
+    width: 100%;
+  }
+
+  #icon-list {
+    margin-left: 0px;
+  }
+
+  #file-btn-section > .delete-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .file-container {
-    padding: 0px 5px 10px 0px;
+    padding: 0px 10px 10px 0px;
   }
 
   .edit-btn,
+  .add-btn,
   .delete-btn,
   .cancel-btn {
     font-size: 1.25em;
@@ -342,6 +490,10 @@ div::-webkit-scrollbar-thumb {
 
   .delete-btn > img {
     width: 7px;
+  }
+
+  .add-icon {
+    width: 8px;
   }
 
   #search-grid {

@@ -68,6 +68,12 @@
         รายการทีมทั้งหมด
       </h1>
       <div id="team-box">
+        <h1
+          v-if="teamList && teamList.length == 0"
+          class="text-normal l-grey-text"
+        >
+          ไม่มีทีมในระบบ
+        </h1>
         <div v-if="!currentTeam.isLeader">
           <div v-for="(team, i) in teamList" :key="i">
             <h1 class="text-normal gray-text teamname">{{ team.teamName }}</h1>
@@ -199,12 +205,14 @@
       </p>
 
       <button
-        v-if="role != `user`"
+        v-if="role == `admin`"
         @click="memberClick"
         class="join-btn show-btn"
       >
         แสดงรายชื่อผู้ลงทะเบียน
       </button>
+
+      <div id="editor-spacer" v-if="role == 'editor'"><span></span></div>
     </div>
   </div>
 </template>
@@ -318,6 +326,10 @@ button {
 .input-box {
   width: 100%;
   margin: 0;
+}
+
+#editor-spacer {
+  height: 20px;
 }
 
 .bold {

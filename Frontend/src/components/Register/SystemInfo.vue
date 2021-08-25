@@ -25,7 +25,7 @@
           v-if="isInvalid.hasTeam"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุคำตอบ
+          * {{ InvalidMessage.hasTeam }}
         </p>
 
         <div id="note">
@@ -66,7 +66,7 @@
           v-if="isInvalid.displayName"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุชื่อผู้ใช้งาน
+          * {{ InvalidMessage.displayName }}
         </p>
 
         <div>
@@ -83,7 +83,7 @@
           v-if="isInvalid.password"
           class="text-normal orange-text error-message"
         >
-          * โปรดตั้งรหัสผ่าน
+          * {{ InvalidMessage.password }}
         </p>
 
         <div>
@@ -101,7 +101,7 @@
           maxlength="16"
           class="text-normal orange-text error-message"
         >
-          * โปรดยืนยันรหัสผ่าน
+          * {{ InvalidMessage.confirmPassword }}
         </p>
       </div>
     </div>
@@ -129,6 +129,11 @@ export default {
         ...new User(false),
         confirmPassword: false,
       },
+      InvalidMessage: {
+        ...new User(false),
+        confirmPassword: false,
+      },
+      duplicateDisplayName: false,
     };
   },
   computed: {
@@ -163,6 +168,7 @@ export default {
   watch: {
     "user.hasTeam": function () {
       this.isInvalid.hasTeam = false;
+      this.InvalidMessage.hasTeam = "";
       if (this.user.hasTeam == "true") {
         this.user.hasTeam = true;
       } else if (this.user.hasTeam == "false") {
@@ -171,30 +177,15 @@ export default {
     },
     "user.displayName": function () {
       this.isInvalid.displayName = false;
-      let reg = /[^A-Za-z0-9_.ก-๛]/;
-      if (this.user.displayName.length < 3) {
-        this.isInvalid.displayName = true;
-      } else if (reg.test(this.user.displayName)) {
-        this.isInvalid.displayName = true;
-      } else if (this.user.displayName == ".") {
-        this.isInvalid.displayName = true;
-      } else if (
-        this.user.displayName[this.user.displayName.length - 1] == "."
-      ) {
-        this.isInvalid.displayName = true;
-      }
+      this.InvalidMessage.displayName = "";
     },
     "user.password": function () {
       this.isInvalid.password = false;
-      if (this.user.password.length < 8) {
-        this.isInvalid.password = true;
-      }
+      this.InvalidMessage.password = "";
     },
     confirmPassword: function () {
       this.isInvalid.confirmPassword = false;
-      if (this.user.password != this.confirmPassword) {
-        this.isInvalid.confirmPassword = true;
-      }
+      this.InvalidMessage.confirmPassword = "";
     },
   },
   methods: {
@@ -214,19 +205,20 @@ export default {
       }
     },
     checkDuplicated() {
-      if (this.user.displayName) {
-        UserService.checkDuplicated({
-          displayName: this.user.displayName,
-        }).then((res) => {
-          if (res.status == 200) {
-            this.isInvalid.displayName = res.data.isFound;
-          } else {
-            console.log("Something wrong!");
+      UserService.checkDuplicated({
+        displayName: this.user.displayName,
+      }).then((res) => {
+        if (res.status == 200) {
+          this.duplicateDisplayName = res.data.isFound;
+          if (this.duplicateDisplayName) {
+            this.isInvalid.displayName = true;
+            this.InvalidMessage.displayName = "ชื่อผู้ใช้งานมีในระบบแล้ว";
+            this.isFormFilled = false;
           }
-        });
-      } else {
-        this.isInvalid.displayName = true;
-      }
+        } else {
+          console.log("Something wrong!");
+        }
+      });
     },
     checkForm() {
       let check =
@@ -246,18 +238,49 @@ export default {
       this.isFormFilled = true;
       if (this.user.hasTeam == null) {
         this.isInvalid.hasTeam = true;
+        this.InvalidMessage.hasTeam = "โปรดระบุคำตอบ";
         this.isFormFilled = false;
       }
       if (!this.user.displayName) {
         this.isInvalid.displayName = true;
+        this.InvalidMessage.displayName = "โปรดระบุชื่อผู้ใช้งาน";
+        this.isFormFilled = false;
+      } else if (this.user.displayName.length < 3) {
+        this.isInvalid.displayName = true;
+        this.InvalidMessage.displayName = "โปรดระบุชื่อผู้ใช้งานไม่ต่ำกว่า 3";
+        this.isFormFilled = false;
+      } else if (/[^A-Za-z0-9_.ก-๛]/.test(this.user.displayName)) {
+        this.isInvalid.displayName = true;
+        this.InvalidMessage.displayName = "โปรดระบุชื่อให้ถูกต้อง";
+        this.isFormFilled = false;
+      } else if (this.user.displayName == ".") {
+        this.isInvalid.displayName = true;
+        this.InvalidMessage.displayName = "โปรดระบุชื่อผู้ใช้งาน";
+        this.isFormFilled = false;
+      } else if (
+        this.user.displayName[this.user.displayName.length - 1] == "."
+      ) {
+        this.isInvalid.displayName = true;
+        this.InvalidMessage.displayName = "โปรดระบุชื่อผู้ใช้งาน";
         this.isFormFilled = false;
       }
       if (!this.user.password) {
         this.isInvalid.password = true;
+        this.InvalidMessage.password = "โปรดระบุรหัสผ่าน";
+        this.isFormFilled = false;
+      } else if (this.user.password.length < 8) {
+        this.isInvalid.password = true;
+        this.InvalidMessage.password = "โปรดระบุรหัสผ่านให้เกินกว่า 7 ตัว";
         this.isFormFilled = false;
       }
       if (!this.confirmPassword) {
         this.isInvalid.confirmPassword = true;
+        this.InvalidMessage.confirmPassword = "โปรดยืนยันรหัสผ่าน";
+        this.isFormFilled = false;
+      } else if (this.user.password != this.confirmPassword) {
+        this.isInvalid.confirmPassword = true;
+        this.InvalidMessage.confirmPassword =
+          "โปรดยืนยันรหัสผ่านให้ตรงกับรหัสผ่าน";
         this.isFormFilled = false;
       }
 

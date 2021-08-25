@@ -6,6 +6,7 @@ import auth from "./auth.module";
 import team from "./team.module";
 import admin from "./adminDashboard.module";
 import video from "./video.module";
+import material from "./material.module";
 
 Vue.use(Vuex);
 
@@ -16,5 +17,6 @@ export default new Vuex.Store({
     team,
     admin,
     video,
+    material,
   },
 });

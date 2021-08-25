@@ -54,6 +54,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("page/setPage", "dashBoard");
+    this.$store.dispatch("material/getMaterialList");
     this.$store.dispatch("video/getVideoList");
   },
 };

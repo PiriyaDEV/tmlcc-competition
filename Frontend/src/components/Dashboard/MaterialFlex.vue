@@ -15,7 +15,17 @@
     <div>
       <h1 class="text-normal material-header">เอกสาร (Materials)</h1>
       <div id="file-box">
-        <div class="file-container" v-for="(file, i) in fileList" :key="i">
+        <h1
+          v-if="materialList && materialList.length == 0"
+          class="text-normal l-grey-text no-file"
+        >
+          ไม่มีเอกสารในระบบ
+        </h1>
+        <div
+          class="file-container"
+          v-for="(folder, i) in materialList"
+          :key="i"
+        >
           <div>
             <div>
               <img
@@ -23,19 +33,34 @@
                 src="../../assets/icon/folder-icon.png"
                 alt=""
               />
-              <h1 class="file-name file-head">เอกสารประจำวันที่ 01/09/2564</h1>
+              <h1 class="file-name file-head">{{ folder.folderName }}</h1>
             </div>
           </div>
-          <h1 class="file-name folder-description">
-            เอกสารเพื่อการเตรียมความพร้อม ก่อนเริ่มการอบรม
+          <h1 v-if="folder.description" class="file-name folder-description">
+            {{ folder.description }}
           </h1>
-          <div id="icon-list" v-for="(file, i) in fileList" :key="i">
+          <div
+            id="icon-list"
+            v-for="(material, i) in folder.materials"
+            :key="i"
+          >
             <img
               class="file-icon"
               src="../../assets/icon/file-icon.png"
               alt=""
             />
-            <h1 class="file-name">โจทย์การแข่งขัน.pdf</h1>
+            <a
+              class="file-name"
+              :href="link"
+              @click="
+                downloadFile({
+                  folderName: folder.folderName,
+                  fileName: material.fileName,
+                })
+              "
+            >
+              {{ material.fileName }}
+            </a>
           </div>
         </div>
       </div>
@@ -45,6 +70,12 @@
       <h1 class="text-normal material-header">Videos</h1>
 
       <div id="video-box">
+        <h1
+          v-if="videoList && videoList.length == 0"
+          class="text-normal l-grey-text no-file"
+        >
+          ไม่มีวิดีโอในระบบ
+        </h1>
         <div class="video-container" v-for="(video, i) in videoList" :key="i">
           <div class="video-image-container" @click="clickLink(video)">
             <img class="video-image" :src="video.thumbnail" alt="" />
@@ -62,12 +93,13 @@
 </template>
 
 <script>
+import url from "../../api-url";
 import { mapGetters } from "vuex";
 
 export default {
   data() {
     return {
-      fileList: 5,
+      link: "",
     };
   },
   methods: {
@@ -77,10 +109,16 @@ export default {
     clickLink(value) {
       window.open(value.link);
     },
+    downloadFile(query) {
+      this.link =
+        url +
+        `/material/download?folder=${query.folderName}&fileName=${query.fileName}`;
+    },
   },
   computed: {
     ...mapGetters({
       roleStatus: "auth/getRole",
+      materialList: "material/getUserMaterialList",
       videoList: "video/getUserVideoList",
     }),
   },
@@ -108,9 +146,17 @@ export default {
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
 }
 
+.no-file {
+  margin-top: 20px;
+}
+
 #file-box {
   overflow-y: scroll;
   height: 232px;
+}
+
+#file-box > .l-grey-text {
+  margin-left: 25px;
 }
 
 .file-head {
@@ -171,6 +217,7 @@ export default {
   color: #303030;
   margin: 0;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .file-date {
@@ -301,6 +348,10 @@ div::-webkit-scrollbar-thumb {
     display: flex;
     justify-content: flex-end;
     padding-bottom: 20px;
+  }
+
+  #file-box > .l-grey-text {
+    margin-left: 0px;
   }
 
   #icon-list {
