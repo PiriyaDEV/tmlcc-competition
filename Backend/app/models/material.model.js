@@ -3,23 +3,22 @@ const sql = require("../database/db.connection");
 const Material = function (material) {
   this.material_id = material.material_id;
   this.folder_id = material.folder_id;
-  this.filePath = material.filePath;
-  this.description = material.description;
+  this.fileName = material.fileName;
   this.status = material.status;
   this.createdAt = material.createdAt;
   this.updatedAt = material.updatedAt;
 };
 
-Material.create = (material, result) => {
-  sql.query("INSERT INTO Materials SET ?", material, (err, res) => {
+Material.create = (materials, result) => {
+  sql.query("INSERT INTO Materials VALUES ?", [materials], (err, res) => {
     if (err) {
       console.log("Error: ", err);
       result(err, null);
       return;
     }
 
-    console.log(`Result: new material file created -> ${material.material_id}`);
-    result(null, material);
+    console.log(`Result: insert ${materials.length} material(s)`);
+    result(null, materials);
     return;
   });
 };
@@ -59,23 +58,11 @@ Material.getCount = (result) => {
   });
 };
 
-Material.getAll = (result) => {
+Material.find = (material, result) => {
   sql.query(
-    `SELECT
-      material_id,
-      (
-          SELECT
-              F.folderName
-          FROM
-              Folders F
-          WHERE
-              F.folder_id = M.folder_id
-      ) AS folderName,
-      description
-     FROM
-         Materials M
-     WHERE
-         status = 'active'`,
+    `SELECT * FROM Materials WHERE
+      material_id = '${material.material_id}' AND
+      folder_id = '${material.folder_id}'`,
     (err, res) => {
       if (err) {
         console.log("Error: ", err);
@@ -83,8 +70,78 @@ Material.getAll = (result) => {
         return;
       }
 
-      console.log(`Result: ${res.length} file(s)`);
+      if (!res.length) {
+        console.log("Result: material not found");
+        result(null, { isFound: false });
+        return;
+      }
+
+      console.log(`Result: material found -> ${res[0].material_id}`);
+      result(null, { isFound: true, ...res[0] });
+      return;
+    }
+  );
+};
+
+Material.getAll = (result) => {
+  sql.query(
+    `SELECT
+      F.folder_id,
+      F.folderName,
+      F.description,
+      IFNULL(
+          (
+              SELECT
+                  JSON_ARRAYAGG(
+                      JSON_OBJECT(
+                          'material_id',
+                          M.material_id,
+                          'fileName',
+                          M.fileName
+                      )
+                  )
+              FROM
+                  Materials M
+              WHERE
+                  F.folder_id = M.folder_id
+                  AND M.status = 'active'
+          ),
+          JSON_ARRAY()
+      ) AS materials
+   FROM
+       Folders F
+   WHERE
+       F.status = 'active'`,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      console.log(`Result: ${res.length} folder(s)`);
       result(null, res);
+      return;
+    }
+  );
+};
+
+Material.folderDelete = (material, result) => {
+  material.updatedAt = Date.now();
+
+  sql.query(
+    `UPDATE Materials SET ? WHERE 
+      folder_id = '${material.folder_id}'`,
+    material,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      console.log(`Result: all materials deleted from folder -> ${material.folder_id}`);
+      result(null, material);
       return;
     }
   );

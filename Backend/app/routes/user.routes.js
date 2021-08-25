@@ -4,6 +4,8 @@ const auth = require("../middleware/auth");
 module.exports = (app) => {
   app.post("/api/user/checkDuplicated", controller.checkDuplicated);
 
+  app.post("/api/user/update", controller.update);
+
   app.get("/api/user/getRole", auth, controller.getRole);
 
   app.get("/api/user/getAllUsers", auth, controller.getAllUsers);

@@ -23,6 +23,31 @@ exports.checkDuplicated = (req, res) => {
   });
 };
 
+exports.update = (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Content can not be empty!",
+    });
+  }
+
+  let user = req.body;
+
+  User.update(user, (err, result) => {
+    if (err) {
+      return res.status(500).send({
+        message:
+          err.message || "Some error occurred while updating user!",
+      });
+    }
+
+    return res.status(200).send({
+      user_id: result.user_id,
+      message: "User updated!",
+    });
+  });
+};
+
+
 exports.getRole = (req, res) => {
   if (!req.query.user_id) {
     return res.status(400).send({
