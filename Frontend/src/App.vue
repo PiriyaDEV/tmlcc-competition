@@ -81,6 +81,10 @@ textarea {
   resize: none;
 }
 
+select {
+  background-color: transparent;
+}
+
 input[type="text"]:disabled {
   background: #f3f3f3;
   border: 1px solid rgba(79, 79, 79, 0.16);
@@ -289,6 +293,10 @@ select:-webkit-autofill:focus {
 .number-bullet > li {
   text-indent: 0px;
   list-style-type: number;
+}
+
+.capital {
+  text-transform: capitalize;
 }
 
 /* ปุ่ม */

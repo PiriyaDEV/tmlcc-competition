@@ -25,14 +25,15 @@
     <div>
       <h1 class="text-normal b-header">รายการ Videos</h1>
       <div id="video-section">
-        <h1 v-if="!videoList.length" class="text-normal l-grey-text">
+        <h1
+          v-if="videoList && videoList.length == 0"
+          class="text-normal l-grey-text"
+        >
           ไม่มีวิดีโอในระบบ
         </h1>
-        <h1 v-if="videoList.length" class="text-normal material-header">
-          Videos
-        </h1>
+        <h1 v-else class="text-normal material-header">Videos</h1>
 
-        <div v-if="videoList.length" id="video-box">
+        <div v-if="videoList && videoList.length != 0" id="video-box">
           <div id="video-box-section" v-for="(video, i) in videoList" :key="i">
             <div class="video-container">
               <div class="video-image-container" @click="clickLink(video)">
@@ -120,12 +121,13 @@ export default {
       edit: false,
       checkEdit: "",
       keyword: "",
-      sort: "name",
+      sort: "new",
     };
   },
   mounted() {
     this.keyword = this.videoSearch;
     this.$store.dispatch("video/updateVideoSort", this.sort);
+    this.$store.dispatch("video/updateEditing", false);
   },
   watch: {
     keyword: function () {
@@ -144,7 +146,10 @@ export default {
       console.log(this.video);
     },
     editClick(value) {
-      this.checkEdit = value.video_id;
+      if (this.editing == false) {
+        this.checkEdit = value.video_id;
+        this.$store.dispatch("video/updateEditing", true);
+      }
     },
     async saveClick(video) {
       await this.$store.dispatch("video/update", {
@@ -154,11 +159,13 @@ export default {
       });
       if (this.createStatus.isSuccess) {
         this.$store.dispatch("video/resetCreateStatus");
+        this.$store.dispatch("video/updateEditing", false);
         this.checkEdit = "";
       }
     },
     async deleteClick(video) {
       await this.$store.dispatch("video/delete", video);
+      this.$store.dispatch("video/updateEditing", false);
       this.checkEdit = "";
     },
     clickLink(value) {
@@ -173,6 +180,7 @@ export default {
       createStatus: "video/getCreateStatus",
       videoList: "video/getVideoList",
       videoSearch: "video/getVideoSearch",
+      editing: "video/getEditing",
     }),
     cssVideoName() {
       let error = "input-box file-name error-input-box";

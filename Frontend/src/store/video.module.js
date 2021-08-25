@@ -59,6 +59,7 @@ export default {
       "พฤศจิกายน",
       "ธันวาคม",
     ],
+    editing: "",
   },
   getters: {
     getVideoList(state) {
@@ -95,6 +96,9 @@ export default {
     },
     getVideoSearch(state) {
       return state.search;
+    },
+    getEditing(state) {
+      return state.editing;
     },
   },
   mutations: {
@@ -163,6 +167,9 @@ export default {
     },
     setVideoSort(state, sort) {
       state.sort = sort;
+    },
+    setEditing(state, status) {
+      state.editing = status;
     },
   },
   actions: {
@@ -264,6 +271,9 @@ export default {
     },
     updateVideoSort({ commit }, sort) {
       commit("setVideoSort", sort);
+    },
+    updateEditing({ commit }, status) {
+      commit("setEditing", status);
     },
   },
 };

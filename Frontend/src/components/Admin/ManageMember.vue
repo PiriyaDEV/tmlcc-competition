@@ -14,7 +14,7 @@
           class="input-box text-normal"
         >
           <option value="name">ชื่อ ก - ฮ</option>
-          <option value="email">อีเมล a - ฮ</option>
+          <option value="email">อีเมล ก - ฮ</option>
           <option value="team">ชื่อทีม ก - ฮ</option>
           <option value="education">ระดับการศึกษา ก - ฮ</option>
         </select>
@@ -34,19 +34,21 @@
         <tr v-for="(user, i) in userList" :key="i">
           <td>
             <span class="table-hd mb-head">Display Name</span
-            ><span class="table-info display-name">{{ user.displayName }}</span>
+            ><span class="table-info display-name capital">{{
+              user.displayName
+            }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">ชื่อ</span
-            ><span class="table-info">{{ user.firstName }}</span>
+            ><span class="table-info capital">{{ user.firstName }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">นามสกุล</span
-            ><span class="table-info">{{ user.lastName }}</span>
+            ><span class="table-info capital">{{ user.lastName }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">Team</span
-            ><span class="table-info">{{ user.teamName }}</span>
+            ><span class="table-info capital">{{ user.teamName }}</span>
           </td>
           <td>
             <span class="table-hd mb-head">E-mail</span

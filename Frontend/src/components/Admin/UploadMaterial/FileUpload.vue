@@ -16,16 +16,33 @@
       <h1 class="text-normal">ชื่อโฟลเดอร์</h1>
       <div>
         <input
-          class="input-box text-normal"
+          :class="cssFolder"
           type="text"
           placeholder="กรอกชื่อโฟลเดอร์ที่ต้องการ"
+          v-model="folderName"
         />
-        <p class="text-normal orange-text error-message">
-          * โปรดระบุชื่อโฟลเดอร์
+        <p
+          v-if="createStatus.folderName.isInvalid"
+          class="text-normal orange-text error-message"
+        >
+          * {{ createStatus.folderName.message }}
         </p>
       </div>
       <div>
-        <button class="add-btn">เพิ่มเอกสาร</button>
+        <button
+          class="add-btn"
+          onclick="document.getElementById('file-input').click(); return false;"
+        >
+          เพิ่มเอกสาร
+        </button>
+        <input
+          type="file"
+          id="file-input"
+          style="visibility: hidden"
+          @change="fileUpload"
+          multiple
+          accept="application/pdf"
+        />
       </div>
     </div>
 
@@ -35,22 +52,30 @@
         <input
           class="input-box text-normal"
           type="text"
+          v-model="description"
           placeholder="กรอกรายละเอียดเพิ่มเติมของโฟลเดอร์ (สามารถเว้นว่างได้)"
         />
-        <p class="text-normal orange-text error-message">* โปรดระบุคำนำหน้า</p>
       </div>
     </div>
 
     <div id="file-content">
       <h1 class="text-normal b-header">รายการไฟล์ในโฟล์เดอร์</h1>
-      <div class="file-list-box" v-for="(file, i) in fileList" :key="i">
+      <h1
+        v-if="file_list && file_list.length == 0"
+        class="text-normal l-grey-text"
+      >
+        ยังไม่ได้อัพโหลดไฟล์
+      </h1>
+      <div class="file-list-box" v-for="(file, i) in file_list" :key="i">
         <div>
           <img
             class="file-icon"
             src="../../../assets/icon/file-icon.png"
             alt=""
           />
-          <h1 class="file-name" v-if="!edit">โจทย์การแข่งขัน.pdf</h1>
+          <h1 class="file-name" v-if="!edit">
+            {{ file_list[i].name }}
+          </h1>
           <input
             class="input-box file-name"
             type="text"
@@ -59,31 +84,98 @@
           />
         </div>
         <div>
-          <button class="delete-btn">
-            <img src="../../../assets/icon/icon-trash.png" alt="" />Delete
+          <button class="delete-btn" @click="fileDelete(i)">
+            <img src="../../../assets/icon/icon-trash.png" />Delete
           </button>
         </div>
       </div>
+      <p
+        v-if="file_list && file_list.length > 5"
+        class="text-normal orange-text error-message file-limit"
+      >
+        * อัพโหลดได้ไม่เกิน 20 ไฟล์
+      </p>
       <hr class="bar-color orange-bar" />
     </div>
 
     <div class="center">
-      <button class="btn-white">บันทึกข้อมูล</button>
+      <button class="btn-white" @click="upload()">บันทึกข้อมูล</button>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      fileList: 2,
       edit: false,
+      folderName: "",
+      description: "",
+      file_list: [],
+      invalidFolder: true,
     };
+  },
+  computed: {
+    ...mapGetters({
+      createStatus: "material/getCreateStatus",
+    }),
+    cssFolder() {
+      let error = "input-box text-normal error-input-box";
+      let complete = "input-box text-normal";
+      if (this.createStatus.folderName.isInvalid) {
+        return error;
+      }
+      return complete;
+    },
+  },
+  mounted() {
+    let currentTime = new Date();
+    this.folderName =
+      "เอกสารประจำวันที่ " +
+      currentTime.getDate().toString().padStart(2, "0") +
+      "-" +
+      (currentTime.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      currentTime.getFullYear();
   },
   methods: {
     clickUpload() {
       this.$emit("fileClickUpload", false);
+    },
+    async upload() {
+      var files = new FormData();
+
+      this.file_list.forEach((file) => {
+        files.append("material-files", file);
+      });
+      await this.$store.dispatch("material/upload", {
+        folderName: this.folderName,
+        description: this.description,
+        files: files,
+      });
+      if (this.createStatus.isSuccess) {
+        this.$emit("fileClickUpload", false);
+      }
+    },
+    fileDelete(index) {
+      this.file_list.splice(index, 1);
+    },
+    fileUpload(event) {
+      var input = event.target;
+      var count = input.files.length;
+      var index = 0;
+      if (input.files) {
+        while (count--) {
+          var reader = new FileReader();
+          // reader.onload = (e) => {
+          //   this.preview_list.push(e.target.result);
+          // };
+          this.file_list.push(input.files[index]);
+          reader.readAsDataURL(input.files[index]);
+          index++;
+        }
+      }
     },
   },
 };
@@ -111,6 +203,11 @@ export default {
 .fa-angle-left {
   margin: 0px 15px 0px 0px;
   color: #bf2e7e !important;
+}
+
+.file-limit {
+  padding-top: 10px;
+  padding-left: 20px;
 }
 
 .page-change-left {

@@ -32,7 +32,7 @@
 import ManageMember from "../../components/Admin/ManageMember.vue";
 import ManageAdmin from "../../components/Admin/ManageAdmin.vue";
 import DashboardNavbar from "../../components/Menu/DashboardNavbar.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   data() {
@@ -62,10 +62,15 @@ export default {
       }
       return unselect;
     },
+    ...mapGetters({
+      editing: "admin/getEditing",
+    }),
   },
   methods: {
     memberChoice() {
-      this.choice = "member";
+      if (this.editing == false) {
+        this.choice = "member";
+      }
     },
     adminChoice() {
       this.choice = "admin";

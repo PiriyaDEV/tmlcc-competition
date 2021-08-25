@@ -15,6 +15,34 @@ export default {
   state: {
     userList: [],
     staffList: [],
+    updateStatus: {
+      readyToUpdate: true,
+      isSuccess: false,
+      firstName: {
+        isInvalid: false,
+        message: "",
+      },
+      lastName: {
+        isInvalid: false,
+        message: "",
+      },
+      phone: {
+        isInvalid: false,
+        message: "",
+      },
+      email: {
+        isInvalid: false,
+        message: "",
+      },
+      organization: {
+        isInvalid: false,
+        message: "",
+      },
+      role: {
+        isInvalid: false,
+        message: "",
+      },
+    },
     user: {
       select: {},
       search: "",
@@ -25,6 +53,7 @@ export default {
       search: "",
       sort: "",
     },
+    editing: false,
   },
   getters: {
     getUserList(state) {
@@ -108,8 +137,63 @@ export default {
     getStaffSearch(state) {
       return state.staff.search;
     },
+    getUpdateStatus(state) {
+      return state.updateStatus;
+    },
+    getEditing(state) {
+      return state.editing;
+    },
   },
   mutations: {
+    resetUpdateStatus(state) {
+      state.updateStatus.firstName.isInvalid = false;
+      state.updateStatus.firstName.message = "";
+      state.updateStatus.lastName.isInvalid = false;
+      state.updateStatus.lastName.message = "";
+      state.updateStatus.phone.isInvalid = false;
+      state.updateStatus.phone.message = "";
+      state.updateStatus.email.isInvalid = false;
+      state.updateStatus.email.message = "";
+      state.updateStatus.organization.isInvalid = false;
+      state.updateStatus.organization.message = "";
+      state.updateStatus.role.isInvalid = false;
+      state.updateStatus.role.message = "";
+      state.updateStatus.readyToUpdate = true;
+      state.updateStatus.isSuccess = false;
+    },
+    setInvalidFirstName(state, message) {
+      state.updateStatus.firstName.isInvalid = true;
+      state.updateStatus.firstName.message = message;
+      state.updateStatus.readyToUpdate = false;
+    },
+    setInvalidLastName(state, message) {
+      state.updateStatus.lastName.isInvalid = true;
+      state.updateStatus.lastName.message = message;
+      state.updateStatus.readyToUpdate = false;
+    },
+    setInvalidPhone(state, message) {
+      state.updateStatus.phone.isInvalid = true;
+      state.updateStatus.phone.message = message;
+      state.updateStatus.readyToUpdate = false;
+    },
+    setInvalidEmail(state, message) {
+      state.updateStatus.email.isInvalid = true;
+      state.updateStatus.email.message = message;
+      state.updateStatus.readyToUpdate = false;
+    },
+    setInvalidOrganization(state, message) {
+      state.updateStatus.organization.isInvalid = true;
+      state.updateStatus.organization.message = message;
+      state.updateStatus.readyToUpdate = false;
+    },
+    setInvalidRole(state, message) {
+      state.updateStatus.role.isInvalid = true;
+      state.updateStatus.role.message = message;
+      state.updateStatus.readyToUpdate = false;
+    },
+    setUpdateSuccess(state) {
+      state.updateStatus.isSuccess = true;
+    },
     resetUserSelect(state) {
       state.user.select = {};
     },
@@ -137,8 +221,74 @@ export default {
     setStaffSearchRole(state, role) {
       state.staff.role = role;
     },
+    setEditing(state, status) {
+      state.editing = status;
+    },
   },
   actions: {
+    async updateStaff({ state, commit, dispatch }, staff) {
+      commit("resetUpdateStatus");
+
+      if (!staff.firstName) {
+        commit("setInvalidFirstName", "โปรดระบุชื่อ");
+      } else if (/[0-9๐-๙!-/:-@[-`{-~]/.test(staff.firstName)) {
+        commit("setInvalidFirstName", "โปรดระบุชื่อให้ถูกต้อง");
+      }
+      if (!staff.lastName) {
+        commit("setInvalidLastName", "โปรดระบุนามสกุล");
+      } else if (/[0-9๐-๙!-/:-@[-`{-~]/.test(staff.lastName)) {
+        commit("setInvalidLastName", "โปรดระบุนามสกุลให้ถูกต้อง");
+      }
+      if (!staff.phone) {
+        commit("setInvalidPhone", "โปรดระบุเบอร์โทรศัพท์");
+      } else if (staff.phone.length < 9 || staff.phone.length > 12) {
+        commit("setInvalidLastName", "โปรดระบุเบอร์โทรศัพท์ให้ครบ");
+      } else if (/[^*^0-9]/.test(staff.phone)) {
+        commit("setInvalidLastName", "โปรดระบุเบอร์โทรศัพท์ให้ถูกต้อง");
+      }
+      if (!staff.email) {
+        commit("setInvalidEmail", "โปรดระบุ E-mail");
+      } else if (
+        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(staff.email)
+      ) {
+        UserService.checkDuplicated({ email: staff.email }).then((res) => {
+          if (res.status == 200) {
+            if (res.data.isFound) {
+              commit("setInvalidEmail", "E-mail มีในระบบแล้ว");
+            }
+          } else {
+            console.log("Something wrong!");
+          }
+        });
+      } else {
+        commit("setInvalidEmail", "โปรดระบุ E-mail ให้ถูกต้อง");
+      }
+      if (!staff.organization) {
+        commit("setInvalidOrganization", "โปรดระบุสังกัด");
+      }
+
+      if (state.updateStatus.readyToUpdate) {
+        await UserService.updateStaff({
+          user_id: staff.user_id,
+          firstName: staff.firstName,
+          lastName: staff.lastName,
+          phone: staff.phone,
+          email: staff.email,
+          organization: staff.organization,
+          role: staff.role,
+        })
+          .then((res) => {
+            if (res.status == 200) {
+              console.log(res.data.message);
+              dispatch("getStaffList");
+              commit("setUpdateSuccess");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
     async getUserList({ commit }) {
       await UserService.getAllUsers()
         .then((res) => {
@@ -189,6 +339,12 @@ export default {
     },
     updateStaffSearchRole({ commit }, role) {
       commit("setStaffSearchRole", role);
+    },
+    resetStatusUpdate({ commit }) {
+      commit("resetUpdateStatus");
+    },
+    updateEditing({ commit }, status) {
+      commit("setEditing", status);
     },
   },
 };

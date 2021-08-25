@@ -15,6 +15,19 @@ class UserService {
       });
   }
 
+  async updateStaff(user) {
+    return await http
+      .post("/user/update", user, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return error.response;
+      });
+  }
+
   async getRole(user) {
     return await http
       .get(`/user/getRole?user_id=${user.user_id}`, {

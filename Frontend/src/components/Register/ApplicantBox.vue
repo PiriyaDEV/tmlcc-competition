@@ -30,7 +30,7 @@
           v-if="isInvalid.titleName"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุคำนำหน้า
+          * {{ InvalidMessage.titleName }}
         </p>
       </div>
       <div>
@@ -40,7 +40,7 @@
           v-if="isInvalid.firstName"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุชื่อ
+          * {{ InvalidMessage.firstName }}
         </p>
       </div>
       <div>
@@ -50,7 +50,7 @@
           v-if="isInvalid.lastName"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุนามสกุล
+          * {{ InvalidMessage.lastName }}
         </p>
       </div>
     </div>
@@ -73,7 +73,7 @@
           v-if="isInvalid.education"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุระดับการศึกษา
+          * {{ InvalidMessage.education }}
         </p>
       </div>
       <div>
@@ -83,7 +83,7 @@
           v-if="isInvalid.institution"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุสถานศึกษา
+          * {{ InvalidMessage.institution }}
         </p>
       </div>
     </div>
@@ -105,7 +105,7 @@
           v-if="isInvalid.organization"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุสังกัด
+          * {{ InvalidMessage.organization }}
         </p>
       </div>
     </div>
@@ -118,7 +118,7 @@
           v-if="isInvalid.address"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุที่อยู่
+          * {{ InvalidMessage.address }}
         </p>
       </div>
       <div>
@@ -128,7 +128,7 @@
           v-if="isInvalid.country"
           class="text-normal orange-text error-message"
         >
-          * โปรดระบุประเทศ
+          * {{ InvalidMessage.country }}
         </p>
       </div>
     </div>
@@ -140,7 +140,7 @@
         <h1 class="text-normal">เบอร์โทรศัพท์</h1>
         <input v-model="user.phone" :class="cssPhone" type="text" />
         <p v-if="isInvalid.phone" class="text-normal orange-text error-message">
-          * โปรดระบุเบอร์โทรศัพท์
+          * {{ InvalidMessage.phone }}
         </p>
       </div>
       <div>
@@ -152,7 +152,7 @@
           type="text"
         />
         <p v-if="isInvalid.email" class="text-normal orange-text error-message">
-          * โปรดระบุ E-mail
+          * {{ InvalidMessage.email }}
         </p>
       </div>
     </div>
@@ -172,7 +172,7 @@
           placeholder="Publication/github/ อื่นๆ"
         ></textarea>
         <p v-if="isInvalid.works" class="text-normal orange-text error-message">
-          * โปรดระบุผลงานที่เคยทำ
+          * {{ InvalidMessage.works }}
         </p>
       </div>
     </div>
@@ -215,7 +215,7 @@
             v-if="isInvalid.workInterest"
             class="text-normal orange-text error-message"
           >
-            * โปรดระบุความสนใจ
+            * {{ InvalidMessage.workInterest }}
           </p>
         </div>
       </div>
@@ -399,7 +399,7 @@
             v-if="isInvalid.skill"
             class="text-normal orange-text error-message"
           >
-            * โปรดระบุเรื่องที่เชี่ยวชาญ
+            * {{ InvalidMessage.skill }}
           </p>
         </div>
       </div>
@@ -427,6 +427,12 @@ export default {
         workInterest: false,
         skill: false,
       },
+      InvalidMessage: {
+        ...new User(false),
+        workInterest: false,
+        skill: false,
+      },
+      duplicateEmail: false,
     };
   },
   computed: {
@@ -590,49 +596,43 @@ export default {
   watch: {
     "user.firstName": function () {
       this.isInvalid.firstName = false;
-      let reg = /[0-9๐-๙!-/:-@[-`{-~]/;
-      if (reg.test(this.user.firstName)) {
-        this.isInvalid.firstName = true;
-      }
+      this.InvalidMessage.firstName = "";
     },
     "user.lastName": function () {
       this.isInvalid.lastName = false;
-      let reg = /[0-9๐-๙!-/:-@[-`{-~]/;
-      if (reg.test(this.user.lastName)) {
-        this.isInvalid.lastName = true;
-      }
+      this.InvalidMessage.lastName = "";
     },
     "user.institution": function () {
       this.isInvalid.institution = false;
+      this.InvalidMessage.institution = "";
     },
     "user.organization": function () {
       this.isInvalid.organization = false;
+      this.InvalidMessage.organization = "";
     },
     "user.address": function () {
       this.isInvalid.address = false;
+      this.InvalidMessage.address = "";
     },
     "user.country": function () {
       this.isInvalid.country = false;
-      let reg = /[0-9๐-๙!-/:-@[-`{-~]/;
-      if (reg.test(this.user.country)) {
-        this.isInvalid.country = true;
-      }
+      this.InvalidMessage.country = "";
     },
     "user.phone": function () {
       this.isInvalid.phone = false;
-      let reg = /[^0-9]/;
-      if (reg.test(this.user.phone)) {
-        this.isInvalid.phone = true;
-      }
+      this.InvalidMessage.phone = "";
     },
     "user.email": function () {
       this.isInvalid.email = false;
+      this.InvalidMessage.email = "";
     },
     "user.works": function () {
       this.isInvalid.works = false;
+      this.InvalidMessage.works = "";
     },
     "user.isWorkInterest": function () {
       this.isInvalid.workInterest = false;
+      this.InvalidMessage.workInterest = "";
       if (this.user.isWorkInterest == "true") {
         this.user.isWorkInterest = true;
         document.getElementById("workInterestBox").disabled = false;
@@ -644,8 +644,11 @@ export default {
     },
     "user.interestField": function () {
       this.isInvalid.workInterest = false;
+      this.InvalidMessage.workInterest = "";
     },
     "user.hasProgSkill": function () {
+      this.isInvalid.skill = false;
+      this.InvalidMessage.skill = "";
       if (this.user.hasProgSkill) {
         this.user.progSkillLevel = "Beginner";
         document.getElementById("programBox").disabled = false;
@@ -662,6 +665,8 @@ export default {
       }
     },
     "user.hasChemSkill": function () {
+      this.isInvalid.skill = false;
+      this.InvalidMessage.skill = "";
       if (this.user.hasChemSkill) {
         this.user.chemSkillLevel = "Beginner";
         document.getElementById("chemBox").disabled = false;
@@ -678,6 +683,8 @@ export default {
       }
     },
     "user.hasMachineLSkill": function () {
+      this.isInvalid.skill = false;
+      this.InvalidMessage.skill = "";
       if (this.user.hasMachineLSkill) {
         this.user.machineLSkillLevel = "Beginner";
         document.getElementById("machineBox").disabled = false;
@@ -694,12 +701,30 @@ export default {
       }
     },
     "user.hasOtherSkill": function () {
+      this.isInvalid.skill = false;
+      this.InvalidMessage.skill = "";
       if (this.user.hasOtherSkill) {
         document.getElementById("otherBox").disabled = false;
       } else {
         this.user.otherSkillList = undefined;
         document.getElementById("otherBox").disabled = true;
       }
+    },
+    "user.progSkillList": function () {
+      this.isInvalid.skill = false;
+      this.InvalidMessage.skill = "";
+    },
+    "user.chemSkillList": function () {
+      this.isInvalid.skill = false;
+      this.InvalidMessage.skill = "";
+    },
+    "user.machineLSkillList": function () {
+      this.isInvalid.skill = false;
+      this.InvalidMessage.skill = "";
+    },
+    "user.otherSkillList": function () {
+      this.isInvalid.skill = false;
+      this.InvalidMessage.skill = "";
     },
   },
   methods: {
@@ -712,17 +737,21 @@ export default {
       }
     },
     checkDuplicated() {
-      let reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/;
-      if (reg.test(this.user.email)) {
+      if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(this.user.email)) {
         UserService.checkDuplicated({ email: this.user.email }).then((res) => {
           if (res.status == 200) {
-            this.isInvalid.email = res.data.isFound;
+            this.duplicateEmail = res.data.isFound;
+            if (res.data.isFound) {
+              this.isInvalid.email = true;
+              this.InvalidMessage.email = "E-mail มีในระบบแล้ว";
+            }
           } else {
             console.log("Something wrong!");
           }
         });
       } else {
         this.isInvalid.email = true;
+        this.InvalidMessage.email = "โปรดระบุ E-mail ให้ถูกต้อง";
       }
     },
     checkForm() {
@@ -775,54 +804,87 @@ export default {
       this.isFormFilled = true;
       if (!this.user.titleName) {
         this.isInvalid.titleName = true;
+        this.InvalidMessage.titleName = "โปรดระบุคำนำหน้า";
         this.isFormFilled = false;
       }
       if (!this.user.firstName) {
         this.isInvalid.firstName = true;
+        this.InvalidMessage.firstName = "โปรดระบุชื่อ";
+        this.isFormFilled = false;
+      } else if (/[0-9๐-๙!-/:-@[-`{-~]/.test(this.user.firstName)) {
+        this.isInvalid.firstName = true;
+        this.InvalidMessage.firstName = "โปรดระบุชื่อให้ถูกต้อง";
         this.isFormFilled = false;
       }
       if (!this.user.lastName) {
         this.isInvalid.lastName = true;
+        this.InvalidMessage.lastName = "โปรดระบุนามสกุล";
+        this.isFormFilled = false;
+      } else if (/[0-9๐-๙!-/:-@[-`{-~]/.test(this.user.lastName)) {
+        this.isInvalid.lastName = true;
+        this.InvalidMessage.lastName = "โปรดระบุนามสกุลให้ถูกต้อง";
         this.isFormFilled = false;
       }
       if (!this.user.education) {
         this.isInvalid.education = true;
+        this.InvalidMessage.education = "โปรดระบุระดับการศึกษาสูงสุด";
         this.isFormFilled = false;
       }
       if (!this.user.institution) {
         this.isInvalid.institution = true;
+        this.InvalidMessage.institution = "โปรดระบุสถานศึกษา";
         this.isFormFilled = false;
       }
       if (!this.user.organization) {
         this.isInvalid.organization = true;
+        this.InvalidMessage.organization = "โปรดระบุสังกัด";
         this.isFormFilled = false;
       }
       if (!this.user.address) {
         this.isInvalid.address = true;
+        this.InvalidMessage.address = "โปรดระบุที่อยู่";
         this.isFormFilled = false;
       }
       if (!this.user.country) {
         this.isInvalid.country = true;
+        this.InvalidMessage.country = "โปรดระบุประเทศ";
+        this.isFormFilled = false;
+      } else if (/[0-9๐-๙!-/:-@[-`{-~]/.test(this.user.country)) {
+        this.isInvalid.country = true;
+        this.InvalidMessage.country = "โปรดระบุประเทศให้ถูกต้อง";
         this.isFormFilled = false;
       }
       if (!this.user.phone) {
         this.isInvalid.phone = true;
+        this.InvalidMessage.phone = "โปรดระบุเบอร์โทรศัพท์";
+        this.isFormFilled = false;
+      } else if (this.user.phone.length < 9 || this.user.phone.length > 12) {
+        this.isInvalid.phone = true;
+        this.InvalidMessage.phone = "โปรดระบุเบอร์โทรศัพท์ให้ครบ";
+        this.isFormFilled = false;
+      } else if (/[^*^0-9]/.test(this.user.phone)) {
+        this.isInvalid.phone = true;
+        this.InvalidMessage.phone = "โปรดระบุเบอร์โทรศัพท์ให้ถูกต้อง";
         this.isFormFilled = false;
       }
       if (!this.user.email) {
         this.isInvalid.email = true;
+        this.InvalidMessage.email = "โปรดระบุ E-mail";
         this.isFormFilled = false;
       }
       if (!this.user.works) {
         this.isInvalid.works = true;
+        this.InvalidMessage.works = "โปรดระบุผลงานที่เคยทำ";
         this.isFormFilled = false;
       }
       if (this.user.isWorkInterest == null) {
         this.isInvalid.workInterest = true;
+        this.InvalidMessage.workInterest = "โปรดระบุความสนใจ";
         this.isFormFilled = false;
       }
       if (this.user.isWorkInterest && !this.user.interestField) {
         this.isInvalid.workInterest = true;
+        this.InvalidMessage.workInterest = "โปรดระบุสาขาที่สนใจ";
         this.isFormFilled = false;
       }
       if (
@@ -832,6 +894,7 @@ export default {
         !this.user.hasOtherSkill
       ) {
         this.isInvalid.skill = true;
+        this.InvalidMessage.skill = "โปรดระบุทักษะที่ถนัด";
         this.isFormFilled = false;
       }
       if (
@@ -839,6 +902,7 @@ export default {
         (!this.user.progSkillLevel || !this.user.progSkillList)
       ) {
         this.isInvalid.skill = true;
+        this.InvalidMessage.skill = "โปรดระบุภาษาที่เชี่ยวชาญ";
         this.isFormFilled = false;
       }
       if (
@@ -846,6 +910,7 @@ export default {
         (!this.user.chemSkillLevel || !this.user.chemSkillList)
       ) {
         this.isInvalid.skill = true;
+        this.InvalidMessage.skill = "โปรดระบุเรื่องที่เชี่ยวชาญ";
         this.isFormFilled = false;
       }
       if (
@@ -853,10 +918,12 @@ export default {
         (!this.user.machineLSkillLevel || !this.user.machineLSkillList)
       ) {
         this.isInvalid.skill = true;
+        this.InvalidMessage.skill = "โปรดระบุเรื่องที่เชี่ยวชาญ";
         this.isFormFilled = false;
       }
       if (this.user.hasOtherSkill && !this.user.otherSkillList) {
         this.isInvalid.skill = true;
+        this.InvalidMessage.skill = "โปรดระบุเรื่องที่เชี่ยวชาญ";
         this.isFormFilled = false;
       }
       return this.isFormFilled;
