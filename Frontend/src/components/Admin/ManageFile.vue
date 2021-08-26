@@ -3,11 +3,16 @@
     <div id="search-grid">
       <div>
         <h1 class="text-normal">ค้นหาจาก keyword</h1>
-        <input class="input-box text-normal" type="text" />
+        <input v-model="keyword" class="input-box text-normal" type="text" />
       </div>
       <div>
         <h1 class="text-normal">เรียงลำดับ</h1>
-        <select name="sorting" id="sorting" class="input-box text-normal">
+        <select
+          v-model="sort"
+          name="sorting"
+          id="sorting"
+          class="input-box text-normal"
+        >
           <option value="name">ชื่อโฟลเดอร์ ก - ฮ</option>
           <option value="new">วันที่อัพโหลด ใหม่ - เก่า</option>
           <option value="old">วันที่อัพโหลด เก่า - ใหม่</option>
@@ -38,27 +43,46 @@
                 src="../../assets/icon/folder-icon.png"
                 alt=""
               />
-              <h1 class="file-name file-head" v-if="edit != folder.material_id">
+              <h1 class="file-name file-head" v-if="edit != folder.folder_id">
                 {{ folder.folderName }}
               </h1>
-              <input
-                class="input-box file-name file-head foldername"
-                type="text"
-                v-model="folder.folderName"
-                v-if="edit == folder.material_id"
-              />
+              <div id="file-head-box" v-if="edit == folder.folder_id">
+                <input
+                  :class="cssFolder"
+                  type="text"
+                  v-model="folder.folderName"
+                />
+                <p
+                  v-if="createStatus.folderName.isInvalid"
+                  class="text-normal orange-text error-message"
+                >
+                  * {{ createStatus.folderName.message }}
+                </p>
+              </div>
             </div>
             <div id="file-btn-section">
-              <button class="edit-btn center" v-if="edit == folder.material_id">
+              <button
+                class="edit-btn center"
+                v-if="edit == folder.folder_id"
+                onclick="document.getElementById('file-input').click(); "
+              >
                 <img
                   class="add-icon"
                   src="../../assets/icon/icon-add.png"
                   alt=""
                 />Add
               </button>
+              <input
+                type="file"
+                id="file-input"
+                style="visibility: hidden"
+                @change="fileUpload"
+                multiple
+                accept="application/pdf"
+              />
               <button
                 class="delete-btn"
-                v-if="edit == folder.material_id"
+                v-if="edit == folder.folder_id"
                 @click="deleteFolder(folder.folder_id)"
               >
                 <img
@@ -69,22 +93,22 @@
               </button>
               <button
                 class="edit-btn"
-                v-if="edit != folder.material_id"
+                v-if="edit != folder.folder_id"
                 @click="editClick(folder)"
               >
                 edit
               </button>
               <button
                 class="edit-btn save-btn"
-                v-if="edit == folder.material_id"
-                @click="saveClick()"
+                v-if="edit == folder.folder_id"
+                @click="updateFolder(folder)"
               >
                 save
               </button>
             </div>
           </div>
           <h1
-            v-if="folder.description && edit != folder.material_id"
+            v-if="folder.description && edit != folder.folder_id"
             class="file-name folder-description"
           >
             {{ folder.description }}
@@ -94,39 +118,57 @@
             type="text"
             v-model="folder.description"
             placeholder="ไม่มีรายละเอียดโฟลเดอร์"
-            v-if="edit == folder.material_id"
+            v-if="edit == folder.folder_id"
           />
+          <div>
+            <h1
+              v-if="
+                folder.materials &&
+                folder.materials.length == 0 &&
+                edit != folder.folder_id
+              "
+              class="no-file file-name"
+            >
+              โฟลเดอร์นี้ไม่มีไฟล์
+            </h1>
+          </div>
           <div
             id="icon-list"
             v-for="(material, i) in folder.materials"
             :key="i"
           >
-            <img
-              class="file-icon"
-              src="../../assets/icon/file-icon.png"
-              alt=""
-            />
-            <a
-              target="_blank"
-              :href="link"
-              class="file-name"
-              @click="
-                downloadFile({
-                  folderName: folder.folderName,
-                  fileName: material.fileName,
-                })
-              "
-              v-if="edit != folder.material_id"
-            >
-              {{ material.fileName }}
-            </a>
-            <input
+            <div>
+              <img
+                class="file-icon"
+                src="../../assets/icon/file-icon.png"
+                alt=""
+              />
+              <a
+                target="_blank"
+                :href="link"
+                class="file-name"
+                @click="
+                  downloadFile({
+                    folderName: folder.folderName,
+                    fileName: material.fileName,
+                  })
+                "
+              >
+                {{ material.fileName }}
+              </a>
+            </div>
+
+            <!-- <input
               class="input-box file-name"
               type="text"
               v-model="material.fileName"
-              v-if="edit == folder.material_id"
-            />
-            <button class="delete-btn" v-if="edit == folder.material_id">
+              v-if="edit == folder.folder_id"
+            /> -->
+            <button
+              class="delete-btn"
+              v-if="edit == folder.folder_id"
+              @click="deleteFile(material.material_id)"
+            >
               <img
                 class="trash-icon"
                 src="../../assets/icon/icon-trash.png"
@@ -149,10 +191,25 @@ export default {
       files: null,
       edit: "",
       link: "",
+      file_list: [],
+      keyword: "",
+      sort: "new",
+      tempFolder: "",
     };
   },
   mounted() {
+    this.$store.dispatch("material/resetCreateStatus");
+    this.keyword = this.materialSearch;
+    this.$store.dispatch("material/updateMaterialSort", this.sort);
     this.$store.dispatch("material/updateEditing", false);
+  },
+  watch: {
+    keyword: function () {
+      this.$store.dispatch("material/updateMaterialSearch", this.keyword);
+    },
+    sort: function () {
+      this.$store.dispatch("material/updateMaterialSort", this.sort);
+    },
   },
   methods: {
     // async fileUpload() {
@@ -164,14 +221,12 @@ export default {
     // },
     editClick(value) {
       if (this.editing == false) {
-        this.edit = value.material_id;
+        this.edit = value.folder_id;
+        this.tempFolder = value.folderName;
         this.$store.dispatch("material/updateEditing", true);
       }
     },
-    saveClick() {
-      this.edit = "";
-      this.$store.dispatch("material/updateEditing", false);
-    },
+
     clickUpload() {
       this.$emit("fileClickUpload", true);
     },
@@ -181,16 +236,63 @@ export default {
         `/material/download?folder=${query.folderName}&fileName=${query.fileName}`;
     },
     async deleteFolder(folder_id) {
-      await this.$store.dispatch("material/deleteFolder", {
-        folder_id: folder_id,
+      await this.$store.dispatch("material/deleteFolder", folder_id);
+    },
+    async deleteFile(material_id) {
+      await this.$store.dispatch("material/deleteFile", material_id);
+    },
+    async updateFolder(folder) {
+      this.$store.dispatch("material/updateTemp", this.tempFolder);
+      await this.$store.dispatch("material/validateUpdate", folder);
+      if (this.createStatus.readyToCreate == true) {
+        await this.$store.dispatch("material/updateFolder", folder);
+        this.edit = "";
+        this.$store.dispatch("material/updateEditing", false);
+      }
+    },
+    fileUpload(event) {
+      var input = event.target;
+      var count = input.files.length;
+      var index = 0;
+      if (input.files) {
+        while (count--) {
+          var reader = new FileReader();
+          // reader.onload = (e) => {
+          //   this.preview_list.push(e.target.result);
+          // };
+          this.file_list.push(input.files[index]);
+          reader.readAsDataURL(input.files[index]);
+          index++;
+        }
+        this.addFile();
+      }
+    },
+    async addFile() {
+      var files = new FormData();
+
+      this.file_list.forEach((file) => {
+        files.append("material-files", file);
+      });
+      await this.$store.dispatch("material/addMaterial", {
+        folder_id: this.edit,
+        description: this.description,
+        files: files,
       });
     },
   },
   computed: {
     ...mapGetters({
       materialList: "material/getMaterialList",
+      videoSearch: "material/getMaterialSearch",
       editing: "material/getEditing",
+      createStatus: "material/getCreateStatus",
     }),
+    cssFolder() {
+      let complete = "input-box file-name file-head foldername";
+      let error = "input-box file-name file-head foldername input-box-error";
+      if (this.createStatus.folderName.isInvalid) return complete;
+      else return error;
+    },
   },
 };
 </script>
@@ -205,6 +307,11 @@ export default {
 
 .input-box {
   width: 100%;
+}
+
+.no-file {
+  margin: 10px 0px 0px 25px !important;
+  color: #7f7f7f !important;
 }
 
 #search-grid {
@@ -309,7 +416,7 @@ export default {
 .file-container {
   align-items: center;
   margin-top: 15px;
-  padding: 0px 20px;
+  padding: 0px 10px 0px 0px;
 }
 
 .file-container:not(:first-child) {
@@ -318,32 +425,43 @@ export default {
 
 .file-container > div:first-child {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 }
 
 .file-container > div > div,
 #icon-list {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .folder-icon {
   width: 22px;
   margin-right: 8px;
+  margin-top: 4px;
+}
+
+.error-message {
+  margin-top: 10px;
+  margin-bottom: 0px;
 }
 
 #icon-list {
   margin-top: 10px;
   margin-left: 25px;
   margin-bottom: 10px;
+  justify-content: space-between;
+}
+
+#file-btn-section {
+  margin-top: 5px;
 }
 
 .folder-description {
   margin-left: 25px !important;
-  margin-top: 10px !important;
+  margin-top: 5px !important;
   color: #7f7f7f !important;
-  width: calc(100% - 100px);
+  width: calc(100% - 300px);
 }
 
 .file-icon {
@@ -363,6 +481,7 @@ export default {
 
 .file-head {
   font-weight: 800;
+  width: 100%;
 }
 
 .file-date {
@@ -415,7 +534,7 @@ div::-webkit-scrollbar-thumb {
   }
 
   .folder-description {
-    width: calc(100% - 85px);
+    width: calc(100% - 255px);
   }
 
   .add-btn {
@@ -447,6 +566,19 @@ div::-webkit-scrollbar-thumb {
     font-size: 1.5em;
   }
 
+  #file-head-box {
+    width: 100%;
+  }
+
+  .no-file {
+    margin: 10px 0px 0px 0px !important;
+    color: #7f7f7f !important;
+  }
+
+  .foldername {
+    min-width: inherit;
+  }
+
   .file-container > div:first-child {
     display: block;
   }
@@ -458,6 +590,7 @@ div::-webkit-scrollbar-thumb {
 
   #file-btn-section {
     margin-top: 10px;
+    margin-bottom: 5px;
   }
 
   .folder-description {
@@ -498,6 +631,15 @@ div::-webkit-scrollbar-thumb {
 
   #search-grid {
     display: block;
+  }
+}
+
+@media screen and (max-width: 489px) {
+  #icon-list > div > .file-name {
+    max-width: 175px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 </style>

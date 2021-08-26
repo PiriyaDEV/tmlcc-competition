@@ -6,11 +6,20 @@ class MaterialService {
   async upload(materials) {
     console.log(materials);
     let query = "";
-    if (materials.description) {
-      query = `?folder=${materials.folderName}&description=${materials.description}`;
+    if (materials.folder_id) {
+      if (materials.description) {
+        query = `?folder_id=${materials.folder_id}&description=${materials.description}`;
+      } else {
+        query = `?folder_id=${materials.folder_id}`;
+      }
     } else {
-      query = `?folder=${materials.folderName}`;
+      if (materials.description) {
+        query = `?folder=${materials.folderName}&description=${materials.description}`;
+      } else {
+        query = `?folder=${materials.folderName}`;
+      }
     }
+
     return await http
       .post("/material/upload" + query, materials.files, {
         headers: {
@@ -26,9 +35,22 @@ class MaterialService {
       });
   }
 
-  async update(materials) {
+  async checkDuplicated(folder) {
     return await http
-      .post("/material/update", materials, {
+      .post("/material/checkDuplicated", folder, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return error.response;
+      });
+  }
+
+  async updateFolder(folder) {
+    return await http
+      .post("/material/updateFolder", folder, {
         headers: authHeader(),
       })
       .then((response) => {
@@ -42,6 +64,19 @@ class MaterialService {
   async deleteFolder(folder) {
     return await http
       .post("/material/deleteFolder", folder, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return error.response;
+      });
+  }
+
+  async deleteFile(material) {
+    return await http
+      .post("/material/deleteFile", material, {
         headers: authHeader(),
       })
       .then((response) => {
