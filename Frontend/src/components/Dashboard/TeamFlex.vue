@@ -69,7 +69,7 @@
       </h1>
       <div id="team-box">
         <h1
-          v-if="teamList && teamList.length == 0"
+          v-if="teamList && teamList.length == 0 && role != `user`"
           class="text-normal l-grey-text"
         >
           ไม่มีทีมในระบบ
@@ -99,7 +99,7 @@
             <button
               class="join-btn"
               @click="showMember(team.teamName)"
-              v-if="role != `user`"
+              v-if="role == `admin`"
             >
               แสดง
             </button>
