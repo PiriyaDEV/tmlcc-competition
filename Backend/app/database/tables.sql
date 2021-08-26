@@ -62,8 +62,7 @@ CREATE TABLE IF NOT EXISTS TeamMembers(
 CREATE TABLE IF NOT EXISTS Materials(
   material_id             VARCHAR(8)      NOT NULL,
   folder_id               VARCHAR(8)      NOT NULL,
-  filePath                VARCHAR(255)    NOT NULL,
-  description             VARCHAR(255)    NULL,
+  fileName                VARCHAR(255)    NOT NULL,
   status                  VARCHAR(8)      NOT NULL,
   createdAt               BIGINT          NOT NULL,
   updatedAt               BIGINT          NOT NULL,
@@ -86,7 +85,9 @@ CREATE TABLE IF NOT EXISTS Videos(
 -- Create Folders Table
 CREATE TABLE IF NOT EXISTS Folders(
   folder_id               VARCHAR(8)      NOT NULL,
-  folderName              VARCHAR(64)     NOT NULL,
+  folderName              VARCHAR(64)     NOT NULL  UNIQUE,
+  description             VARCHAR(64)     NULL,
+  status                  VARCHAR(8)      NOT NULL,
   createdAt               BIGINT          NOT NULL,
   updatedAt               BIGINT          NOT NULL,
   PRIMARY KEY (folder_id)
