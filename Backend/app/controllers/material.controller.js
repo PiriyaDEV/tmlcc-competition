@@ -26,13 +26,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage }).array("material-files", 20);
 
 exports.upload = (req, res) => {
-  if (!req.query.folder || req.query.folder_id) {
+  if (!req.query.folder && !req.query.folder_id) {
     return res.status(400).send({
       message: "Content can not be empty!",
     });
   }
 
-  Folder.find({ folderName: req.query.folder }, (err, find) => {
+  console.log(req.query)
+
+  Folder.find({ folderName: req.query.folder, folder_id : req.query.folder_id }, (err, find) => {
     if (err) {
       return res.status(500).send({
         message: err.message || "Some error occurred while finding the folder!",
@@ -131,75 +133,201 @@ exports.upload = (req, res) => {
           });
         });
     } else {
-      folder_id = find.folder_id;
-      upload(req, res, (err) => {
-        if (res.req.files.length > 0) {
-          Material.getCount((err, count) => {
-            let materials = [];
+      if (find.status == "deleted") {
+        Folder.update(
+          { folder_id: find.folder_id, status: "active" },
+          (err, update_result) => {
             if (err) {
-              console.log(
-                err.message ||
-                  "Some error occurred while getting the number of materials!"
-              );
+              return res.status(500).send({
+                message:
+                  err.message ||
+                  "Some error occurred while updating the folder!",
+              });
             }
-            res.req.files.forEach((file) => {
-              count++;
-              count = count.toString();
 
-              let material = [
-                "MA" + count.padStart(6, "0"),
-                folder_id,
-                file.originalname,
-                "active",
-                Date.now(),
-                Date.now(),
-              ];
+            fsPromises
+              .mkdir(
+                materials_dir + "/" + find.folderName,
+                { recursive: true },
+                (err) => {
+                  return res.status(500).send({
+                    message:
+                      err.message ||
+                      "Some error occurred while making a new directory!",
+                  });
+                }
+              )
+              .then(() => {
+                upload(req, res, (err) => {
+                  if (res.req.files.length > 0) {
+                    Material.getCount((err, count) => {
+                      let materials = [];
+                      if (err) {
+                        console.log(
+                          err.message ||
+                            "Some error occurred while getting the number of materials!"
+                        );
+                      }
+                      res.req.files.forEach((file) => {
+                        count++;
+                        count = count.toString();
 
-              materials.push(material);
-            });
+                        let material = [
+                          "MA" + count.padStart(6, "0"),
+                          find.folder_id,
+                          file.originalname,
+                          "active",
+                          Date.now(),
+                          Date.now(),
+                        ];
 
-            Material.create(materials, (err, result) => {
+                        materials.push(material);
+                      });
+
+                      Material.create(materials, (err, result) => {
+                        if (err) {
+                          console.log(
+                            err.message ||
+                              "Some error occurred while creating the new material!"
+                          );
+                        }
+
+                        return res.status(201).send({
+                          upload: `${result.length} file(s)`,
+                          message: "Material folder created!",
+                        });
+                      });
+                    });
+                  }
+                });
+              });
+          }
+        );
+      } else {
+        req.query.folder = find.folderName;
+        upload(req, res, (err) => {
+          if (res.req.files.length > 0) {
+            Material.getCount((err, count) => {
+              let materials = [];
               if (err) {
                 console.log(
                   err.message ||
-                    "Some error occurred while creating the new material!"
+                    "Some error occurred while getting the number of materials!"
                 );
               }
+              res.req.files.forEach((file) => {
+                count++;
+                count = count.toString();
 
-              return res.status(201).send({
-                upload: `${result.length} file(s)`,
-                message: "Material folder created!",
+                let material = [
+                  "MA" + count.padStart(6, "0"),
+                  find.folder_id,
+                  file.originalname,
+                  "active",
+                  Date.now(),
+                  Date.now(),
+                ];
+
+                materials.push(material);
+              });
+
+              Material.create(materials, (err, result) => {
+                if (err) {
+                  console.log(
+                    err.message ||
+                      "Some error occurred while creating the new material!"
+                  );
+                }
+
+                return res.status(201).send({
+                  upload: `${result.length} file(s)`,
+                  message: "Material folder updated!",
+                });
               });
             });
-          });
-        }
-      });
+          }
+        });
+      }
     }
   });
 };
 
-exports.update = (req, res) => {
+exports.checkDuplicated = (req, res) => {
   if (!req.body) {
     return res.status(400).send({
       message: "Content can not be empty!",
     });
   }
 
-  let material = req.body;
+  let folder = req.body;
 
-  Material.update(material, (err, result) => {
+  Folder.find(folder, (err, result) => {
     if (err) {
       return res.status(500).send({
         message:
-          err.message ||
-          "Some error occurred while updating material information!",
+          err.message || "Some error occurred while checking duplicated folder!",
       });
     }
 
+    if (result.status == 'deleted') {
+      result.isFound = false;
+    }
+
     return res.status(200).send({
-      material_id: result.material_id,
-      message: "Material updated!",
+      isFound: result.isFound,
     });
+  });
+};
+
+exports.updateFolder = (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Content can not be empty!",
+    });
+  }
+
+  let folder = req.body;
+
+  Folder.find(folder, (err, find) => {
+    if (err) {
+      return res.status(500).send({
+        message:
+          err.message || "Some error occurred while finding folder name!",
+      });
+    }
+
+    if (!find.isFound) {
+      return res.status(200).send({
+        message: "Folder not found!",
+      });
+    }
+
+    let currentName = find.folderName;
+    let newName = folder.folderName;
+
+    fsPromises
+      .rename(materials_dir + "/" + currentName, materials_dir + "/" + newName, (err) => {
+        return res.status(500).send({
+          message:
+            err.message || "Some error occurred while deleting the directory!",
+        });
+      })
+      .then(() => {
+        Folder.update(folder, (err, result) => {
+          if (err) {
+            return res.status(500).send({
+              message:
+                err.message ||
+                "Some error occurred while updating folder information!",
+            });
+          }
+
+          return res.status(200).send({
+            folder_id: result.folder_id,
+            message: "Folder updated!",
+          });
+        });
+      });
   });
 };
 
@@ -249,21 +377,95 @@ exports.deleteFolder = (req, res) => {
         }
 
         fsPromises
-          .rmdir(
-            materials_dir + "/" + find_result.folderName,
+          .rmdir(materials_dir + "/" + find_result.folderName,{ recursive: true, force: true }, (err) => {
+            return res.status(500).send({
+              message:
+                err.message ||
+                "Some error occurred while deleting the directory!",
+            });
+          })
+          .then(() => {
+            return res.status(200).send({
+              folder_id: result.folder_id,
+              message: "Folder deleted!",
+            });
+          });
+      });
+    });
+  });
+};
+
+exports.deleteFile = (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Content can not be empty!",
+    });
+  }
+
+  let material = req.body;
+
+  Material.find(material, (err, find_result) => {
+    if (err) {
+      return res.status(500).send({
+        message: err.message || "Some error occurred while finding material!",
+      });
+    }
+
+    if (!find_result.isFound) {
+      return res.status(200).send({
+        message: "Material not found!",
+      });
+    }
+
+    if (find_result.status == "deleted") {
+      return res.status(200).send({
+        message: "Material already deleted!",
+      });
+    }
+
+    Folder.find({ folder_id: find_result.folder_id }, (err, findF_result) => {
+      if (err) {
+        return res.status(500).send({
+          message:
+            err.message || "Some error occurred while finding folder name!",
+        });
+      }
+
+      if (!findF_result.isFound) {
+        return res.status(200).send({
+          message: "Folder not found!",
+        });
+      }
+
+      material.status = "deleted";
+
+      Material.update(material, (err, result) => {
+        if (err) {
+          return res.status(500).send({
+            message:
+              err.message || "Some error occurred while updating material!",
+          });
+        }
+
+        fsPromises
+          .unlink(
+            materials_dir +
+              "/" +
+              findF_result.folderName +
+              "/" +
+              find_result.fileName,
             { recursive: true, force: true },
             (err) => {
               return res.status(500).send({
                 message:
-                  err.message ||
-                  "Some error occurred while deleting the directory!",
+                  err.message || "Some error occurred while deleting the file!",
               });
             }
           )
           .then(() => {
             return res.status(200).send({
-              folder_id: result.folder_id,
-              message: "Folder deleted!",
+              material_id: result.material_id,
+              message: "Material deleted!",
             });
           });
       });

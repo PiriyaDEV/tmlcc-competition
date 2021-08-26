@@ -107,7 +107,7 @@ exports.login = (req, res) => {
               lastLogin: update_result.lastLogin,
             },
             authConfig.secretKey,
-            { expiresIn: 86400 }
+            { expiresIn: "24h" }
           );
 
           res.cookie("user", token, { httpOnly: true, maxAge: 900000 });

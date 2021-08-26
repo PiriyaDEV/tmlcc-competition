@@ -59,10 +59,10 @@ Material.getCount = (result) => {
 };
 
 Material.find = (material, result) => {
+  console.log(material)
   sql.query(
     `SELECT * FROM Materials WHERE
-      material_id = '${material.material_id}' AND
-      folder_id = '${material.folder_id}'`,
+      material_id = '${material.material_id}'`,
     (err, res) => {
       if (err) {
         console.log("Error: ", err);
@@ -89,6 +89,7 @@ Material.getAll = (result) => {
       F.folder_id,
       F.folderName,
       F.description,
+      F.createdAt,
       IFNULL(
           (
               SELECT
@@ -111,7 +112,8 @@ Material.getAll = (result) => {
    FROM
        Folders F
    WHERE
-       F.status = 'active'`,
+       F.status = 'active'
+   ORDER BY F.createdAt DESC`,
     (err, res) => {
       if (err) {
         console.log("Error: ", err);
