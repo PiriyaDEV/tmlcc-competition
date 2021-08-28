@@ -36,6 +36,7 @@
           :class="cssFolder"
           type="text"
           placeholder="กรอกชื่อโฟลเดอร์ที่ต้องการ"
+          maxlength="64"
           v-model="folderName"
         />
         <input
@@ -82,6 +83,7 @@
           class="input-box text-normal"
           type="text"
           v-model="description"
+          maxlength="255"
           placeholder="กรอกรายละเอียดเพิ่มเติมของโฟลเดอร์ (สามารถเว้นว่างได้)"
         />
         <input

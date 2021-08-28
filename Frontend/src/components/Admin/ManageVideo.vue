@@ -49,12 +49,14 @@
                   :class="cssVideoName"
                   type="text"
                   v-model="video.videoName"
+                  maxlength="64"
                   v-if="checkEdit == video.video_id"
                 />
                 <input
                   class="input-box file-description description-box"
                   type="text"
                   v-model="video.description"
+                  maxlength="255"
                   v-if="checkEdit == video.video_id"
                   placeholder="ไม่มีรายละเอียดวิดีโอ"
                 />

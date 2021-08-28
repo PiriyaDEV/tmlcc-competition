@@ -15,6 +15,7 @@ export default {
   state: {
     userList: [],
     staffList: [],
+    currentPage: "",
     updateStatus: {
       readyToUpdate: true,
       isSuccess: false,
@@ -47,17 +48,31 @@ export default {
       select: {},
       search: "",
       sort: "",
+      pagination: {
+        page: 1,
+        perPage: 25,
+        pages: [],
+      },
     },
     staff: {
       role: "",
       search: "",
       sort: "",
+      pagination: {
+        page: 1,
+        perPage: 25,
+        pages: [],
+      },
     },
     editing: false,
   },
   getters: {
+    getUserListLength(state) {
+      return state.userList.length;
+    },
     getUserList(state) {
       let list = state.userList;
+
       if (state.user.search) {
         list = list.filter((user) => {
           let keyword = state.user.search.toLowerCase().trim();
@@ -73,23 +88,45 @@ export default {
         });
       }
       if (state.user.sort == "name") {
-        return (list = list.sort((userA, userB) =>
+        list = list.sort((userA, userB) =>
           compare(userA.firstName, userB.firstName)
-        ));
+        );
       } else if (state.user.sort == "email") {
-        return list.sort((userA, userB) => compare(userA.email, userB.email));
+        list = list.sort((userA, userB) => compare(userA.email, userB.email));
       } else if (state.user.sort == "team") {
-        return list.sort((userA, userB) =>
+        list = list.sort((userA, userB) =>
           compare(userA.teamName, userB.teamName)
         );
       } else if (state.user.sort == "education") {
-        return list.sort((userA, userB) =>
+        list = list.sort((userA, userB) =>
           compare(userA.education, userB.education)
         );
       }
+
+      let pages = [];
+      let numberOfPages = Math.ceil(
+        list.length / state.user.pagination.perPage
+      );
+
+      for (let index = 1; index <= numberOfPages; index++) {
+        pages.push(index);
+      }
+
+      state.user.pagination.pages = pages;
+
+      let page = state.user.pagination.page;
+      let perPage = state.user.pagination.perPage;
+      let from = page * perPage - perPage;
+      let to = page * perPage;
+
+      return list.slice(from, to);
+    },
+    getStaffListLength(state) {
+      return state.staffList.length;
     },
     getStaffList(state) {
       let list = state.staffList;
+
       if (state.staff.search || state.staff.role) {
         list = list.filter((staff) => {
           let keyword = state.staff.search.toLowerCase().trim();
@@ -115,18 +152,36 @@ export default {
         });
       }
       if (state.staff.sort == "name") {
-        return (list = list.sort((staffA, staffB) =>
+        list = list.sort((staffA, staffB) =>
           compare(staffA.firstName, staffB.firstName)
-        ));
+        );
       } else if (state.staff.sort == "email") {
-        return list.sort((staffA, staffB) =>
+        list = list.sort((staffA, staffB) =>
           compare(staffA.email, staffB.email)
         );
       } else if (state.staff.sort == "organization") {
-        return list.sort((staffA, staffB) =>
+        list = list.sort((staffA, staffB) =>
           compare(staffA.organization, staffB.organization)
         );
       }
+
+      let pages = [];
+      let numberOfPages = Math.ceil(
+        list.length / state.staff.pagination.perPage
+      );
+
+      for (let index = 1; index <= numberOfPages; index++) {
+        pages.push(index);
+      }
+
+      state.staff.pagination.pages = pages;
+
+      let page = state.staff.pagination.page;
+      let perPage = state.staff.pagination.perPage;
+      let from = page * perPage - perPage;
+      let to = page * perPage;
+
+      return list.slice(from, to);
     },
     getUserSelect(state) {
       return state.user.select;
@@ -142,6 +197,13 @@ export default {
     },
     getEditing(state) {
       return state.editing;
+    },
+    getPagination(state) {
+      if (state.currentPage == "user") {
+        return state.user.pagination;
+      } else if (state.currentPage == "staff") {
+        return state.staff.pagination;
+      }
     },
   },
   mutations: {
@@ -223,6 +285,21 @@ export default {
     },
     setEditing(state, status) {
       state.editing = status;
+    },
+    setCurrentPage(state, currentPage) {
+      state.currentPage = currentPage;
+    },
+    setUserPerPage(state, page) {
+      state.user.pagination.perPage = page;
+    },
+    setUserPage(state, page) {
+      state.user.pagination.page = page;
+    },
+    setStaffPerPage(state, page) {
+      state.staff.pagination.perPage = page;
+    },
+    setStaffPage(state, page) {
+      state.staff.pagination.page = page;
     },
   },
   actions: {
@@ -345,6 +422,21 @@ export default {
     },
     updateEditing({ commit }, status) {
       commit("setEditing", status);
+    },
+    updateUserPageLimit({ commit }, perPage) {
+      commit("setUserPerPage", perPage);
+    },
+    updateUserSelectPage({ commit }, page) {
+      commit("setUserPage", page);
+    },
+    updateStaffPageLimit({ commit }, perPage) {
+      commit("setStaffPerPage", perPage);
+    },
+    updateStaffSelectPage({ commit }, page) {
+      commit("setStaffPage", page);
+    },
+    setCurrentPage({ commit }, currentPage) {
+      commit("setCurrentPage", currentPage);
     },
   },
 };

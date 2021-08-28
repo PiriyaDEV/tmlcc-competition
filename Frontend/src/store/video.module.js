@@ -73,9 +73,9 @@ export default {
       }
 
       if (state.sort == "name") {
-        return (list = list.sort((videoA, videoB) =>
+        return list.sort((videoA, videoB) =>
           compare(videoA.videoName, videoB.videoName, "ASC")
-        ));
+        );
       } else if (state.sort == "new") {
         return list.sort((videoA, videoB) =>
           compare(videoA.time, videoB.time, "DSC")

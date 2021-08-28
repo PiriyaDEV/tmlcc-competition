@@ -16,6 +16,7 @@
                 :class="cssInvalidEmail"
                 type="text"
                 placeholder="E-mail ที่ใช้ในการสมัคร"
+                maxlength="64"
                 v-model="user.email"
               />
               <p
@@ -30,6 +31,7 @@
               <input
                 :class="cssInvalidPassword"
                 type="password"
+                maxlength="32"
                 placeholder="กรอก Password"
                 v-model="user.password"
               />
@@ -41,9 +43,9 @@
               </p>
             </div>
 
-            <h1 class="text-normal purple-text forgot-pass">
+            <!-- <h1 class="text-normal purple-text forgot-pass">
               <span>ลืมรหัสผ่าน</span>
-            </h1>
+            </h1> -->
 
             <div class="center">
               <button @click="login()" class="btn-color">เข้าสู่ระบบ</button>
@@ -84,7 +86,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("page/setPage", "login");
-    this.$store.dispatch("auth/resetLoginStatus");
+    this.$store.dispatch("auth/resetStatus");
   },
   computed: {
     ...mapGetters({
@@ -109,12 +111,16 @@ export default {
   },
   methods: {
     registerClick() {
-      this.$router.push("/register");
+      if (this.$route.path != "/register") {
+        this.$router.push("/register");
+      }
     },
     async login() {
       await this.$store.dispatch("auth/login", this.user);
       if (this.loginStatus.isAuthenticated) {
-        this.$router.push("/dashboard");
+        if (this.$route.path != "/dashboard") {
+          this.$router.push("/dashboard");
+        }
       }
     },
   },

@@ -13,6 +13,7 @@
           class="input-box text-normal"
           placeholder="กรอกชื่อทีมที่ต้องการ"
           v-model="teamName"
+          maxlength="32"
           @blur="checkDuplicated()"
         />
         <h1 @click="createTeam()" class="add-btn">+</h1>
@@ -46,6 +47,7 @@
           class="teamname-text-l input-box"
           type="text"
           v-model="teamName"
+          maxlength="32"
           @blur="checkDuplicated()"
         />
         <button @click="renameTeam" class="edit-btn">save</button>
@@ -246,11 +248,16 @@ export default {
   },
   methods: {
     memberClick() {
-      this.$router.push("/dashboard/member");
+      this.$store.dispatch("admin/updateUserSearch", "");
+      if (this.$route.path != "/dashboard/member") {
+        this.$router.push("/dashboard/member");
+      }
     },
     showMember(teamName) {
       this.$store.dispatch("admin/updateUserSearch", teamName);
-      this.$router.push("/dashboard/member");
+      if (this.$route.path != "/dashboard/member") {
+        this.$router.push("/dashboard/member");
+      }
     },
     deleteClick() {
       this.deleteCheck = !this.deleteCheck;

@@ -53,9 +53,9 @@ export default {
       }
 
       if (state.sort == "name") {
-        return (list = list.sort((folderA, folderB) =>
+        return list.sort((folderA, folderB) =>
           compare(folderA.folderName, folderB.folderName, "ASC")
-        ));
+        );
       } else if (state.sort == "new") {
         return list.sort((folderA, folderB) =>
           compare(folderA.createdAt, folderB.createdAt, "DSC")

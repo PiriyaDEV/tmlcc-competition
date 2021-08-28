@@ -104,7 +104,9 @@ export default {
   },
   methods: {
     manageClick() {
-      this.$router.push("/dashboard/file");
+      if (this.$route.path != "/dashboard/file") {
+        this.$router.push("/dashboard/file");
+      }
     },
     clickLink(value) {
       window.open(value.link);

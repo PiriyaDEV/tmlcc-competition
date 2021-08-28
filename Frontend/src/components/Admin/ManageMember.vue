@@ -31,6 +31,12 @@
           <th class="table-hd">ระดับการศึกษา</th>
           <th class="table-regis-hd">แสดงใบสมัคร</th>
         </tr>
+        <h1
+          v-if="userList && userList.length == 0"
+          class="text-normal l-grey-text no-info"
+        >
+          ไม่มีข้อมูลในระบบ
+        </h1>
         <tr v-for="(user, i) in userList" :key="i">
           <td>
             <span class="table-hd mb-head">Display Name</span
@@ -70,10 +76,14 @@
         </tr>
       </table>
     </div>
+    <div id="pagination">
+      <Pagination :keywordClear="keyword" :currentPage="`user`" />
+    </div>
   </div>
 </template>
 
 <script>
+import Pagination from "../Admin/Menu/Pagination.vue";
 import { mapGetters } from "vuex";
 import pdfMake from "pdfmake";
 import pdfFonts from "../../assets/custom-fonts.js";
@@ -84,6 +94,9 @@ export default {
       keyword: "",
       sort: "name",
     };
+  },
+  components: {
+    Pagination,
   },
   mounted() {
     this.keyword = this.userSearch;
@@ -386,13 +399,18 @@ export default {
 }
 
 #table-section {
-  height: 522px;
-  overflow-y: auto;
+  /* height: 522px; */
+  /* overflow-y: auto; */
   padding-right: 10px;
 }
 
 #member-table {
   width: 100%;
+}
+
+.no-info {
+  margin-top: 10px;
+  margin-left: 10px;
 }
 
 .table-hd {

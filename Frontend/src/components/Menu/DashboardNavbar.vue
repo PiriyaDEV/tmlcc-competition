@@ -92,22 +92,34 @@ export default {
   },
   methods: {
     mainpage() {
-      this.$router.push("/");
+      if (this.$route.path != "/") {
+        this.$router.push("/");
+      }
     },
     dashboard() {
-      this.$router.push("/dashboard");
+      if (this.$route.path != "/dashboard") {
+        this.$router.push("/dashboard");
+      }
     },
     dashboardMember() {
-      this.$router.push("/dashboard/member");
+      if (this.$route.path != "/dashboard/member") {
+        this.$router.push("/dashboard/member");
+      }
     },
     dashboardFile() {
-      this.$router.push("/dashboard/file");
+      if (this.$route.path != "/dashboard/file") {
+        this.$router.push("/dashboard/file");
+      }
     },
     registerClick() {
-      this.$router.push("/register");
+      if (this.$route.path != "/register") {
+        this.$router.push("/register");
+      }
     },
     loginClick() {
-      this.$router.push("/login");
+      if (this.$route.path != "/login") {
+        this.$router.push("/login");
+      }
     },
     toggleShowMenu() {
       this.showMenu = !this.showMenu;

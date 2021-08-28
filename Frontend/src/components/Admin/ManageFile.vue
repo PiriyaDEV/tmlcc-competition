@@ -51,6 +51,7 @@
                   :class="cssFolder"
                   type="text"
                   v-model="folder.folderName"
+                  maxlength="64"
                 />
                 <p
                   v-if="createStatus.folderName.isInvalid"
@@ -118,6 +119,7 @@
             type="text"
             v-model="folder.description"
             placeholder="ไม่มีรายละเอียดโฟลเดอร์"
+            maxlength="255"
             v-if="edit == folder.folder_id"
           />
           <div>

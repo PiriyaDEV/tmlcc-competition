@@ -326,7 +326,9 @@ export default {
   },
   methods: {
     registerClick() {
-      this.$router.push("/register");
+      if (this.$route.path != "/register") {
+        this.$router.push("/register");
+      }
     },
     subscribeClick() {
       this.validateEmail();

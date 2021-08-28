@@ -59,6 +59,12 @@
           <th class="table-hd">สังกัด</th>
           <th class="table-regis-hd">แก้ไขข้อมูล</th>
         </tr>
+        <h1
+          v-if="staffList && staffList.length == 0"
+          class="text-normal l-grey-text no-info"
+        >
+          ไม่มีข้อมูลในระบบ
+        </h1>
         <tr v-for="(staff, i) in staffList" :key="i">
           <td>
             <span class="table-hd mb-head">Role</span>
@@ -91,6 +97,7 @@
                 type="text"
                 v-if="edit == staff.user_id"
                 v-model="staff.firstName"
+                maxlength="32"
               />
               <p
                 v-if="edit == staff.user_id && updateStatus.firstName.isInvalid"
@@ -110,6 +117,7 @@
                 class="input-box table-info"
                 type="text"
                 v-if="edit == staff.user_id"
+                maxlength="32"
                 v-model="staff.lastName"
               />
               <p
@@ -130,6 +138,7 @@
                 class="input-box table-info"
                 type="text"
                 v-if="edit == staff.user_id"
+                maxlength="16"
                 v-model="staff.phone"
               />
               <p
@@ -150,6 +159,7 @@
                 class="input-box table-info"
                 type="text"
                 v-if="edit == staff.user_id"
+                maxlength="64"
                 v-model="staff.email"
               />
               <p
@@ -171,6 +181,7 @@
                 type="text"
                 v-if="edit == staff.user_id"
                 v-model="staff.organization"
+                maxlength="128"
               />
               <p
                 v-if="
@@ -202,10 +213,14 @@
         </tr>
       </table>
     </div>
+    <div id="pagination">
+      <Pagination :keywordClear="keyword" :currentPage="`staff`" />
+    </div>
   </div>
 </template>
 
 <script>
+import Pagination from "../Admin/Menu/Pagination.vue";
 import { mapGetters } from "vuex";
 
 export default {
@@ -216,6 +231,9 @@ export default {
       role: "",
       sort: "name",
     };
+  },
+  components: {
+    Pagination,
   },
   mounted() {
     this.keyword = this.staffSearch;
@@ -315,13 +333,18 @@ export default {
   margin-right: 10px;
 }
 
+.no-info {
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
 #role-select > div:nth-child(1) {
   margin-right: 25px;
 }
 
 #table-section {
-  height: 522px;
-  overflow-y: auto;
+  /* height: 522px; */
+  /* overflow-y: auto; */
   padding-right: 10px;
 }
 
