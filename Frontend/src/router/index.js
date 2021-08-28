@@ -16,6 +16,7 @@ const routes = [
     component: () => import("../views/Login.vue"),
     meta: {
       hideForAuth: true,
+      endCountdown: true,
     },
   },
   {
@@ -24,6 +25,7 @@ const routes = [
     component: () => import("../views/Register.vue"),
     meta: {
       hideForAuth: true,
+      endCountdown: true,
     },
   },
   {
@@ -32,6 +34,7 @@ const routes = [
     component: () => import("../views/Dashboard.vue"),
     meta: {
       requiresAuth: true,
+      endCountdown: true,
     },
   },
   {
@@ -41,6 +44,7 @@ const routes = [
     meta: {
       requiresAuth: true,
       requiresAdmin: true,
+      endCountdown: true,
     },
   },
   {
@@ -50,6 +54,7 @@ const routes = [
     meta: {
       requiresAuth: true,
       requiresEditor: true,
+      endCountdown: true,
     },
   },
   {
@@ -67,6 +72,13 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   let loginStatus = store.getters["auth/getLoginStatus"];
+  let countdown = store.getters["page/getCountdownStatus"];
+
+  if (to.matched.some((record) => record.meta.endCountdown)) {
+    if (!countdown) {
+      next({ name: "Mainpage" });
+    }
+  }
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     await store.dispatch("auth/fetchRole");

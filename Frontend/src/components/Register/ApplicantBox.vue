@@ -35,7 +35,12 @@
       </div>
       <div>
         <h1 class="text-normal">ชื่อ</h1>
-        <input v-model="user.firstName" :class="cssFirstName" type="text" />
+        <input
+          v-model="user.firstName"
+          :class="cssFirstName"
+          maxlength="32"
+          type="text"
+        />
         <p
           v-if="isInvalid.firstName"
           class="text-normal orange-text error-message"
@@ -45,7 +50,12 @@
       </div>
       <div>
         <h1 class="text-normal">นามสกุล</h1>
-        <input v-model="user.lastName" :class="cssLastName" type="text" />
+        <input
+          v-model="user.lastName"
+          :class="cssLastName"
+          maxlength="32"
+          type="text"
+        />
         <p
           v-if="isInvalid.lastName"
           class="text-normal orange-text error-message"
@@ -78,7 +88,12 @@
       </div>
       <div>
         <h1 class="text-normal">สถานศึกษา</h1>
-        <input v-model="user.institution" :class="cssInstitution" type="text" />
+        <input
+          v-model="user.institution"
+          :class="cssInstitution"
+          maxlength="128"
+          type="text"
+        />
         <p
           v-if="isInvalid.institution"
           class="text-normal orange-text error-message"
@@ -99,6 +114,7 @@
         <input
           v-model="user.organization"
           :class="cssOrganization"
+          maxlength="128"
           type="text"
         />
         <p
@@ -113,7 +129,12 @@
     <div id="address-grid" class="center">
       <div>
         <h1 class="text-normal">ที่อยู่</h1>
-        <input v-model="user.address" :class="cssAddress" type="text" />
+        <input
+          v-model="user.address"
+          :class="cssAddress"
+          maxlength="255"
+          type="text"
+        />
         <p
           v-if="isInvalid.address"
           class="text-normal orange-text error-message"
@@ -123,7 +144,12 @@
       </div>
       <div>
         <h1 class="text-normal">ประเทศ</h1>
-        <input v-model="user.country" :class="cssCountry" type="text" />
+        <input
+          v-model="user.country"
+          :class="cssCountry"
+          maxlength="64"
+          type="text"
+        />
         <p
           v-if="isInvalid.country"
           class="text-normal orange-text error-message"
@@ -138,7 +164,12 @@
     <div id="contact-grid" class="center">
       <div>
         <h1 class="text-normal">เบอร์โทรศัพท์</h1>
-        <input v-model="user.phone" :class="cssPhone" type="text" />
+        <input
+          v-model="user.phone"
+          :class="cssPhone"
+          maxlength="16"
+          type="text"
+        />
         <p v-if="isInvalid.phone" class="text-normal orange-text error-message">
           * {{ InvalidMessage.phone }}
         </p>
@@ -149,6 +180,7 @@
           v-model="user.email"
           @blur="checkDuplicated()"
           :class="cssEmail"
+          maxlength="64"
           type="text"
         />
         <p v-if="isInvalid.email" class="text-normal orange-text error-message">
@@ -168,6 +200,7 @@
           id="work"
           cols="30"
           rows="5"
+          maxlength="1028"
           :class="cssWorks"
           placeholder="Publication/github/ อื่นๆ"
         ></textarea>
@@ -208,6 +241,7 @@
             id="workInterestBox"
             v-model="user.interestField"
             :class="cssWorkInterest"
+            maxlength="255"
             type="text"
             placeholder="โปรดระบุสาขาที่สนใจ"
           />
@@ -272,6 +306,7 @@
             disabled
             id="programBox"
             v-model="user.progSkillList"
+            maxlength="255"
             :class="cssProgSkill"
             type="text"
             placeholder="ระบุภาษา โดยใช้ , กั้น"
@@ -324,6 +359,7 @@
             id="chemBox"
             v-model="user.chemSkillList"
             :class="cssChemSkill"
+            maxlength="255"
             type="text"
             placeholder="ระบุเรื่องที่เชี่ยวชาญ โดยใช้ , กั้น"
           />
@@ -375,6 +411,7 @@
             disabled
             id="machineBox"
             v-model="user.machineLSkillList"
+            maxlength="255"
             :class="cssMachineLSkill"
             type="text"
             placeholder="ระบุเรื่องที่เชี่ยวชาญ โดยใช้ , กั้น"
@@ -392,6 +429,7 @@
             id="otherBox"
             v-model="user.otherSkillList"
             :class="cssOtherSkill"
+            maxlength="255"
             type="text"
             placeholder="ระบุเรื่องที่เชี่ยวชาญ โดยใช้ , กั้น"
           />
@@ -858,7 +896,7 @@ export default {
         this.isInvalid.phone = true;
         this.InvalidMessage.phone = "โปรดระบุเบอร์โทรศัพท์";
         this.isFormFilled = false;
-      } else if (this.user.phone.length < 9 || this.user.phone.length > 12) {
+      } else if (this.user.phone.length < 9 || this.user.phone.length > 15) {
         this.isInvalid.phone = true;
         this.InvalidMessage.phone = "โปรดระบุเบอร์โทรศัพท์ให้ครบ";
         this.isFormFilled = false;

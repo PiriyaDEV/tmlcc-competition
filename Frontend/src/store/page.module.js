@@ -2,10 +2,20 @@ export default {
   namespaced: true,
   state: {
     page: "",
+    countdown: {
+      end: new Date("September 1, 2020 00:00:00").getTime(),
+      now: new Date().getTime(),
+    },
   },
   getters: {
     getPage(state) {
       return state.page;
+    },
+    getCountdown(state) {
+      return state.countdown;
+    },
+    getCountdownStatus(state) {
+      return state.countdown.now >= state.countdown.end ? true : false;
     },
   },
   mutations: {

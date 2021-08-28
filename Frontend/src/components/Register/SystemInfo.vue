@@ -46,6 +46,7 @@
             v-model="user.email"
             class="input-box text-normal"
             type="text"
+            maxlength="64"
             placeholder="{E-mail ใช้ข้อมูลเดียวกับช่องติดต่อ}"
             disabled
           />
@@ -75,7 +76,7 @@
             v-model="user.password"
             :class="cssPassword"
             type="password"
-            maxlength="16"
+            maxlength="32"
             autocomplete="new-password"
           />
         </div>
@@ -92,13 +93,12 @@
             v-model="confirmPassword"
             :class="cssConfirmPassword"
             type="password"
-            maxlength="16"
+            maxlength="32"
             autocomplete="new-password"
           />
         </div>
         <p
           v-if="isInvalid.confirmPassword"
-          maxlength="16"
           class="text-normal orange-text error-message"
         >
           * {{ InvalidMessage.confirmPassword }}
@@ -197,7 +197,9 @@ export default {
         AuthService.register(this.user).then((res) => {
           if (res.status == 201) {
             console.log("Register success!");
-            this.$router.push("/login");
+            if (this.$route.path != "/login") {
+              this.$router.push("/login");
+            }
           } else {
             console.log("Something wrong!");
           }
@@ -270,7 +272,7 @@ export default {
         this.isFormFilled = false;
       } else if (this.user.password.length < 8) {
         this.isInvalid.password = true;
-        this.InvalidMessage.password = "โปรดระบุรหัสผ่านให้เกินกว่า 7 ตัว";
+        this.InvalidMessage.password = "โปรดระบุรหัสผ่านอย่างน้อย 8 ตัว";
         this.isFormFilled = false;
       }
       if (!this.confirmPassword) {

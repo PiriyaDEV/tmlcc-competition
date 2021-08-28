@@ -81,6 +81,7 @@
 
 <script>
 import MainSponsors from "../Mainpage/MainSponsors.vue";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -101,11 +102,16 @@ export default {
   components: {
     MainSponsors,
   },
+  computed: {
+    ...mapGetters({
+      countdown: "page/getCountdown",
+    }),
+  },
   mounted() {
     setInterval(() => {
-      var countDownDate = new Date("September 1, 2021 00:00:00").getTime();
+      // var countDownDate = new Date("September 1, 2021 00:00:00").getTime();
       var now = new Date().getTime();
-      var distance = countDownDate - now;
+      var distance = this.countdown.end - now;
       this.days = Math.floor(distance / (1000 * 60 * 60 * 24));
       this.hours = Math.floor(
         (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)

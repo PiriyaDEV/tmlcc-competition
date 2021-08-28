@@ -19,6 +19,7 @@
           :class="cssVideoName"
           type="text"
           placeholder="กรอกชื่อวิดิโอ"
+          maxlength="64"
           v-model="video.videoName"
         />
         <p
@@ -37,6 +38,7 @@
           :class="cssVideoLink"
           type="text"
           placeholder="กรอก url ของ video"
+          maxlength="255"
           v-model="video.link"
         />
         <p
@@ -56,6 +58,7 @@
           :class="cssVideoDate"
           type="text"
           placeholder="เลือกวัน/เดือน/ปี (Default คือ วันที่่เปิดหน้าที่นี้)"
+          maxlength="9"
           v-model="video.date"
         />
         <p
@@ -76,6 +79,7 @@
           type="text"
           placeholder="เลือกเวลาในการเผยแพร่ (Default คือ เวลาที่เปิดหน้าที่นี้)"
           v-model="video.time"
+          maxlength="8"
         />
         <p
           v-if="createStatus.time.isInvalid"
@@ -94,6 +98,7 @@
           class="input-box text-normal"
           type="text"
           placeholder="กรอกรายละเอียดเพิ่มเติมของวิดิโอ  (สามารถเว้นว่างได้)"
+          maxlength="255"
           v-model="video.description"
         />
       </div>

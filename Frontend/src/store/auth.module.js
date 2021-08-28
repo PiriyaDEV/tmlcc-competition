@@ -38,6 +38,9 @@ export default {
     getRegisterStatus(state) {
       return state.registerStatus;
     },
+    getStatusCode(state) {
+      return state.statusCode;
+    },
   },
   mutations: {
     resetStatus(state) {
@@ -69,6 +72,9 @@ export default {
     },
     setRole(state, role) {
       state.role = role;
+    },
+    setStatusCode(state, code) {
+      state.statusCode = code;
     },
   },
   actions: {
@@ -124,6 +130,9 @@ export default {
           .then((res) => {
             if (res.status == 200) {
               commit("setRole", res.data.role);
+            } else if (res.status == 401) {
+              commit("clearAuth");
+              window.location.href = "/login";
             } else {
               console.log("Something wrong!");
             }

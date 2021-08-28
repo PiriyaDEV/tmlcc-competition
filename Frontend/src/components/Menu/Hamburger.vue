@@ -203,7 +203,10 @@
       <!-- <div class="nav-head nav-link register-btn">
         <a class="text-normal" href="/register">ลงทะเบียน</a>
       </div> -->
-      <div v-if="page != `dashBoard`" class="nav-head nav-link register-btn">
+      <div
+        v-if="page != `dashBoard` && endCountdown == true"
+        class="nav-head nav-link register-btn"
+      >
         <a
           class="text-normal"
           v-if="page != `agreement`"
@@ -213,6 +216,13 @@
         <a class="text-normal" v-if="page == `agreement`" @click="loginClick()"
           >เข้าสู่ระบบ</a
         >
+      </div>
+      <div
+        v-if="page != `dashBoard` && endCountdown == false"
+        class="nav-head nav-link register-btn blocked"
+      >
+        <a class="text-normal" v-if="page != `agreement`">ลงทะเบียน</a>
+        <a class="text-normal" v-if="page == `agreement`">เข้าสู่ระบบ</a>
       </div>
       <div v-if="page == `dashBoard`" class="nav-head nav-link register-btn">
         <a class="text-normal" @click="logout">ออกจากระบบ</a>
@@ -253,14 +263,18 @@ export default {
       }
     },
     registerClick() {
-      this.$router.push("/register");
+      if (this.$route.path != "/register") {
+        this.$router.push("/register");
+      }
     },
     loginClick() {
-      this.$router.push("/login");
+      if (this.$route.path != "/login") {
+        this.$router.push("/login");
+      }
     },
-    dashboard(value) {
-      this.$router.push(value);
-    },
+    // dashboard(value) {
+    //   this.$router.push(value);
+    // },
     logout() {
       this.$store.dispatch("auth/logout");
       window.location.href = "/login";
@@ -292,6 +306,7 @@ export default {
       displayName: "auth/getDisplayName",
       loginStatus: "auth/getLoginStatus",
       roleStatus: "auth/getRole",
+      endCountdown: "page/getCountdownStatus",
     }),
   },
 };

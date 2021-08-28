@@ -49,20 +49,29 @@
             >ติดต่อเรา</router-link
           >
           <div class="center">
-            <!-- <button v-if="page != `agreement`" class="btn-white blocked">
-              ลงทะเบียน
-            </button> -->
             <button
-              v-if="page != `agreement`"
+              v-if="page != `agreement` && endCountdown == false"
+              class="btn-white blocked"
+            >
+              ลงทะเบียน
+            </button>
+            <button
+              v-if="page != `agreement` && endCountdown == true"
               @click="registerClick()"
               class="btn-white"
             >
               ลงทะเบียน
             </button>
             <button
-              v-if="page == `agreement`"
+              v-if="page == `agreement` && endCountdown == true"
               @click="loginClick()"
               class="btn-color"
+            >
+              เข้าสู่ระบบ
+            </button>
+            <button
+              v-if="page == `agreement` && endCountdown == false"
+              class="btn-white blocked"
             >
               เข้าสู่ระบบ
             </button>
@@ -94,13 +103,19 @@ export default {
   },
   methods: {
     mainpage() {
-      this.$router.push("/");
+      if (this.$route.path != "/") {
+        this.$router.push("/");
+      }
     },
     registerClick() {
-      this.$router.push("/register");
+      if (this.$route.path != "/register") {
+        this.$router.push("/register");
+      }
     },
     loginClick() {
-      this.$router.push("/login");
+      if (this.$route.path != "/login") {
+        this.$router.push("/login");
+      }
     },
     toggleShowMenu() {
       this.showMenu = !this.showMenu;
@@ -135,6 +150,7 @@ export default {
     },
     ...mapGetters({
       page: "page/getPage",
+      endCountdown: "page/getCountdownStatus",
       displayName: "auth/getDisplayName",
       loginStatus: "auth/getLoginStatus",
       roleStatus: "auth/getRole",

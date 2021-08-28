@@ -81,7 +81,8 @@ textarea {
   resize: none;
 }
 
-select {
+select,
+option {
   background-color: transparent;
 }
 

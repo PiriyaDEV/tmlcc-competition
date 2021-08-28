@@ -13,6 +13,7 @@
           class="input-box text-normal"
           placeholder="กรอกชื่อทีมที่ต้องการ"
           v-model="teamName"
+          maxlength="32"
           @blur="checkDuplicated()"
         />
         <h1 @click="createTeam()" class="add-btn">+</h1>
@@ -46,6 +47,7 @@
           class="teamname-text-l input-box"
           type="text"
           v-model="teamName"
+          maxlength="32"
           @blur="checkDuplicated()"
         />
         <button @click="renameTeam" class="edit-btn">save</button>
@@ -69,7 +71,7 @@
       </h1>
       <div id="team-box">
         <h1
-          v-if="teamList && teamList.length == 0"
+          v-if="teamList && teamList.length == 0 && role != `user`"
           class="text-normal l-grey-text"
         >
           ไม่มีทีมในระบบ
@@ -99,7 +101,7 @@
             <button
               class="join-btn"
               @click="showMember(team.teamName)"
-              v-if="role != `user`"
+              v-if="role == `admin`"
             >
               แสดง
             </button>
@@ -246,11 +248,16 @@ export default {
   },
   methods: {
     memberClick() {
-      this.$router.push("/dashboard/member");
+      this.$store.dispatch("admin/updateUserSearch", "");
+      if (this.$route.path != "/dashboard/member") {
+        this.$router.push("/dashboard/member");
+      }
     },
     showMember(teamName) {
       this.$store.dispatch("admin/updateUserSearch", teamName);
-      this.$router.push("/dashboard/member");
+      if (this.$route.path != "/dashboard/member") {
+        this.$router.push("/dashboard/member");
+      }
     },
     deleteClick() {
       this.deleteCheck = !this.deleteCheck;

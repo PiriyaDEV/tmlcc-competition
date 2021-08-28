@@ -1,8 +1,24 @@
 <template>
   <div id="file-upload">
     <div class="center page-change-left">
-      <i class="fa fa-angle-left" aria-hidden="true"></i>
-      <h1 @click="clickUpload()" class="text-normal purple-text">
+      <i
+        v-if="clickUploadStatus == false"
+        class="fa fa-angle-left"
+        aria-hidden="true"
+      ></i>
+      <h1
+        v-if="clickUploadStatus == false"
+        @click="clickUpload()"
+        class="text-normal purple-text"
+      >
+        หน้าหลักการจัดการไฟล์
+      </h1>
+      <i
+        v-if="clickUploadStatus == true"
+        class="fa fa-angle-left fa-grey"
+        aria-hidden="true"
+      ></i>
+      <h1 v-if="clickUploadStatus == true" class="text-normal gray-text">
         หน้าหลักการจัดการไฟล์
       </h1>
     </div>
@@ -16,10 +32,20 @@
       <h1 class="text-normal">ชื่อโฟลเดอร์</h1>
       <div>
         <input
+          v-if="clickUploadStatus == false"
           :class="cssFolder"
           type="text"
           placeholder="กรอกชื่อโฟลเดอร์ที่ต้องการ"
+          maxlength="64"
           v-model="folderName"
+        />
+        <input
+          v-if="clickUploadStatus == true"
+          :class="cssFolder"
+          type="text"
+          placeholder="กรอกชื่อโฟลเดอร์ที่ต้องการ"
+          :value="folderName"
+          disabled
         />
         <p
           v-if="createStatus.folderName.isInvalid"
@@ -28,7 +54,7 @@
           * {{ createStatus.folderName.message }}
         </p>
       </div>
-      <div>
+      <div v-if="clickUploadStatus == false">
         <button
           class="add-btn"
           onclick="document.getElementById('file-input').click(); return false;"
@@ -44,16 +70,29 @@
           accept="application/pdf"
         />
       </div>
+      <div v-if="clickUploadStatus == true">
+        <button class="add-btn blocked">เพิ่มเอกสาร</button>
+      </div>
     </div>
 
     <div class="search-grid seach-no-btn">
       <h1 class="text-normal">รายละเอียดเอกสาร</h1>
       <div>
         <input
+          v-if="clickUploadStatus == false"
           class="input-box text-normal"
           type="text"
           v-model="description"
+          maxlength="255"
           placeholder="กรอกรายละเอียดเพิ่มเติมของโฟลเดอร์ (สามารถเว้นว่างได้)"
+        />
+        <input
+          v-if="clickUploadStatus == true"
+          class="input-box text-normal"
+          type="text"
+          :value="description"
+          placeholder="กรอกรายละเอียดเพิ่มเติมของโฟลเดอร์ (สามารถเว้นว่างได้)"
+          disabled
         />
       </div>
     </div>
@@ -76,30 +115,53 @@
           <h1 class="file-name" v-if="!edit">
             {{ file_list[i].name }}
           </h1>
-          <input
-            class="input-box file-name"
-            type="text"
-            value="โจทย์การแข่งขัน"
-            v-if="edit"
-          />
         </div>
         <div>
-          <button class="delete-btn" @click="fileDelete(i)">
+          <button
+            class="delete-btn"
+            v-if="clickUploadStatus == false"
+            @click="fileDelete(i)"
+          >
+            <img src="../../../assets/icon/icon-trash.png" />Delete
+          </button>
+          <button v-else class="delete-btn">
             <img src="../../../assets/icon/icon-trash.png" />Delete
           </button>
         </div>
       </div>
       <p
-        v-if="file_list && file_list.length > 5"
+        v-if="file_list && file_list.length > 20"
         class="text-normal orange-text error-message file-limit"
       >
         * อัพโหลดได้ไม่เกิน 20 ไฟล์
+      </p>
+      <p
+        v-else-if="uploadInvalid && file_list.length == 0"
+        class="text-normal orange-text error-message"
+      >
+        * ต้องอัพโหลดอย่างน้อย 1 ไฟล์
       </p>
       <hr class="bar-color orange-bar" />
     </div>
 
     <div class="center">
-      <button class="btn-white" @click="upload()">บันทึกข้อมูล</button>
+      <button
+        v-if="clickUploadStatus == false"
+        class="btn-white"
+        @click="upload()"
+      >
+        บันทึกข้อมูล
+      </button>
+      <button v-if="clickUploadStatus == true" class="btn-grey">
+        กำลังบันทึกข้อมูล
+      </button>
+    </div>
+
+    <div class="progress center" v-if="clickUploadStatus == true">
+      <span class="indicator"></span>
+      <span class="indicator"></span>
+      <span class="indicator"></span>
+      <span class="indicator"></span>
     </div>
   </div>
 </template>
@@ -114,6 +176,8 @@ export default {
       description: "",
       file_list: [],
       invalidFolder: true,
+      uploadInvalid: false,
+      clickUploadStatus: false,
     };
   },
   computed: {
@@ -130,6 +194,7 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch("material/resetCreateStatus");
     let currentTime = new Date();
     this.folderName =
       "เอกสารประจำวันที่ " +
@@ -138,24 +203,41 @@ export default {
       (currentTime.getMonth() + 1).toString().padStart(2, "0") +
       "-" +
       currentTime.getFullYear();
+
+    this.clickUploadStatus = false;
   },
   methods: {
     clickUpload() {
       this.$emit("fileClickUpload", false);
     },
     async upload() {
-      var files = new FormData();
-
-      this.file_list.forEach((file) => {
-        files.append("material-files", file);
-      });
-      await this.$store.dispatch("material/upload", {
+      await this.$store.dispatch("material/validate", {
         folderName: this.folderName,
         description: this.description,
-        files: files,
+        files: this.file_list,
       });
-      if (this.createStatus.isSuccess) {
-        this.$emit("fileClickUpload", false);
+
+      if (this.createStatus.readyToCreate) {
+        if (this.file_list && this.file_list.length != 0) {
+          this.clickUploadStatus = true;
+          this.uploadInvalid = false;
+
+          var files = new FormData();
+
+          this.file_list.forEach((file) => {
+            files.append("material-files", file);
+          });
+          await this.$store.dispatch("material/upload", {
+            folderName: this.folderName,
+            description: this.description,
+            files: files,
+          });
+          if (this.createStatus.isSuccess) {
+            this.$emit("fileClickUpload", false);
+          }
+        } else {
+          this.uploadInvalid = true;
+        }
       }
     },
     fileDelete(index) {
@@ -205,6 +287,10 @@ export default {
   color: #bf2e7e !important;
 }
 
+.fa-grey {
+  color: #c4c4c4 !important;
+}
+
 .file-limit {
   padding-top: 10px;
   padding-left: 20px;
@@ -215,6 +301,16 @@ export default {
   top: 35px;
   left: 50px;
   cursor: pointer;
+}
+
+.blocked {
+  background-color: #c4c4c4 !important;
+  color: #ffffff !important;
+  border-color: #c4c4c4 !important;
+}
+
+input[type="text"]:disabled {
+  background: #e5e5e5;
 }
 
 .bar-color {
@@ -251,6 +347,11 @@ export default {
 .btn-white {
   margin-top: 20px;
   color: #2f65af;
+}
+
+.btn-grey {
+  margin-top: 20px;
+  cursor: default;
 }
 
 .seach-no-btn {
@@ -394,6 +495,48 @@ export default {
   color: #2f65af;
 }
 
+/* Loading */
+.progress .indicator:nth-child(1) {
+  animation: fade 3s ease 0s infinite;
+}
+
+.progress .indicator:nth-child(2) {
+  animation: fade 3s ease 250ms infinite;
+}
+
+.progress .indicator:nth-child(3) {
+  animation: fade 3s ease 500ms infinite;
+}
+
+.progress .indicator:nth-child(4) {
+  animation: fade 3s ease-in-out 1s infinite;
+}
+
+.indicator {
+  background-color: #2f65af;
+  width: 7px;
+  height: 7px;
+  border-radius: 10px;
+  display: inline-block;
+  margin: 20px 10px 0px 10px;
+  opacity: 0;
+}
+
+@keyframes fade {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+}
+
 /* Scrollbar */
 
 div::-webkit-scrollbar {
@@ -481,6 +624,11 @@ div::-webkit-scrollbar-thumb {
 
   .delete-btn > img {
     width: 7px;
+  }
+
+  .indicator {
+    width: 5px;
+    height: 5px;
   }
 }
 </style>

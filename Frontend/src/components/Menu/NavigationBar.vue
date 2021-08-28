@@ -123,15 +123,18 @@ export default {
   mounted() {
     $(document).ready(function () {
       var target = $(location).attr("hash");
+      var nav = $(target);
       var offset = $(this).attr("data-offset")
         ? $(this).attr("data-offset")
         : 20;
-      $("body,html").animate(
-        {
-          scrollTop: $(target).offset().top - offset,
-        },
-        700
-      );
+      if (nav.length) {
+        $("body,html").animate(
+          {
+            scrollTop: nav.offset().top - offset,
+          },
+          700
+        );
+      }
     });
   },
   computed: {
