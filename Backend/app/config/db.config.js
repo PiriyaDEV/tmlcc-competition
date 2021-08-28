@@ -4,5 +4,5 @@ module.exports = {
   USER: "root",
   PASSWORD: "Strong1234!",
   DB: "tmlcc",
-  multipleStatements: true,
+  MULTIPLE_STATEMENTS: true,
 };
