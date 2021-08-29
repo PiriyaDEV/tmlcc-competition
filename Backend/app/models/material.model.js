@@ -10,7 +10,7 @@ const Material = function (material) {
 };
 
 Material.create = (materials, result) => {
-  sql.query("INSERT INTO Materials VALUES ?", [materials], (err, res) => {
+  sql.query(`INSERT INTO Materials VALUES ?`, [materials], (err, res) => {
     if (err) {
       console.log("Error: ", err);
       result(err, null);
@@ -61,8 +61,7 @@ Material.getCount = (result) => {
 Material.find = (material, result) => {
   sql.query(
     `SELECT * FROM Materials WHERE
-      material_id = '${material.material_id}' AND
-      folder_id = '${material.folder_id}'`,
+      material_id = '${material.material_id}'`,
     (err, res) => {
       if (err) {
         console.log("Error: ", err);
@@ -89,6 +88,7 @@ Material.getAll = (result) => {
       F.folder_id,
       F.folderName,
       F.description,
+      F.createdAt,
       IFNULL(
           (
               SELECT
@@ -111,7 +111,8 @@ Material.getAll = (result) => {
    FROM
        Folders F
    WHERE
-       F.status = 'active'`,
+       F.status = 'active'
+   ORDER BY F.createdAt DESC`,
     (err, res) => {
       if (err) {
         console.log("Error: ", err);
@@ -121,6 +122,57 @@ Material.getAll = (result) => {
 
       console.log(`Result: ${res.length} folder(s)`);
       result(null, res);
+      return;
+    }
+  );
+};
+
+Material.getAllByFolder = (folder, result) => {
+  sql.query(
+    `SELECT
+      F.folder_id,
+      F.folderName,
+      F.description,
+      F.createdAt,
+      IFNULL(
+          (
+              SELECT
+                  JSON_ARRAYAGG(
+                      JSON_OBJECT(
+                          'material_id',
+                          M.material_id,
+                          'fileName',
+                          M.fileName
+                      )
+                  )
+              FROM
+                  Materials M
+              WHERE
+                  F.folder_id = M.folder_id
+                  AND M.status = 'active'
+          ),
+          JSON_ARRAY()
+      ) AS materials
+   FROM
+       Folders F
+   WHERE
+       F.folderName = '${folder.folderName}'
+       AND F.status = 'active'`,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      if (!res.length) {
+        console.log("Result: folder not found");
+        result(null, { isFound: false });
+        return;
+      }
+
+      console.log(`Result: folder found -> ${folder.folderName}`);
+      result(null, { isFound: true, ...res[0] });
       return;
     }
   );

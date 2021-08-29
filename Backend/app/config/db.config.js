@@ -1,8 +1,8 @@
 module.exports = {
-  HOST: "localhost",
-  PORT: 3306,
-  USER: "root",
-  PASSWORD: "Strong1234!",
-  DB: "tmlcc",
-  multipleStatements: true,
+  HOST: process.env.DB_HOST,
+  PORT: process.env.DB_PORT,
+  USER: process.env.DB_USER,
+  PASSWORD: process.env.DB_PASSWORD,
+  DB: process.env.DB_NAME,
+  MULTIPLE_STATEMENTS: true,
 };

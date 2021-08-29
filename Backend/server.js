@@ -2,6 +2,8 @@ const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const dotenv = require('dotenv');
+dotenv.config();
 
 const authConfig = require("./app/config/auth.config");
 
@@ -13,6 +15,7 @@ let corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(cookieParser(authConfig.secretKey));
+app.use('/file', express.static('uploads'))
 
 // parse requests of content-type: application/json
 app.use(bodyParser.json({ limit: "20mb" }));

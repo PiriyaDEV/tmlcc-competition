@@ -10,7 +10,8 @@ const Folder = function (folder) {
 };
 
 Folder.create = (folder, result) => {
-  sql.query("INSERT INTO Folders SET ?", folder, (err, res) => {
+  sql.query(
+    `INSERT INTO Folders SET ?`, folder, (err, res) => {
     if (err) {
       console.log("Error: ", err);
       result(err, null);

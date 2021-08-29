@@ -38,7 +38,6 @@ exports.register = (req, res) => {
     user.firstName = user.firstName.toLowerCase();
     user.lastName = user.lastName.toLowerCase();
     user.organization = user.organization.toLowerCase();
-    user.role = "user";
     user.lastLogin = Date.now();
     user.createdAt = Date.now();
     user.updatedAt = Date.now();
@@ -107,7 +106,7 @@ exports.login = (req, res) => {
               lastLogin: update_result.lastLogin,
             },
             authConfig.secretKey,
-            { expiresIn: 86400 }
+            { expiresIn: "24h" }
           );
 
           res.cookie("user", token, { httpOnly: true, maxAge: 900000 });
