@@ -85,8 +85,8 @@ CREATE TABLE IF NOT EXISTS Videos(
 -- Create Folders Table
 CREATE TABLE IF NOT EXISTS Folders(
   folder_id               VARCHAR(8)      NOT NULL,
-  folderName              VARCHAR(64)     NOT NULL  UNIQUE,
-  description             VARCHAR(255)     NULL,
+  folderName              VARCHAR(64)     NOT NULL,
+  description             VARCHAR(255)    NULL,
   status                  VARCHAR(8)      NOT NULL,
   createdAt               BIGINT          NOT NULL,
   updatedAt               BIGINT          NOT NULL,

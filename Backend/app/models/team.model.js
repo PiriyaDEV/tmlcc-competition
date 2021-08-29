@@ -267,7 +267,7 @@ Team.getInfoForLeader = (team_id, result) => {
         return;
       }
 
-      console.log(`team found -> ${res[0].team_id}`);
+      console.log(`Result: team found -> ${res[0].team_id}`);
       result(null, res[0]);
       return;
     }

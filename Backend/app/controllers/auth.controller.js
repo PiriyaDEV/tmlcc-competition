@@ -38,7 +38,6 @@ exports.register = (req, res) => {
     user.firstName = user.firstName.toLowerCase();
     user.lastName = user.lastName.toLowerCase();
     user.organization = user.organization.toLowerCase();
-    user.role = "user";
     user.lastLogin = Date.now();
     user.createdAt = Date.now();
     user.updatedAt = Date.now();
