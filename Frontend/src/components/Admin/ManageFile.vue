@@ -1,9 +1,20 @@
 <template>
   <div id="manage-file">
+    <div class="center page-change-left">
+      <i class="fa fa-angle-left" aria-hidden="true"></i>
+      <h1 @click="clickDasboard()" class="text-normal purple-text">
+        กลับหน้าแดชบอร์ด
+      </h1>
+    </div>
     <div id="search-grid">
       <div>
         <h1 class="text-normal">ค้นหาจาก keyword</h1>
-        <input v-model="keyword" class="input-box text-normal" type="text" />
+        <input
+          v-model="keyword"
+          class="input-box text-normal"
+          placeholder="ค้นหาด้วยชื่อโฟลเดอร์ หรือ ชื่อไฟล์"
+          type="text"
+        />
       </div>
       <div>
         <h1 class="text-normal">เรียงลำดับ</h1>
@@ -63,13 +74,13 @@
             </div>
             <div id="file-btn-section">
               <button
-                class="edit-btn center"
+                class="edit-btn add-file-btn center"
                 v-if="edit == folder.folder_id"
                 onclick="document.getElementById('file-input').click(); "
               >
                 <img
                   class="add-icon"
-                  src="../../assets/icon/icon-add.png"
+                  src="../../assets/icon/icon-add-b.png"
                   alt=""
                 />Add
               </button>
@@ -88,23 +99,29 @@
               >
                 <img
                   class="delete-icon"
-                  src="../../assets/icon/icon-trash.png"
+                  src="../../assets/icon/icon-trash-o.png"
                   alt=""
                 />Delete
               </button>
               <button
-                class="edit-btn"
+                class="edit-btn center"
                 v-if="edit != folder.folder_id"
                 @click="editClick(folder)"
               >
-                edit
+                <img
+                  class="edit-icon"
+                  src="../../assets/icon/edit-icon-p.png"
+                  alt=""
+                />
+                Edit
               </button>
               <button
-                class="edit-btn save-btn"
+                class="edit-btn save-btn center"
                 v-if="edit == folder.folder_id"
                 @click="updateFolder(folder)"
               >
-                save
+                <i class="fa fa-save"></i>
+                Save
               </button>
             </div>
           </div>
@@ -173,7 +190,7 @@
             >
               <img
                 class="trash-icon"
-                src="../../assets/icon/icon-trash.png"
+                src="../../assets/icon/icon-trash-o.png"
                 alt=""
               />
             </button>
@@ -221,6 +238,11 @@ export default {
     // uploadFileMethod() {
     //   console.log(this.files);
     // },
+    clickDasboard() {
+      if (this.$route.path != "/dashboard") {
+        this.$router.push("/dashboard");
+      }
+    },
     editClick(value) {
       if (this.editing == false) {
         this.edit = value.folder_id;
@@ -233,9 +255,10 @@ export default {
       this.$emit("fileClickUpload", true);
     },
     downloadFile(query) {
-      this.link =
-        url +
-        `/material/download?folder=${query.folderName}&fileName=${query.fileName}`;
+      this.link = url.replace(
+        "/api",
+        `/file/materials/${query.folderName}/${query.fileName}`
+      );
     },
     async deleteFolder(folder_id) {
       await this.$store.dispatch("material/deleteFolder", folder_id);
@@ -253,17 +276,19 @@ export default {
       }
     },
     fileUpload(event) {
+      this.file_list = [];
       var input = event.target;
       var count = input.files.length;
       var index = 0;
+
       if (input.files) {
         while (count--) {
-          var reader = new FileReader();
+          //var reader = new FileReader();
           // reader.onload = (e) => {
           //   this.preview_list.push(e.target.result);
           // };
           this.file_list.push(input.files[index]);
-          reader.readAsDataURL(input.files[index]);
+          //reader.readAsDataURL(input.files[index]);
           index++;
         }
         this.addFile();
@@ -271,13 +296,21 @@ export default {
     },
     async addFile() {
       var files = new FormData();
-
       this.file_list.forEach((file) => {
-        files.append("material-files", file);
+        let folder_index = this.materialList.findIndex(
+          (folder) => folder.folder_id == this.edit
+        );
+        let match_index = this.materialList[folder_index].materials.findIndex(
+          (material) => material.fileName == file.name
+        );
+        if (match_index == -1) {
+          files.append("material-files", file);
+        } else {
+          alert("ไฟล์ซ้ำ");
+        }
       });
       await this.$store.dispatch("material/addMaterial", {
         folder_id: this.edit,
-        description: this.description,
         files: files,
       });
     },
@@ -303,8 +336,9 @@ export default {
 #manage-file {
   background: #ffffff;
   border-radius: 30px;
-  padding: 30px 60px;
+  padding: 80px 60px 30px 60px;
   margin-top: 25px;
+  position: relative;
 }
 
 .input-box {
@@ -322,6 +356,12 @@ export default {
   grid-gap: 25px;
   grid-auto-rows: auto;
   align-items: flex-end;
+}
+
+.edit-icon {
+  width: 15px;
+  margin-right: 4px;
+  /* margin-left: 5px; */
 }
 
 .b-header {
@@ -342,6 +382,32 @@ export default {
   margin-right: 5px;
 }
 
+.fa {
+  font-size: 2.25em;
+  font-weight: 500;
+}
+
+.fa-angle-left {
+  margin: 0px 15px 0px 0px;
+  color: #bf2e7e !important;
+}
+
+.fa-grey {
+  color: #c4c4c4 !important;
+}
+
+.fa-save {
+  font-size: 1.2em !important;
+  margin-right: 5px;
+}
+
+.page-change-left {
+  position: absolute;
+  top: 35px;
+  left: 60px;
+  cursor: pointer;
+}
+
 .add-btn {
   font-size: 1.75em;
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
@@ -358,7 +424,14 @@ export default {
 
 .save-btn {
   color: #ffffff !important;
-  background-color: #f07821 !important;
+  background-color: #2f65af !important;
+  border-color: #2f65af !important;
+}
+
+.add-file-btn {
+  color: #2f65af !important;
+  background-color: #ffffff !important;
+  border-color: #2f65af !important;
 }
 
 .notfound {
@@ -390,14 +463,14 @@ export default {
 }
 
 .edit-btn {
-  color: #f07821;
-  border: 2px solid #f07821;
+  color: #bf2e7e;
+  border: 2px solid #bf2e7e;
   background-color: transparent;
 }
 
 .delete-btn {
-  color: #bf2e7e;
-  border: 2px solid #bf2e7e;
+  color: #f07821;
+  border: 2px solid #f07821;
   background-color: transparent;
   margin: 0px 10px;
   display: flex;
@@ -512,9 +585,16 @@ div::-webkit-scrollbar-thumb {
 
 @media screen and (max-width: 980px) {
   #manage-file {
-    padding: 30px;
+    padding: 80px 30px 30px 30px;
   }
 
+  .page-change-left {
+    left: 30px;
+  }
+
+  .edit-icon {
+    width: 10px;
+  }
   #file-information {
     margin-top: 15px;
   }
@@ -568,6 +648,10 @@ div::-webkit-scrollbar-thumb {
     font-size: 1.5em;
   }
 
+  .edit-icon {
+    width: 9px;
+  }
+
   #file-head-box {
     width: 100%;
   }
@@ -614,14 +698,14 @@ div::-webkit-scrollbar-thumb {
     padding: 0px 10px 10px 0px;
   }
 
-  .edit-btn,
+  /* .edit-btn,
   .add-btn,
   .delete-btn,
   .cancel-btn {
     font-size: 1.25em;
-    padding: 0px 5px;
+    padding: 3px 5px;
     margin: 0px 5px;
-  }
+  } */
 
   .delete-btn > img {
     width: 7px;

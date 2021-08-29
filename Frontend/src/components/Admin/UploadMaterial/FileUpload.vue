@@ -227,13 +227,13 @@ export default {
           this.file_list.forEach((file) => {
             files.append("material-files", file);
           });
-          await this.$store.dispatch("material/upload", {
+          await this.$store.dispatch("material/uploadToNewFolder", {
             folderName: this.folderName,
             description: this.description,
             files: files,
           });
           if (this.createStatus.isSuccess) {
-            this.$emit("fileClickUpload", false);
+            this.$store.dispatch("page/setPage", "popupFile");
           }
         } else {
           this.uploadInvalid = true;
@@ -299,7 +299,7 @@ export default {
 .page-change-left {
   position: absolute;
   top: 35px;
-  left: 50px;
+  left: 60px;
   cursor: pointer;
 }
 

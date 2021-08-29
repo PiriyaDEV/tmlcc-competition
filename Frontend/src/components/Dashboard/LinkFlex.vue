@@ -52,7 +52,12 @@
         />
         <h1 class="text-normal gray-text">Dataset</h1>
       </div>
-      <div class="icon-box">
+      <div
+        class="icon-box"
+        @click="
+          linkClick('https://deepnote.com/dashboard/TMLCC-workshop/projects')
+        "
+      >
         <img
           class="link-icon"
           src="../../assets/icon/codalab-icon.png"
@@ -83,7 +88,7 @@ export default {
     spacerCss() {
       let user = "spacer";
       let admin = "spacer spacer-admin";
-      if (this.roleStatus == "admin") {
+      if (this.roleStatus != "user") {
         return admin;
       }
       return user;
@@ -133,7 +138,7 @@ export default {
 }
 
 .spacer-admin {
-  height: 110px !important;
+  height: 160px !important;
 }
 
 .edit-btn {
@@ -153,7 +158,7 @@ export default {
 }
 
 .spacer {
-  height: 50px;
+  height: 90px;
 }
 
 @media screen and (max-width: 1100px) {

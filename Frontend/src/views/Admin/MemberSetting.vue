@@ -21,7 +21,14 @@
           </div>
 
           <ManageMember v-if="choice == `member`" />
-          <ManageAdmin v-if="choice == `admin`" />
+          <ManageAdmin
+            v-if="choice == `admin` && addStatus == false"
+            @statusAdd="statusAdd"
+          />
+          <AddAdmin
+            v-if="choice == `admin` && addStatus == true"
+            @statusAdd="statusAdd"
+          />
         </div>
       </div>
     </div>
@@ -32,18 +39,21 @@
 import ManageMember from "../../components/Admin/ManageMember.vue";
 import ManageAdmin from "../../components/Admin/ManageAdmin.vue";
 import DashboardNavbar from "../../components/Menu/DashboardNavbar.vue";
+import AddAdmin from "../../components/Admin/Menu/AddAdmin.vue";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
   data() {
     return {
       choice: "member",
+      addStatus: false,
     };
   },
   components: {
     DashboardNavbar,
     ManageMember,
     ManageAdmin,
+    AddAdmin,
   },
   computed: {
     cssHeaderMember() {
@@ -70,7 +80,11 @@ export default {
     memberChoice() {
       if (this.editing == false) {
         this.choice = "member";
+        this.addStatus = false;
       }
+    },
+    statusAdd(value) {
+      this.addStatus = value;
     },
     adminChoice() {
       this.choice = "admin";

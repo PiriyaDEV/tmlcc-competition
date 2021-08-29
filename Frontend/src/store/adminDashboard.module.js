@@ -91,6 +91,10 @@ export default {
         list = list.sort((userA, userB) =>
           compare(userA.firstName, userB.firstName)
         );
+      } else if (state.user.sort == "nameLast") {
+        list = list.sort((userA, userB) =>
+          compare(userB.firstName, userA.firstName)
+        );
       } else if (state.user.sort == "email") {
         list = list.sort((userA, userB) => compare(userA.email, userB.email));
       } else if (state.user.sort == "team") {
@@ -154,6 +158,10 @@ export default {
       if (state.staff.sort == "name") {
         list = list.sort((staffA, staffB) =>
           compare(staffA.firstName, staffB.firstName)
+        );
+      } else if (state.staff.sort == "nameLast") {
+        list = list.sort((staffA, staffB) =>
+          compare(staffB.firstName, staffA.firstName)
         );
       } else if (state.staff.sort == "email") {
         list = list.sort((staffA, staffB) =>

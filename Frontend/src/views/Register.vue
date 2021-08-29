@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div id="register-div">
+    <!-- <Popup id="popup"/> -->
+    <Popup v-if="page == 'popupRegister'" :displayNameShow="displayNameShow" />
     <Navbar />
     <div id="register" class="section">
       <div id="register-container" class="page-container">
@@ -14,7 +16,11 @@
 
             <ApplicantBox v-if="page == `applicant`" :user="user" />
 
-            <SystemInfo v-if="page == `info`" :user="user" />
+            <SystemInfo
+              v-if="page == `info` || page == 'popupRegister'"
+              :user="user"
+              @displayNamefunction="displayNamefunction"
+            />
 
             <!-- <ApplicantBox /> -->
           </div>
@@ -29,16 +35,19 @@ import Navbar from "../components/Menu/Navbar.vue";
 import AgreementBox from "../components/Register/AgreementBox.vue";
 import ApplicantBox from "../components/Register/ApplicantBox.vue";
 import SystemInfo from "../components/Register/SystemInfo.vue";
+import Popup from "../components/Popup/Popup.vue";
 import User from "../models/user.model";
 import { mapGetters } from "vuex";
 
 export default {
   data() {
     return {
+      displayNameShow: "",
       navbarPage: "register1",
       user: new User({
         titleName: "นาย",
         education: "มัธยมศึกษา",
+        role: "user",
         hasProgSkill: false,
         hasChemSkill: false,
         hasMachineLSkill: false,
@@ -51,6 +60,7 @@ export default {
     AgreementBox,
     ApplicantBox,
     SystemInfo,
+    Popup,
   },
   computed: {
     ...mapGetters({
@@ -59,6 +69,11 @@ export default {
   },
   mounted() {
     this.$store.dispatch("page/setPage", "agreement");
+  },
+  methods: {
+    displayNamefunction(value) {
+      this.displayNameShow = value;
+    },
   },
 };
 </script>
@@ -70,6 +85,7 @@ export default {
   background-color: #f3f3f3;
   box-shadow: inset 0px 11px 8px -10px rgba(188, 188, 188, 0.5);
   -webkit-box-shadow: inset 0px 11px 8px -10px rgba(188, 188, 188, 0.5);
+  position: relative;
 }
 
 #tmlcc-logo {

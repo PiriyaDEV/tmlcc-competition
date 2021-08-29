@@ -1,32 +1,42 @@
 import http from "./../http-common";
 import authHeader from "./auth-header";
-import url from "./../api-url";
 
 class MaterialService {
-  async upload(materials) {
-    console.log(materials);
+  async uploadToNewFolder(materials) {
     let query = "";
-    if (materials.folder_id) {
-      if (materials.description) {
-        query = `?folder_id=${materials.folder_id}&description=${materials.description}`;
-      } else {
-        query = `?folder_id=${materials.folder_id}`;
-      }
+    if (materials.description) {
+      query = `?folderName=${materials.folderName}&description=${materials.description}`;
     } else {
-      if (materials.description) {
-        query = `?folder=${materials.folderName}&description=${materials.description}`;
-      } else {
-        query = `?folder=${materials.folderName}`;
-      }
+      query = `?folderName=${materials.folderName}`;
     }
 
     return await http
-      .post("/material/upload" + query, materials.files, {
+      .post("/material/uploadToNewFolder" + query, materials.files, {
         headers: {
           "Content-Type": "multipart/form-data",
           ...authHeader(),
         },
       })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return error.response;
+      });
+  }
+
+  async uploadToExistFolder(materials) {
+    return await http
+      .post(
+        `/material/uploadToExistFolder?folder_id=${materials.folder_id}`,
+        materials.files,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            ...authHeader(),
+          },
+        }
+      )
       .then((response) => {
         return response;
       })
@@ -87,6 +97,19 @@ class MaterialService {
       });
   }
 
+  async getAllByFolder(folder) {
+    return await http
+      .post("/material/getAllByFolder", folder, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return error.response;
+      });
+  }
+
   async getAll() {
     return await http
       .get("/material/getAll", {
@@ -98,13 +121,6 @@ class MaterialService {
       .catch((error) => {
         return error.response;
       });
-  }
-
-  download(query) {
-    return (
-      url +
-      `/material/download?folder=${query.folderName}&fileName=${query.fileName}`
-    );
   }
 }
 

@@ -45,11 +45,30 @@ export default {
     getMaterialList(state) {
       let list = state.materialList;
       if (state.search) {
-        list = list.filter((folder) => {
+        let folderMatch = [];
+        list.forEach((folder) => {
           let keyword = state.search.toLowerCase().trim();
 
-          return folder.folderName.toLowerCase().trim().includes(keyword);
+          if (folder.folderName.toLowerCase().trim().includes(keyword)) {
+            folderMatch.push(folder);
+          } else {
+            let fileMatch = [];
+            fileMatch = folder.materials.filter((material) =>
+              material.fileName.toLowerCase().trim().includes(keyword)
+            );
+            if (fileMatch.length) {
+              folderMatch.push({
+                folder_id: folder.foldere_id,
+                folderName: folder.folderName,
+                description: folder.description,
+                materials: fileMatch,
+                createdAt: folder.createdAt,
+              });
+            }
+          }
         });
+
+        list = folderMatch;
       }
 
       if (state.sort == "name") {
@@ -130,13 +149,16 @@ export default {
       } else if (/[^- A-Za-z0-9ก-๛]/.test(materials.folderName)) {
         commit("setInvalidFolderName", "ชื่อโฟลเดอร์ห้ามมี ตัวอักษรพิเศษ");
       } else {
-        await MaterialService.checkDuplicated({
+        await MaterialService.getAllByFolder({
           folderName: materials.folderName,
         })
           .then((res) => {
             if (res.status == 200) {
               if (res.data.isFound) {
-                commit("setInvalidFolderName", "โฟลเดอร์มีในระบบแล้ว");
+                commit(
+                  "setInvalidFolderName",
+                  "โฟลเดอร์มีในระบบแล้ว หากต้องการเพิ่มไฟล์ ให้ไปที่หน้าหลักการจัดการไฟล์"
+                );
               }
             }
           })
@@ -151,9 +173,9 @@ export default {
         commit("setInvalidFiles", "อัพโหลดได้สูงสุด 20 ไฟล์");
       }
     },
-    async upload({ state, commit, dispatch }, materials) {
+    async uploadToNewFolder({ state, commit, dispatch }, materials) {
       if (state.createStatus.readyToCreate) {
-        await MaterialService.upload(materials)
+        await MaterialService.uploadToNewFolder(materials)
           .then((res) => {
             if (res.status == 201) {
               console.log(res.data.message);
@@ -175,7 +197,7 @@ export default {
       }
 
       if (state.createStatus.readyToCreate) {
-        await MaterialService.upload(materials)
+        await MaterialService.uploadToExistFolder(materials)
           .then((res) => {
             if (res.status == 201) {
               console.log(res.data.message);
@@ -271,6 +293,7 @@ export default {
           console.log(err);
         });
     },
+
     updateMaterialSearch({ commit }, keyword) {
       commit("setMaterialSearch", keyword);
     },

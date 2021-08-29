@@ -18,6 +18,7 @@
                 placeholder="E-mail ที่ใช้ในการสมัคร"
                 maxlength="64"
                 v-model="user.email"
+                id="email-input"
               />
               <p
                 v-if="loginStatus.email.isInvalid"
@@ -34,6 +35,7 @@
                 maxlength="32"
                 placeholder="กรอก Password"
                 v-model="user.password"
+                id="password-input"
               />
               <p
                 v-if="loginStatus.password.isInvalid"
@@ -48,7 +50,9 @@
             </h1> -->
 
             <div class="center">
-              <button @click="login()" class="btn-color">เข้าสู่ระบบ</button>
+              <button @click="login()" id="login-button" class="btn-color">
+                เข้าสู่ระบบ
+              </button>
             </div>
 
             <hr class="bar-color" />
@@ -69,6 +73,7 @@
 </template>
 
 <script>
+import $ from "jquery";
 import Navbar from "../components/Menu/Navbar.vue";
 import { mapGetters } from "vuex";
 
@@ -87,6 +92,28 @@ export default {
   mounted() {
     this.$store.dispatch("page/setPage", "login");
     this.$store.dispatch("auth/resetStatus");
+
+    $(function () {
+      $("#email-input").on("keyup", function (e) {
+        if (e.which === 13) {
+          document.getElementById("password-input").focus();
+        }
+      });
+    });
+
+    // Get the input field
+    var input = document.getElementById("password-input");
+
+    // Execute a function when the user releases a key on the keyboard
+    input.addEventListener("keyup", function (event) {
+      // Number 13 is the "Enter" key on the keyboard
+      if (event.keyCode === 13) {
+        // Cancel the default action, if needed
+        event.preventDefault();
+        // Trigger the button element with a click
+        document.getElementById("login-button").click();
+      }
+    });
   },
   computed: {
     ...mapGetters({

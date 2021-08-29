@@ -7,17 +7,20 @@
             id="tmlcc-icon"
             src="../../assets/navbar/TMLCC_color.png"
             alt=""
-            @click="dashboard()"
+            @click="mainpage()"
           />
           <img
             id="tmlcc-logo"
             src="../../assets/navbar/TMLCC.png"
             alt=""
-            @click="dashboard()"
+            @click="mainpage()"
           />
           <div class="center">
-            <p class="text-normal nav-text" @click="mainpage()">
+            <!-- <p class="text-normal nav-text" @click="mainpage()">
               หน้าหลักการแข่งขัน
+            </p> -->
+            <p class="text-normal nav-text" @click="dashboard()">
+              กลับหน้าแดชบอร์ด
             </p>
           </div>
         </div>
