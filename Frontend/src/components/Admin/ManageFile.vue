@@ -262,6 +262,7 @@ export default {
     },
     async deleteFolder(folder_id) {
       await this.$store.dispatch("material/deleteFolder", folder_id);
+      this.$store.dispatch("material/updateEditing", false);
     },
     async deleteFile(material_id) {
       await this.$store.dispatch("material/deleteFile", material_id);
@@ -306,7 +307,7 @@ export default {
         if (match_index == -1) {
           files.append("material-files", file);
         } else {
-          alert("ไฟล์ซ้ำ");
+          // alert("ไฟล์ซ้ำ");
         }
       });
       await this.$store.dispatch("material/addMaterial", {
