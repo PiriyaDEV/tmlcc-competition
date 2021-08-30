@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS Users(
   machineLSkillList       VARCHAR(255)    NULL,
   hasOtherSkill           BOOLEAN         NOT NULL,
   otherSkillList          VARCHAR(255)    NULL,
+  registerFor             VARCHAR(25)     NOT NULL,
   hasTeam                 BOOLEAN         NOT NULL,
   role                    VARCHAR(8)      NOT NULL,
   lastLogin               BIGINT          NOT NULL,

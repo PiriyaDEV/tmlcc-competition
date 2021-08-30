@@ -28,6 +28,7 @@ const User = function (user) {
   this.machineLSkillList = user.machineLSkillList;
   this.hasOtherSkill = user.hasOtherSkill;
   this.otherSkillList = user.otherSkillList;
+  this.registerFor = user.registerFor;
   this.hasTeam = user.hasTeam;
   this.role = user.role;
   this.lastLogin = user.lastLogin;
@@ -203,7 +204,8 @@ User.getInfo = (user, result) => {
       machineLSkillLevel,
       machineLSkillList,
       hasOtherSkill,
-      otherSkillList
+      otherSkillList,
+      registerFor
      FROM Users WHERE
       user_id = '${user.user_id}' OR
       email = '${user.email}' OR
