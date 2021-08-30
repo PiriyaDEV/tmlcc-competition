@@ -92,7 +92,7 @@
                 multiple
                 accept="application/pdf"
               />
-              <button
+              <!-- <button
                 class="delete-btn"
                 v-if="edit == folder.folder_id"
                 @click="deleteFolder(folder.folder_id)"
@@ -102,7 +102,7 @@
                   src="../../assets/icon/icon-trash-o.png"
                   alt=""
                 />Delete
-              </button>
+              </button> -->
               <button
                 class="edit-btn center"
                 v-if="edit != folder.folder_id"
@@ -433,6 +433,7 @@ export default {
   color: #2f65af !important;
   background-color: #ffffff !important;
   border-color: #2f65af !important;
+  margin-right: 10px;
 }
 
 .notfound {
