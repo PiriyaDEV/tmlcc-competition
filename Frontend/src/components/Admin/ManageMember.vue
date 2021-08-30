@@ -36,8 +36,8 @@
           class="input-box text-normal addon-btn"
         >
           <!-- <option value="1">1 รายการ</option> -->
-          <option value="5">5 รายการ</option>
-          <option value="25" v-if="userListLength > 5">25 รายการ</option>
+          <!-- <option value="5">5 รายการ</option> -->
+          <option value="25">25 รายการ</option>
           <option value="50" v-if="userListLength > 25">50 รายการ</option>
           <option value="100" v-if="userListLength > 50">100 รายการ</option>
           <option value="200" v-if="userListLength > 100">200 รายการ</option>
