@@ -50,6 +50,7 @@
               alt=""
             />
             <a
+              target="_blank"
               class="file-name"
               :href="link"
               @click="
@@ -112,9 +113,10 @@ export default {
       window.open(value.link);
     },
     downloadFile(query) {
-      this.link =
-        url +
-        `/material/download?folder=${query.folderName}&fileName=${query.fileName}`;
+      this.link = url.replace(
+        "/api",
+        `/file/materials/${query.folderName}/${query.fileName}`
+      );
     },
   },
   computed: {
@@ -154,7 +156,8 @@ export default {
 
 #file-box {
   overflow-y: scroll;
-  height: 232px;
+  height: 360px;
+  margin-top: 20px;
 }
 
 #file-box > .l-grey-text {
@@ -175,6 +178,10 @@ export default {
   padding-left: 25px;
   padding-top: 10px;
   color: #7f7f7f !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 700px;
 }
 
 .file-description {
@@ -182,12 +189,23 @@ export default {
   font-weight: 500;
   margin: 0;
   color: #7f7f7f;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 700px;
 }
 
 .file-container {
   align-items: center;
-  margin-top: 15px;
   padding: 0px 20px;
+}
+
+.file-container:first-child {
+  margin-top: 0px;
+}
+
+.file-container:not(:first-child) {
+  margin-top: 25px;
 }
 
 .file-container > div:first-child {
@@ -208,7 +226,7 @@ export default {
 }
 
 .file-icon {
-  width: 25px;
+  width: 18px;
   margin-right: 20px;
   cursor: pointer;
 }
@@ -220,6 +238,10 @@ export default {
   margin: 0;
   cursor: pointer;
   text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 700px;
 }
 
 .file-date {
@@ -317,6 +339,10 @@ div::-webkit-scrollbar-thumb {
     width: 18px;
   }
 
+  #file-box {
+    height: 260px;
+  }
+
   #video-box {
     height: 260px;
   }
@@ -331,7 +357,7 @@ div::-webkit-scrollbar-thumb {
   }
 
   .file-icon {
-    width: 20px;
+    width: 16px;
   }
 
   .video-image {
@@ -384,8 +410,14 @@ div::-webkit-scrollbar-thumb {
     font-size: 1.5em;
   }
 
+  .folder-description,
+  .file-description,
+  .file-name {
+    max-width: 200px;
+  }
+
   .file-icon {
-    width: 18px;
+    width: 15px;
   }
 
   .file-container {
@@ -405,6 +437,16 @@ div::-webkit-scrollbar-thumb {
 @media screen and (max-width: 414px) {
   #btn-right {
     justify-content: center;
+  }
+
+  .file-name {
+    font-size: 1.5em;
+  }
+
+  .folder-description,
+  .file-description,
+  .file-name {
+    max-width: 150px;
   }
 }
 </style>

@@ -35,10 +35,10 @@
         >
           <img
             class="edit-icon"
-            src="../../assets/icon/edit-icon-o.png"
+            src="../../assets/icon/edit-icon-p.png"
             alt=""
           />
-          edit
+          Edit
         </button>
       </div>
 
@@ -50,7 +50,9 @@
           maxlength="32"
           @blur="checkDuplicated()"
         />
-        <button @click="renameTeam" class="edit-btn">save</button>
+        <button @click="renameTeam" class="edit-btn save-btn center">
+          <i class="fa fa-save"></i>Save
+        </button>
       </div>
 
       <p
@@ -72,7 +74,7 @@
       <div id="team-box">
         <h1
           v-if="teamList && teamList.length == 0 && role != `user`"
-          class="text-normal l-grey-text"
+          class="text-normal gray-text"
         >
           ไม่มีทีมในระบบ
         </h1>
@@ -144,13 +146,13 @@
           v-if="
             !currentTeam.isLeader && !currentTeam.members && !teamList.length
           "
-          class="text-normal l-grey-text"
+          class="text-normal gray-text"
         >
           ไม่พบทีมในระบบ
         </h1>
         <h1
           v-if="currentTeam.isLeader && currentTeam.members.length == 1"
-          class="text-normal l-grey-text"
+          class="text-normal gray-text"
         >
           คุณยังไม่มีเพื่อนร่วมทีม
         </h1>
@@ -165,7 +167,7 @@
         v-if="role == `user` && currentTeam.isLeader && teamStatus.hasTeam"
       >
         <span v-if="!deleteCheck"
-          >ต้องการที่จะลบทีมนี้ กดที่นี้เพื่อ
+          >ต้องการที่จะลบทีมนี้ กดที่นี่เพื่อ
           <span @click="deleteClick" class="orange-text"
             ><img
               class="trash-icon"
@@ -188,7 +190,7 @@
         v-if="role == `user` && !currentTeam.isLeader && teamStatus.hasTeam"
       >
         <span v-if="!leaveCheck"
-          >ต้องการออกจากกลุ่ม กดที่นี้เพื่อ
+          >ต้องการออกจากกลุ่ม กดที่นี่เพื่อ
           <span @click="leaveClick" class="orange-text"
             ><img
               class="leave-icon"
@@ -336,7 +338,7 @@ button {
 }
 
 #editor-spacer {
-  height: 20px;
+  height: 40px;
 }
 
 .bold {
@@ -356,6 +358,12 @@ button {
   margin-left: 5px;
 }
 
+.save-btn {
+  color: #ffffff !important;
+  background-color: #2f65af !important;
+  border-color: #2f65af !important;
+}
+
 .add-btn {
   border: 2px solid #764a97;
   box-sizing: border-box;
@@ -369,6 +377,11 @@ button {
   cursor: pointer;
 }
 
+.fa-save {
+  font-size: 1.2em !important;
+  margin-right: 5px;
+}
+
 .team-list {
   margin-top: 10px;
 }
@@ -379,7 +392,7 @@ button {
 }
 
 .note > span > .orange-text,
-.note > span > .l-grey-text {
+.note > span > .gray-text {
   cursor: pointer;
   font-weight: 700;
 }
@@ -420,7 +433,7 @@ button {
   padding: 10px 12px;
   border: 1px solid rgba(79, 79, 79, 0.16);
   box-sizing: border-box;
-  height: 175px;
+  height: 250px;
   border-radius: 8px;
   overflow-y: scroll;
 }
@@ -497,12 +510,12 @@ button {
 }
 
 .edit-btn {
-  color: #f07821;
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
   font-size: 1.75em;
   margin: 0px 0px 0px 14px;
-  border: 2px solid #f07821;
   box-sizing: border-box;
+  color: #bf2e7e;
+  border: 2px solid #bf2e7e;
   border-radius: 12px;
   padding: 6px 7px;
   background-color: transparent;
@@ -561,6 +574,10 @@ div::-webkit-scrollbar-thumb {
 
   .edit-icon {
     width: 10px;
+  }
+
+  #editor-spacer {
+    height: 20px;
   }
 }
 

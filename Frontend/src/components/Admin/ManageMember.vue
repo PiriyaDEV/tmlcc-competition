@@ -1,5 +1,12 @@
 <template>
   <div id="manage-member">
+    <div class="center page-change-left">
+      <i class="fa fa-angle-left" aria-hidden="true"></i>
+      <h1 @click="clickDasboard()" class="text-normal purple-text">
+        กลับหน้าแดชบอร์ด
+      </h1>
+    </div>
+
     <div id="search-grid">
       <div>
         <h1 class="text-normal">ค้นหาจาก keyword</h1>
@@ -14,9 +21,28 @@
           class="input-box text-normal"
         >
           <option value="name">ชื่อ ก - ฮ</option>
+          <option value="nameLast">ชื่อ ฮ - ก</option>
           <option value="email">อีเมล ก - ฮ</option>
           <option value="team">ชื่อทีม ก - ฮ</option>
           <option value="education">ระดับการศึกษา ก - ฮ</option>
+        </select>
+      </div>
+      <div>
+        <h1 class="text-normal">แสดงผล</h1>
+        <select
+          v-model="perPage"
+          name="show"
+          id="show"
+          class="input-box text-normal addon-btn"
+        >
+          <!-- <option value="1">1 รายการ</option> -->
+          <!-- <option value="5">5 รายการ</option> -->
+          <option value="25">25 รายการ</option>
+          <option value="50" v-if="userListLength > 25">50 รายการ</option>
+          <option value="100" v-if="userListLength > 50">100 รายการ</option>
+          <option value="200" v-if="userListLength > 100">200 รายการ</option>
+          <option value="500" v-if="userListLength > 200">500 รายการ</option>
+          <option value="all">ทั้งหมด</option>
         </select>
       </div>
     </div>
@@ -29,7 +55,7 @@
           <th class="table-hd">Team</th>
           <th class="table-hd">E-mail</th>
           <th class="table-hd">ระดับการศึกษา</th>
-          <th class="table-regis-hd">แสดงใบสมัคร</th>
+          <th class="table-hd">แสดงใบสมัคร</th>
         </tr>
         <h1
           v-if="userList && userList.length == 0"
@@ -39,33 +65,33 @@
         </h1>
         <tr v-for="(user, i) in userList" :key="i">
           <td>
-            <span class="table-hd mb-head">Display Name</span
-            ><span class="table-info display-name capital">{{
-              user.displayName
-            }}</span>
+            <h1 class="table-hd mb-head">Display Name</h1>
+            <h1 class="table-info display-name capital">
+              {{ user.displayName }}
+            </h1>
           </td>
           <td>
-            <span class="table-hd mb-head">ชื่อ</span
-            ><span class="table-info capital">{{ user.firstName }}</span>
+            <h1 class="table-hd mb-head">ชื่อ</h1>
+            <h1 class="table-info capital">{{ user.firstName }}</h1>
           </td>
           <td>
-            <span class="table-hd mb-head">นามสกุล</span
-            ><span class="table-info capital">{{ user.lastName }}</span>
+            <h1 class="table-hd mb-head">นามสกุล</h1>
+            <h1 class="table-info capital">{{ user.lastName }}</h1>
           </td>
           <td>
-            <span class="table-hd mb-head">Team</span
-            ><span class="table-info capital">{{ user.teamName }}</span>
+            <h1 class="table-hd mb-head">Team</h1>
+            <h1 class="table-info capital">{{ user.teamName }}</h1>
           </td>
           <td>
-            <span class="table-hd mb-head">E-mail</span
-            ><span class="table-info">{{ user.email }}</span>
+            <h1 class="table-hd mb-head">E-mail</h1>
+            <h1 class="table-info">{{ user.email }}</h1>
           </td>
           <td>
-            <span class="table-hd mb-head">ระดับการศึกษา</span
-            ><span class="table-info">{{ user.education }}</span>
+            <h1 class="table-hd mb-head">ระดับการศึกษา</h1>
+            <h1 class="table-info">{{ user.education }}</h1>
           </td>
           <td>
-            <span class="table-hd mb-head">แสดงใบสมัคร</span>
+            <h1 class="table-hd mb-head">แสดงใบสมัคร</h1>
             <img
               class="file-icon"
               src="../../assets/icon/file-icon.png"
@@ -77,7 +103,11 @@
       </table>
     </div>
     <div id="pagination">
-      <Pagination :keywordClear="keyword" :currentPage="`user`" />
+      <Pagination
+        :keywordClear="keyword"
+        :currentPage="`user`"
+        :active="activeCheck"
+      />
     </div>
   </div>
 </template>
@@ -93,6 +123,9 @@ export default {
     return {
       keyword: "",
       sort: "name",
+      perPage: 25,
+      currentPage: "user",
+      activeCheck: false,
     };
   },
   components: {
@@ -107,6 +140,7 @@ export default {
       userList: "admin/getUserList",
       userInfo: "admin/getUserSelect",
       userSearch: "admin/getUserSearch",
+      userListLength: "admin/getUserListLength",
     }),
   },
   watch: {
@@ -116,8 +150,31 @@ export default {
     sort: function () {
       this.$store.dispatch("admin/updateUserSort", this.sort);
     },
+    perPage: function () {
+      this.activeCheck = !this.activeCheck;
+      if (this.perPage == "all") {
+        if (this.currentPage == "user") {
+          this.$store.dispatch(
+            "admin/updateUserPageLimit",
+            this.userListLength
+          );
+        }
+      } else {
+        if (this.currentPage == "user") {
+          this.$store.dispatch("admin/updateUserPageLimit", this.perPage);
+          this.page = 1;
+          this.$store.dispatch("admin/updateUserSelectPage", 1);
+        }
+      }
+    },
   },
   methods: {
+    clickDasboard() {
+      if (this.$route.path != "/dashboard") {
+        this.keyword = "";
+        this.$router.push("/dashboard");
+      }
+    },
     async viewDoc(user_id) {
       await this.$store.dispatch("admin/getUserInfo", user_id);
 
@@ -382,8 +439,9 @@ export default {
 #manage-member {
   background: #ffffff;
   border-radius: 30px;
-  padding: 30px 60px;
+  padding: 80px 60px 30px 60px;
   margin-top: 25px;
+  position: relative;
 }
 
 .input-box {
@@ -392,7 +450,7 @@ export default {
 
 #search-grid {
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 3fr 1fr 1fr;
   grid-gap: 25px;
   grid-auto-rows: auto;
   align-items: flex-start;
@@ -411,6 +469,27 @@ export default {
 .no-info {
   margin-top: 10px;
   margin-left: 10px;
+}
+
+.fa {
+  font-size: 2.25em;
+  font-weight: 500;
+}
+
+.fa-angle-left {
+  margin: 0px 15px 0px 0px;
+  color: #bf2e7e !important;
+}
+
+.fa-grey {
+  color: #c4c4c4 !important;
+}
+
+.page-change-left {
+  position: absolute;
+  top: 35px;
+  left: 60px;
+  cursor: pointer;
 }
 
 .table-hd {
@@ -435,6 +514,12 @@ export default {
   font-weight: 500;
   color: #303030;
   margin: 0;
+  /* white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; */
+  word-wrap: break-word;
+  height: 100%;
+  max-width: 100px;
 }
 
 .mb-head {
@@ -495,7 +580,24 @@ div::-webkit-scrollbar-thumb {
 
 @media screen and (max-width: 980px) {
   #manage-member {
-    padding: 30px;
+    padding: 80px 30px 30px 30px;
+  }
+
+  td:nth-child(1),
+  th:nth-child(1) {
+    border-left: 1px solid #c4c4c4;
+  }
+
+  td[data-v-80aeddec]:last-child {
+    border-right: 1px solid #c4c4c4;
+  }
+
+  .table-info {
+    max-width: 100%;
+  }
+
+  .page-change-left {
+    left: 30px;
   }
 
   table tr {

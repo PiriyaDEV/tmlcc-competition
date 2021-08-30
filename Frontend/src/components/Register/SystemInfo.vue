@@ -197,9 +197,8 @@ export default {
         AuthService.register(this.user).then((res) => {
           if (res.status == 201) {
             console.log("Register success!");
-            if (this.$route.path != "/login") {
-              this.$router.push("/login");
-            }
+            this.$emit("displayNamefunction", this.user.displayName);
+            this.$store.dispatch("page/setPage", "popupRegister");
           } else {
             console.log("Something wrong!");
           }

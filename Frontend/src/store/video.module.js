@@ -227,6 +227,7 @@ export default {
         await VideoService.update({
           video_id: video.video_id,
           videoName: video.videoName,
+          link: video.link,
           description: video.description,
         })
           .then((res) => {

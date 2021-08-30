@@ -1,10 +1,20 @@
 <template>
-  <div id="pagination" class="section">
+  <div id="pagination">
+    <div id="show-text">
+      <h1 v-if="currentPage == 'user'" class="text-normal">
+        แสดงผล {{ beforePage }} ถึง {{ afterPage }} จาก
+        {{ userListLength }} ข้อมูล
+      </h1>
+      <h1 v-if="currentPage == 'staff'" class="text-normal">
+        แสดงผล {{ beforePage }} ถึง {{ afterPage }} จาก
+        {{ staffListLength }} ข้อมูล
+      </h1>
+    </div>
     <div id="pagination-section">
       <div class="section">
-        <div class="pagenum-box addon-btn" @click="setPage(1)">
+        <!-- <div class="pagenum-box addon-btn" @click="setPage(1)">
           <h1 class="text-normal">หน้าแรก</h1>
-        </div>
+        </div> -->
         <div class="pagenum-box previous-page" @click="previousPage">
           <h1 class="text-normal">ก่อนหน้า</h1>
         </div>
@@ -54,15 +64,16 @@
         <div class="pagenum-box next-page" @click="nextPage">
           <h1 class="text-normal">หน้าถัดไป</h1>
         </div>
-        <div>
+
+        <!-- <div>
           <select
             v-model="perPage"
             name="show"
             id="show"
-            class="pagenum-box text-normal addon-btn"
+            class="pagenum-box text-normal"
           >
-            <!-- <option value="1">1 รายการ</option>
-            <option value="5">5 รายการ</option> -->
+            <option value="1">1 รายการ</option>
+            <option value="5">5 รายการ</option>
             <option value="25">25 รายการ</option>
             <option
               value="50"
@@ -90,7 +101,13 @@
             </option>
             <option value="all">ทั้งหมด</option>
           </select>
-        </div>
+        </div> -->
+        <!-- <div
+          class="pagenum-box next-page"
+          @click="setPage(pagination.pages.length)"
+        >
+          <h1 class="text-normal">หน้าสุดท้าย</h1>
+        </div> -->
         <!-- <h1>{{ pageNum }}</h1> -->
       </div>
     </div>
@@ -106,13 +123,15 @@ export default {
       page: 1,
       perPage: 25,
       pagesLimit: 5,
+      beforePage: 0,
+      afterPage: 0,
       window: {
         width: 0,
         height: 0,
       },
     };
   },
-  props: ["currentPage", "keywordClear"],
+  props: ["currentPage", "keywordClear", "active"],
   computed: {
     ...mapGetters({
       pagination: "admin/getPagination",
@@ -124,9 +143,33 @@ export default {
     page: function () {
       if (this.currentPage == "user") {
         this.$store.dispatch("admin/updateUserSelectPage", this.page);
+        if (
+          this.pagination.page * this.pagination.perPage >=
+          this.userListLength
+        ) {
+          this.afterPage = this.userListLength;
+        } else {
+          this.afterPage = this.pagination.page * this.pagination.perPage;
+        }
       } else if (this.currentPage == "staff") {
         this.$store.dispatch("admin/updateStaffSelectPage", this.page);
+        if (
+          this.pagination.page * this.pagination.perPage >=
+          this.staffListLength
+        ) {
+          this.afterPage = this.staffListLength;
+        } else {
+          this.afterPage = this.pagination.page * this.pagination.perPage;
+        }
       }
+      this.beforePage =
+        this.pagination.page * this.pagination.perPage -
+        (this.pagination.perPage - 1);
+    },
+    active: function () {
+      this.beforePage = 0;
+      this.afterPage = 0;
+      this.perPage = this.pagination.perPage;
     },
     keywordClear: function () {
       this.page = 1;
@@ -138,39 +181,86 @@ export default {
             "admin/updateUserPageLimit",
             this.userListLength
           );
+          if (
+            this.pagination.page * this.pagination.perPage >=
+            this.userListLength
+          ) {
+            this.afterPage = this.userListLength;
+          } else {
+            this.afterPage = this.pagination.page * this.pagination.perPage;
+          }
         } else if (this.currentPage == "staff") {
           this.$store.dispatch(
             "admin/updateStaffPageLimit",
             this.staffListLength
           );
+          if (
+            this.pagination.page * this.pagination.perPage >=
+            this.staffListLength
+          ) {
+            this.afterPage = this.staffListLength;
+          } else {
+            this.afterPage = this.pagination.page * this.pagination.perPage;
+          }
         }
       } else {
         if (this.currentPage == "user") {
           this.$store.dispatch("admin/updateUserPageLimit", this.perPage);
           this.page = 1;
           this.$store.dispatch("admin/updateUserSelectPage", 1);
+          if (
+            this.pagination.page * this.pagination.perPage >=
+            this.userListLength
+          ) {
+            this.afterPage = this.userListLength;
+          } else {
+            this.afterPage = this.pagination.page * this.pagination.perPage;
+          }
         } else if (this.currentPage == "staff") {
           this.$store.dispatch("admin/updateStaffPageLimit", this.perPage);
           this.page = 1;
           this.$store.dispatch("admin/updateStaffSelectPage", 1);
+          if (
+            this.pagination.page * this.pagination.perPage >=
+            this.staffListLength
+          ) {
+            this.afterPage = this.staffListLength;
+          } else {
+            this.afterPage = this.pagination.page * this.pagination.perPage;
+          }
         }
       }
+      this.beforePage =
+        this.pagination.page * this.pagination.perPage -
+        (this.pagination.perPage - 1);
     },
   },
   created() {
     this.$store.dispatch("admin/setCurrentPage", this.currentPage);
     window.addEventListener("resize", this.detectScreenChange);
     this.detectScreenChange();
-  },
-  mounted() {
+
     if (this.currentPage == "user") {
       this.$store.dispatch("admin/updateUserPageLimit", this.perPage);
       this.$store.dispatch("admin/updateUserSelectPage", this.page);
+      this.afterPage = this.pagination.page * this.pagination.perPage;
     } else if (this.currentPage == "staff") {
       this.$store.dispatch("admin/updateStaffPageLimit", this.perPage);
       this.$store.dispatch("admin/updateStaffSelectPage", this.page);
+      if (
+        this.pagination.page * this.pagination.perPage >=
+        this.staffListLength
+      ) {
+        this.afterPage = this.staffListLength;
+      } else {
+        this.afterPage = this.pagination.page * this.pagination.perPage;
+      }
     }
+    this.beforePage =
+      this.pagination.page * this.pagination.perPage -
+      (this.pagination.perPage - 1);
   },
+  mounted() {},
   destroyed() {
     window.removeEventListener("resize", this.detectScreenChange);
   },
@@ -206,6 +296,17 @@ export default {
 <style scoped>
 #pagination {
   margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#show-text {
+  right: 0px;
+}
+
+.text-normal {
+  font-size: 2em;
 }
 
 #pagination-section {
@@ -269,6 +370,26 @@ option {
 @media screen and (max-width: 1024px) {
   #pagination-section > div:first-child {
     margin-right: 10px;
+  }
+
+  #pagination-section {
+    justify-content: center;
+  }
+
+  #pagination {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  #show-text {
+    margin-top: 20px;
+    justify-content: center;
+    display: flex;
+  }
+
+  .text-normal {
+    font-size: 1.75em;
   }
 
   #pagination-section > div:last-child {

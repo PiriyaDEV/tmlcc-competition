@@ -134,15 +134,24 @@
         </div>
       </div>
 
+      <div
+        v-if="page == `dashBoard` || loginStatus.isAuthenticated == true"
+        class="nav-head nav-link"
+      >
+        <a class="text-normal" @click="hideNav" href="/dashboard"
+          >กลับหน้าแดชบอร์ด</a
+        >
+      </div>
+
       <div v-if="page != `dashBoard`" class="nav-head nav-link">
         <a class="text-normal" @click="hideNav" href="/about"
           >เกี่ยวกับโครงการ</a
         >
       </div>
 
-      <div v-if="page == `dashBoard`" class="nav-head nav-link">
+      <!-- <div v-if="page == `dashBoard`" class="nav-head nav-link">
         <a class="text-normal" @click="hideNav" href="/">หน้าหลักการแข่งขัน</a>
-      </div>
+      </div> -->
 
       <div
         v-if="page == `dashBoard` && roleStatus == `admin`"
@@ -191,7 +200,7 @@
       </div>
 
       <div
-        v-if="page == `dashBoard`"
+        v-if="page == `dashBoard` || loginStatus.isAuthenticated == true"
         class="nav-head nav-link display-name-box"
       >
         <a class="text-normal display-name" @click="hideNav" href="/dashboard"
@@ -203,11 +212,14 @@
       <!-- <div class="nav-head nav-link register-btn">
         <a class="text-normal" href="/register">ลงทะเบียน</a>
       </div> -->
+
       <div
         v-if="page != `dashBoard` && endCountdown == true"
         class="nav-head nav-link register-btn"
       >
-        <a
+        <!-- อันเก่าที่ยังไม่มีปุ่มlogout -->
+
+        <!-- <a
           class="text-normal"
           v-if="page != `agreement`"
           @click="registerClick()"
@@ -215,15 +227,44 @@
         >
         <a class="text-normal" v-if="page == `agreement`" @click="loginClick()"
           >เข้าสู่ระบบ</a
+        > -->
+
+        <!-- อันเก่าที่ยังไม่มีปุ่มlogout -->
+
+        <!-- อันใหม่ที่มีปุ่มlogout -->
+
+        <a
+          class="text-normal register-text"
+          v-if="page != `agreement` && loginStatus.isAuthenticated == false"
+          @click="registerClick()"
+          >ลงทะเบียน</a
         >
+        <a
+          class="text-normal"
+          v-if="page == `agreement` && loginStatus.isAuthenticated == false"
+          @click="loginClick()"
+          >เข้าสู่ระบบ</a
+        >
+        <a
+          class="text-normal"
+          v-if="page == `mainpage` && loginStatus.isAuthenticated == true"
+          @click="logout"
+          >ออกจากระบบ</a
+        >
+
+        <!-- อันใหม่ที่มีปุ่มlogout -->
       </div>
+
       <div
         v-if="page != `dashBoard` && endCountdown == false"
         class="nav-head nav-link register-btn blocked"
       >
-        <a class="text-normal" v-if="page != `agreement`">ลงทะเบียน</a>
+        <a class="text-normal register-text" v-if="page != `agreement`"
+          >ลงทะเบียน</a
+        >
         <a class="text-normal" v-if="page == `agreement`">เข้าสู่ระบบ</a>
       </div>
+
       <div v-if="page == `dashBoard`" class="nav-head nav-link register-btn">
         <a class="text-normal" @click="logout">ออกจากระบบ</a>
       </div>
@@ -424,6 +465,10 @@ export default {
     text-decoration: none;
     color: #303030;
     font-size: 14px;
+  }
+
+  .register-text {
+    color: #bf2e7e !important;
   }
 }
 </style>

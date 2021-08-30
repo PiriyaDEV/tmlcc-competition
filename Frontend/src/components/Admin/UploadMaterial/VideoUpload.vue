@@ -188,7 +188,7 @@ export default {
       await this.$store.dispatch("video/create", this.video);
       if (this.createStatus.isSuccess) {
         this.$store.dispatch("video/resetCreateStatus");
-        this.$emit("videoClickUpload", false);
+        this.$store.dispatch("page/setPage", "popupVideo");
       }
     },
   },
@@ -222,7 +222,7 @@ export default {
 .page-change-left {
   position: absolute;
   top: 35px;
-  left: 50px;
+  left: 60px;
   cursor: pointer;
 }
 

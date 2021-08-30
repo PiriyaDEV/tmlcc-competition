@@ -819,11 +819,6 @@ export default {
         ? false
         : this.user.isWorkInterest && !this.user.interestField
         ? false
-        : !this.user.hasProgSkill &&
-          !this.user.hasChemSkill &&
-          !this.user.hasMachineLSkill &&
-          !this.user.hasOtherSkill
-        ? false
         : this.user.hasProgSkill &&
           (!this.user.progSkillLevel || !this.user.progSkillList)
         ? false
@@ -900,7 +895,7 @@ export default {
         this.isInvalid.phone = true;
         this.InvalidMessage.phone = "โปรดระบุเบอร์โทรศัพท์ให้ครบ";
         this.isFormFilled = false;
-      } else if (/[^*^0-9]/.test(this.user.phone)) {
+      } else if (/[^+^0-9]/.test(this.user.phone)) {
         this.isInvalid.phone = true;
         this.InvalidMessage.phone = "โปรดระบุเบอร์โทรศัพท์ให้ถูกต้อง";
         this.isFormFilled = false;
@@ -923,16 +918,6 @@ export default {
       if (this.user.isWorkInterest && !this.user.interestField) {
         this.isInvalid.workInterest = true;
         this.InvalidMessage.workInterest = "โปรดระบุสาขาที่สนใจ";
-        this.isFormFilled = false;
-      }
-      if (
-        !this.user.hasProgSkill &&
-        !this.user.hasChemSkill &&
-        !this.user.hasMachineLSkill &&
-        !this.user.hasOtherSkill
-      ) {
-        this.isInvalid.skill = true;
-        this.InvalidMessage.skill = "โปรดระบุทักษะที่ถนัด";
         this.isFormFilled = false;
       }
       if (

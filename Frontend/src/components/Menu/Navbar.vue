@@ -27,6 +27,12 @@
           </div>
         </div>
         <div id="nav-right">
+          <a
+            class="text-normal nav-text dashboard-link"
+            href="/dashboard"
+            v-if="loginStatus.isAuthenticated"
+            >กลับหน้าแดชบอร์ด</a
+          >
           <a class="text-normal nav-text" href="/about">เกี่ยวกับโครงการ</a>
           <!-- <p v-if="page == `login`" class="text-normal nav-text">Q&A</p> -->
           <!-- <p v-if="page != `login`" class="text-normal nav-text">Workshops</p> -->
@@ -48,7 +54,30 @@
             class="text-normal nav-text"
             >ติดต่อเรา</router-link
           >
-          <div class="center">
+          <div v-if="loginStatus.isAuthenticated" class="center">
+            <p
+              class="text-normal display-name nav-text"
+              @click="toggleShowLogout()"
+            >
+              <span v-if="roleStatus == `admin`">Admin </span
+              ><span v-if="roleStatus == `editor`">Editor </span
+              >{{ displayName }}
+            </p>
+            <img
+              id="dropdown-icon"
+              src="../../assets/navbar/dropdown.png"
+              alt=""
+              @click="toggleShowLogout()"
+            />
+            <div
+              id="signout-dropdown"
+              :class="SlideLogout"
+              @click="toggleShowLogout()"
+            >
+              <button @click="logout()" class="btn-white">ออกจากระบบ</button>
+            </div>
+          </div>
+          <div v-else class="center">
             <button
               v-if="page != `agreement` && endCountdown == false"
               class="btn-white blocked"

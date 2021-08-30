@@ -1,6 +1,7 @@
 <template>
   <div>
     <DashboardNavbar />
+    <Popup v-if="page == 'popupFile' || page == 'popupVideo'" />
     <div id="file-setting" class="section">
       <div id="file-container" class="page-container">
         <div>
@@ -26,11 +27,11 @@
           />
           <FileUpload
             @fileClickUpload="fileClickUpload"
-            v-if="clickFile == true"
+            v-if="clickFile == true || page == 'popupFile'"
           />
           <VideoUpload
             @videoClickUpload="videoClickUpload"
-            v-if="clickVideo == true"
+            v-if="clickVideo == true || page == 'popupVideo'"
           />
         </div>
       </div>
@@ -44,6 +45,7 @@ import VideoUpload from "../../components/Admin/UploadMaterial/VideoUpload.vue";
 import ManageFile from "../../components/Admin/ManageFile.vue";
 import ManageVideo from "../../components/Admin/ManageVideo.vue";
 import DashboardNavbar from "../../components/Menu/DashboardNavbar.vue";
+import Popup from "../../components/Popup/Popup.vue";
 import { mapGetters } from "vuex";
 export default {
   data() {
@@ -59,6 +61,7 @@ export default {
     ManageVideo,
     VideoUpload,
     FileUpload,
+    Popup,
   },
   computed: {
     cssbarFile() {
@@ -94,6 +97,7 @@ export default {
       return unselect;
     },
     ...mapGetters({
+      page: "page/getPage",
       editingVideo: "video/getEditing",
       editingMaterial: "material/getEditing",
     }),

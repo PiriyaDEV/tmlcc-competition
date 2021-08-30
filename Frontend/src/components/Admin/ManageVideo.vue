@@ -1,9 +1,20 @@
 <template>
   <div id="manage-video">
+    <div class="center page-change-left">
+      <i class="fa fa-angle-left" aria-hidden="true"></i>
+      <h1 @click="clickDasboard()" class="text-normal purple-text">
+        กลับหน้าแดชบอร์ด
+      </h1>
+    </div>
     <div id="search-grid">
       <div>
         <h1 class="text-normal">ค้นหาจาก keyword</h1>
-        <input v-model="keyword" class="input-box text-normal" type="text" />
+        <input
+          v-model="keyword"
+          class="input-box text-normal"
+          placeholder="ค้นหาด้วยชื่อวิดีโอ"
+          type="text"
+        />
       </div>
       <div>
         <h1 class="text-normal">เรียงลำดับ</h1>
@@ -60,6 +71,13 @@
                   v-if="checkEdit == video.video_id"
                   placeholder="ไม่มีรายละเอียดวิดีโอ"
                 />
+                <input
+                  class="input-box file-description description-box"
+                  type="text"
+                  v-if="checkEdit == video.video_id"
+                  v-model="video.link"
+                  maxlength="255"
+                />
                 <p
                   v-if="
                     checkEdit == video.video_id &&
@@ -90,21 +108,27 @@
                 v-if="checkEdit == video.video_id"
                 @click="deleteClick(video)"
               >
-                <img src="../../assets/icon/icon-trash.png" alt="" />Delete
+                <img src="../../assets/icon/icon-trash-o.png" alt="" />Delete
               </button>
               <button
-                class="edit-btn"
+                class="edit-btn center"
                 v-if="checkEdit != video.video_id"
                 @click="editClick(video)"
               >
-                edit
+                <img
+                  class="edit-icon center"
+                  src="../../assets/icon/edit-icon-p.png"
+                  alt=""
+                />
+                Edit
               </button>
               <button
-                class="edit-btn save-btn"
+                class="edit-btn save-btn center"
                 v-if="checkEdit == video.video_id"
                 @click="saveClick(video)"
               >
-                save
+                <i class="fa fa-save"></i>
+                Save
               </button>
             </div>
           </div>
@@ -140,6 +164,11 @@ export default {
     },
   },
   methods: {
+    clickDasboard() {
+      if (this.$route.path != "/dashboard") {
+        this.$router.push("/dashboard");
+      }
+    },
     async videoUpload() {
       this.video = this.$refs.videoUploader.video;
       await this.uploadVideoMethod();
@@ -157,6 +186,7 @@ export default {
       await this.$store.dispatch("video/update", {
         video_id: video.video_id,
         videoName: video.videoName,
+        link: video.link,
         description: video.description,
       });
       if (this.createStatus.isSuccess) {
@@ -200,8 +230,9 @@ export default {
 #manage-video {
   background: #ffffff;
   border-radius: 30px;
-  padding: 30px 60px;
+  padding: 80px 60px 30px 60px;
   margin-top: 25px;
+  position: relative;
 }
 
 .input-box {
@@ -211,6 +242,12 @@ export default {
 .description-box {
   margin-top: 5px !important;
   color: #7f7f7f !important;
+}
+
+.edit-icon {
+  width: 15px;
+  margin-right: 4px;
+  /* margin-left: 5px; */
 }
 
 .error-message {
@@ -247,6 +284,11 @@ export default {
   color: #303030 !important;
 }
 
+.fa-save {
+  font-size: 1.2em !important;
+  margin-right: 5px;
+}
+
 .video-container > div > .input-box {
   padding: 3px 5px !important;
 }
@@ -262,19 +304,41 @@ export default {
 }
 
 .edit-btn {
-  color: #f07821;
-  border: 2px solid #f07821;
+  color: #bf2e7e;
+  border: 2px solid #bf2e7e;
   background-color: transparent;
+}
+
+.fa {
+  font-size: 2.25em;
+  font-weight: 500;
+}
+
+.fa-angle-left {
+  margin: 0px 15px 0px 0px;
+  color: #bf2e7e !important;
+}
+
+.fa-grey {
+  color: #c4c4c4 !important;
+}
+
+.page-change-left {
+  position: absolute;
+  top: 35px;
+  left: 60px;
+  cursor: pointer;
 }
 
 .save-btn {
   color: #ffffff !important;
-  background-color: #f07821 !important;
+  background-color: #2f65af !important;
+  border-color: #2f65af !important;
 }
 
 .delete-btn {
-  color: #bf2e7e;
-  border: 2px solid #bf2e7e;
+  color: #f07821;
+  border: 2px solid #f07821;
   background-color: transparent;
   margin: 0px 10px;
   display: flex;
@@ -299,6 +363,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 #video-box {
@@ -379,7 +444,15 @@ div::-webkit-scrollbar-thumb {
 
 @media screen and (max-width: 980px) {
   #manage-video {
-    padding: 30px;
+    padding: 80px 30px 30px 30px;
+  }
+
+  .edit-icon {
+    width: 10px;
+  }
+
+  .page-change-left {
+    left: 30px;
   }
 
   #video-box {
@@ -422,6 +495,10 @@ div::-webkit-scrollbar-thumb {
   .file-name {
     font-size: 1.5em;
     margin-top: 10px;
+  }
+
+  .edit-icon {
+    width: 9px;
   }
 
   .video-container {
