@@ -163,7 +163,7 @@ exports.uploadToExistFolder = (req, res) => {
             "Some error occurred while uploading file to the folder!",
         });
       }
-  
+
       if (res.req.files.length > 0) {
         Material.getCount((err, count) => {
           let materials = [];
@@ -176,7 +176,7 @@ exports.uploadToExistFolder = (req, res) => {
           res.req.files.forEach((file) => {
             count++;
             count = count.toString();
-  
+
             let material = [
               "MA" + count.padStart(6, "0"),
               result.folder_id,
@@ -185,10 +185,10 @@ exports.uploadToExistFolder = (req, res) => {
               Date.now(),
               Date.now(),
             ];
-  
+
             materials.push(material);
           });
-  
+
           Material.create(materials, (err, result) => {
             if (err) {
               console.log(
@@ -196,7 +196,7 @@ exports.uploadToExistFolder = (req, res) => {
                   "Some error occurred while creating the new materials!"
               );
             }
-  
+
             return res.status(201).send({
               upload: `${res.req.files.length} file(s)`,
               message: "Material added to the folder!",
@@ -338,24 +338,56 @@ exports.deleteFolder = (req, res) => {
           });
         }
 
-        fsPromises
-          .rmdir(
-            materials_dir + "/" + find_result.folderName,
-            { recursive: true, force: true },
-            (err) => {
-              return res.status(500).send({
-                message:
-                  err.message ||
-                  "Some error occurred while deleting the directory!",
-              });
-            }
-          )
-          .then(() => {
+        let path = materials_dir + "/" + find_result.folderName;
+
+        if (fs.existsSync(path)) {
+          const files = fs.readdirSync(path);
+
+          if (files.length > 0) {
+            files.forEach((filename) => {
+              if (fs.statSync(path + "/" + filename).isDirectory()) {
+                removeDir(path + "/" + filename);
+              } else {
+                fs.unlinkSync(path + "/" + filename);
+              }
+            });
+            fs.rmdirSync(path);
             return res.status(200).send({
               folder_id: result.folder_id,
               message: "Folder deleted!",
             });
+          } else {
+            fs.rmdirSync(path);
+            return res.status(200).send({
+              folder_id: result.folder_id,
+              message: "Folder deleted!",
+            }); 
+          }
+        } else {
+          return res.status(500).send({
+            message:
+              err.message ||
+              "Some error occurred while deleting the directory!",
           });
+        }
+        // fsPromises
+        //   .rmdir(
+        //     materials_dir + "/" + find_result.folderName,
+        //     { recursive: true },
+        //     (err) => {
+        //       return res.status(500).send({
+        //         message:
+        //           err.message ||
+        //           "Some error occurred while deleting the directory!",
+        //       });
+        //     }
+        //   )
+        //   .then(() => {
+        //     return res.status(200).send({
+        //       folder_id: result.folder_id,
+        //       message: "Folder deleted!",
+        //     });
+        //   });
       });
     });
   });
