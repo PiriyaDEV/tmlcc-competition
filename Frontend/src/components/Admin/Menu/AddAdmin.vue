@@ -250,6 +250,7 @@ export default {
         hasChemSkill: false,
         hasMachineLSkill: false,
         hasOtherSkill: false,
+        registerFor: "-",
       }),
       isInvalid: {
         ...new User(false),
@@ -472,6 +473,8 @@ export default {
         : this.user.hasOtherSkill && !this.user.otherSkillList
         ? false
         : this.user.hasTeam == null
+        ? false
+        : !this.user.registerFor
         ? false
         : this.user.role
         ? false

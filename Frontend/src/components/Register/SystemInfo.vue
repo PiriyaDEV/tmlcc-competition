@@ -31,8 +31,8 @@
         <div id="note">
           <h1 class="text-normal purple-text">หมายเหตุ :</h1>
           <h1 class="text-normal">
-            การสร้างกลุ่ม สามารถสร้าง <br />
-            และเพิ่มสมาชิกได้ หลังการเข้าสู่ระบบ
+            การสร้างกลุ่มสามารถสร้าง <br />
+            และเพิ่มสมาชิกได้ ภายหลังจากเข้าสู่ระบบ
           </h1>
         </div>
 
@@ -41,7 +41,7 @@
         <h1 id="login-info" class="header-s">ข้อมูลสำหรับการเข้าสู่ระบบ</h1>
 
         <div>
-          <h1 class="text-normal">Email : ใช้ e-mail ในการเข้าสู่ระบบ</h1>
+          <h1 class="text-normal">Email: เพื่อใช้ในการเข้าสู่ระบบ</h1>
           <input
             v-model="user.email"
             class="input-box text-normal"

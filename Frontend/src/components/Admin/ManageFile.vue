@@ -92,7 +92,7 @@
                 multiple
                 accept="application/pdf"
               />
-              <!-- <button
+              <button
                 class="delete-btn"
                 v-if="edit == folder.folder_id"
                 @click="deleteFolder(folder.folder_id)"
@@ -102,7 +102,7 @@
                   src="../../assets/icon/icon-trash-o.png"
                   alt=""
                 />Delete
-              </button> -->
+              </button>
               <button
                 class="edit-btn center"
                 v-if="edit != folder.folder_id"
@@ -307,7 +307,7 @@ export default {
         if (match_index == -1) {
           files.append("material-files", file);
         } else {
-          // alert("ไฟล์ซ้ำ");
+          alert("ไฟล์ซ้ำ");
         }
       });
       await this.$store.dispatch("material/addMaterial", {
@@ -433,7 +433,6 @@ export default {
   color: #2f65af !important;
   background-color: #ffffff !important;
   border-color: #2f65af !important;
-  margin-right: 10px;
 }
 
 .notfound {

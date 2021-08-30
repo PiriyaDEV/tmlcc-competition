@@ -52,7 +52,7 @@
         />
         <h1 class="text-normal gray-text">Dataset</h1>
       </div>
-      <div
+      <!-- <div
         class="icon-box"
         @click="
           linkClick('https://deepnote.com/dashboard/TMLCC-workshop/projects')
@@ -64,7 +64,7 @@
           alt=""
         />
         <h1 class="text-normal gray-text">Codalab Competition</h1>
-      </div>
+      </div> -->
     </div>
 
     <!-- <div class="section">
@@ -138,7 +138,7 @@ export default {
 }
 
 .spacer-admin {
-  height: 160px !important;
+  height: 220px !important;
 }
 
 .edit-btn {
@@ -158,7 +158,7 @@ export default {
 }
 
 .spacer {
-  height: 90px;
+  height: 150px;
 }
 
 @media screen and (max-width: 1100px) {

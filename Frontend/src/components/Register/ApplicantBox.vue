@@ -192,6 +192,44 @@
     <h1 class="header-s">ความสนใจ</h1>
 
     <div id="work-grid">
+      <div id="registerfor-section">
+        <h1 class="text-normal">ผู้สมัครสนใจเข้าร่วม</h1>
+        <div class="registerfor-radio">
+          <div>
+            <input
+              v-model="user.registerFor"
+              value="Workshop"
+              name="registerfor"
+              type="radio"
+            />
+            <label class="text-normal">Workshop</label>
+          </div>
+          <div>
+            <input
+              v-model="user.registerFor"
+              value="Competition"
+              name="registerfor"
+              type="radio"
+            />
+            <label class="text-normal">Competition</label>
+          </div>
+          <div>
+            <input
+              v-model="user.registerFor"
+              value="Workshop and Competition"
+              name="registerfor"
+              type="radio"
+            />
+            <label class="text-normal">Workshop and Competition</label>
+          </div>
+        </div>
+        <p
+          v-if="isInvalid.registerFor"
+          class="text-normal orange-text error-message"
+        >
+          * {{ InvalidMessage.registerFor }}
+        </p>
+      </div>
       <div>
         <h1 class="text-normal">ผลงานที่เคยทำ</h1>
         <textarea
@@ -748,6 +786,10 @@ export default {
         document.getElementById("otherBox").disabled = true;
       }
     },
+    "user.registerFor": function () {
+      this.isInvalid.registerFor = false;
+      this.InvalidMessage.registerFor = "";
+    },
     "user.progSkillList": function () {
       this.isInvalid.skill = false;
       this.InvalidMessage.skill = "";
@@ -829,6 +871,8 @@ export default {
           (!this.user.machineLSkillLevel || !this.user.machineLSkillList)
         ? false
         : this.user.hasOtherSkill && !this.user.otherSkillList
+        ? false
+        : !this.user.registerFor
         ? false
         : true;
       return check;
@@ -949,6 +993,11 @@ export default {
         this.InvalidMessage.skill = "โปรดระบุเรื่องที่เชี่ยวชาญ";
         this.isFormFilled = false;
       }
+      if (!this.user.registerFor) {
+        this.isInvalid.registerFor = true;
+        this.InvalidMessage.registerFor = "โปรดระบุความสนใจ";
+        this.isFormFilled = false;
+      }
       return this.isFormFilled;
     },
   },
@@ -1039,6 +1088,23 @@ export default {
   margin-bottom: 5px;
 }
 
+#registerfor-section {
+  margin-top: 5px;
+}
+
+.registerfor-radio {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.registerfor-radio > div > input {
+  margin-right: 10px;
+}
+
+.registerfor-radio > div {
+  margin: 10px 0px;
+}
+
 /* grid input */
 #name-grid {
   display: grid;
@@ -1111,6 +1177,14 @@ export default {
   #invite-checkbox,
   #education-grid {
     display: block;
+  }
+
+  #invite-checkbox > div {
+    margin: 10px 0px;
+  }
+
+  .skill-checkbox > div {
+    margin: 10px 0px;
   }
 
   .skill-checkbox > div:not(:first-child) {
