@@ -67,6 +67,19 @@ class UserService {
       });
   }
 
+  async getDataToExport() {
+    return await http
+      .get("/user/getDataToExport", {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return error.response;
+      });
+  }
+
   async getInfo(user) {
     return await http
       .get(`/user/getInfo?user_id=${user.user_id}`, {

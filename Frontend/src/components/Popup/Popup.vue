@@ -17,6 +17,17 @@
         </button>
       </div>
 
+      <div v-if="page == 'popupResetpassword'" id="white-box">
+        <div class="center">
+          <h1 class="text-normal message-text">
+            ยินดีด้วย, รหัสผ่านของคุณได้ถูกแก้ไขเรียบร้อยแล้ว
+          </h1>
+        </div>
+        <button @click="clickTo('login')" class="btn-white">
+          คลิกที่นี่เพื่อเข้าสู่ระบบ
+        </button>
+      </div>
+
       <div v-if="page == 'popupFile'" id="white-box">
         <div class="center">
           <h1 class="text-normal message-text">

@@ -54,10 +54,10 @@
         />
         <h1 class="text-normal gray-text">Dataset</h1>
       </div>
-      <!-- <div
+      <div
         class="icon-box"
         @click="
-          linkClick('https://deepnote.com/dashboard/TMLCC-workshop/projects')
+          linkClick('https://competitions.codalab.org/competitions/34540')
         "
       >
         <img
@@ -66,14 +66,26 @@
           alt=""
         />
         <h1 class="text-normal gray-text">Codalab Competition</h1>
-      </div> -->
+      </div>
+      <div class="icon-box" @click="linkClick('https://learn-ai.in.th/')">
+        <img
+          class="link-icon"
+          src="../../assets/icon/learnai-logo.png"
+          alt=""
+        />
+        <h1 class="text-normal gray-text">LearnAI</h1>
+      </div>
+      <div class="icon-box" @click="linkClick('http://bigdataexperience.org/')">
+        <img class="link-icon" src="../../assets/icon/bxlogo.png" alt="" />
+        <h1 class="text-normal gray-text">BX KMUTT</h1>
+      </div>
     </div>
 
     <!-- <div class="section">
       <button class="edit-btn">Edit Information</button>
     </div> -->
 
-    <div :class="spacerCss"></div>
+    <!-- <div :class="spacerCss"></div> -->
   </div>
 </template>
 
@@ -106,7 +118,7 @@ export default {
 #linkflex {
   background: #ffffff;
   border-radius: 30px;
-  padding: 15px 32px 15px 32px;
+  padding: 15px 32px 30px 32px;
   width: 270px;
   margin-top: 45px;
 }
@@ -123,7 +135,7 @@ export default {
 
 .icon-box {
   display: flex;
-  text-align: center;
+  /* text-align: center; */
 }
 
 .icon-box:not(:last-child) {

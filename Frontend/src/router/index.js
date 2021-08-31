@@ -20,6 +20,15 @@ const routes = [
     },
   },
   {
+    path: "/reset-password",
+    name: "ForgetPass",
+    component: () => import("../views/ForgetPass.vue"),
+    meta: {
+      hideForAuth: true,
+      endCountdown: true,
+    },
+  },
+  {
     path: "/register",
     name: "Register",
     component: () => import("../views/Register.vue"),

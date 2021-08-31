@@ -237,7 +237,10 @@
             <div>
               <p class="text-medium">
                 คุณวารินทร์ ระงับพิศม์ <br />
-                E-mail : <span class="blue-text">tmlcc.th@gmail.com</span>
+                E-mail :
+                <span class="blue-text mail-link" @click="mailTo"
+                  >tmlcc.th@gmail.com</span
+                >
               </p>
             </div>
           </div>
@@ -330,6 +333,9 @@ export default {
         this.$router.push("/register");
       }
     },
+    mailTo() {
+      window.location.href = "mailto:tmlcc.th@gmail.com";
+    },
     subscribeClick() {
       this.validateEmail();
       if (!this.subscribe.isInvalid && this.subscribe.email) {
@@ -396,9 +402,17 @@ export default {
   margin: 0px;
 }
 
+.mail-link {
+  cursor: pointer;
+}
+
 .download-link {
   text-decoration: underline;
   color: #2f65af !important;
+  cursor: pointer;
+}
+
+.subscribe-btn {
   cursor: pointer;
 }
 
