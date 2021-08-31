@@ -27,6 +27,7 @@ export default class User {
     this.machineLSkillList = user.machineLSkillList;
     this.hasOtherSkill = user.hasOtherSkill;
     this.otherSkillList = user.otherSkillList;
+    this.registerFor = user.registerFor;
     this.hasTeam = user.hasTeam;
     this.role = user.role;
     this.lastLogin = user.lastLogin;

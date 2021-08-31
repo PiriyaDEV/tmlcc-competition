@@ -47,7 +47,7 @@
           </div>
           <div class="two-column">
             <li>การอบรมเชิงปฏิบัติการ (workshop)</li>
-            <li class="second-tab block-tab">16 - 19 กันยายน 2564</li>
+            <li class="second-tab block-tab">17 - 19 กันยายน 2564</li>
           </div>
           <div class="two-column">
             <li>การแข่งขัน รอบที่ 1</li>
@@ -98,7 +98,7 @@
       <hr class="bar-color bar-color-s" />
 
       <div class="center">
-        <img id="timeline" src="../../assets/mainpage/Timeline-2.png" alt="" />
+        <img id="timeline" src="../../assets/mainpage/Timeline-3.png" alt="" />
       </div>
 
       <h1 id="users-info" class="header-s">คุณสมบัติผู้เข้าแข่งขัน</h1>

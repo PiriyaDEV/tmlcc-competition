@@ -324,6 +324,14 @@ export default {
           { text: "ความสนใจ", fontSize: 13, margin: [0, 15, 0, 8], bold: true },
           {
             text: [
+              { text: "ผู้สมัครสนใจเข้าร่วม : " },
+              { text: this.userInfo.registerFor, decoration: "underline" },
+            ],
+            fontSize: 11,
+            margin: [0, 5, 0, 8],
+          },
+          {
+            text: [
               { text: "ผลงานที่เคยทำ : " },
               { text: this.userInfo.works, decoration: "underline" },
             ],

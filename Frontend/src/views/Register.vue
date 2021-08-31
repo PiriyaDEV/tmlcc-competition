@@ -9,7 +9,7 @@
           <div class="center">
             <img id="tmlcc-logo" src="../assets/TMLCC_Logo.png" alt="" />
           </div>
-          <h1 class="header-c">สมัครเข้าร่วมการแข่งขัน</h1>
+          <h1 class="header-c">สมัครเข้าร่วมโครงการ</h1>
 
           <div>
             <AgreementBox v-show="page == `agreement`" />
