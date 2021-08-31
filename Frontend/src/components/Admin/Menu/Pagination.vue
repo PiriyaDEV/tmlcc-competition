@@ -1,13 +1,25 @@
 <template>
   <div id="pagination">
     <div id="show-text">
-      <h1 v-if="currentPage == 'user'" class="text-normal">
-        แสดงผล {{ beforePage }} ถึง {{ afterPage }} จาก
-        {{ userListLength }} ข้อมูล
+      <h1 class="text-normal">
+        <span v-if="currentPage == 'user' && userListLength >= 25"
+          >แสดงผล {{ beforePage }} ถึง {{ afterPage }} จาก
+          {{ userListLength }} ข้อมูล</span
+        >
+        <span v-else-if="currentPage == 'user' && userListLength < 25"
+          >แสดงผล {{ beforePage }} ถึง {{ userListLength }} จาก
+          {{ userListLength }} ข้อมูล</span
+        >
       </h1>
-      <h1 v-if="currentPage == 'staff'" class="text-normal">
-        แสดงผล {{ beforePage }} ถึง {{ afterPage }} จาก
-        {{ staffListLength }} ข้อมูล
+      <h1 class="text-normal">
+        <span v-if="currentPage == 'staff' && staffListLength >= 25"
+          >แสดงผล {{ beforePage }} ถึง {{ afterPage }} จาก
+          {{ staffListLength }} ข้อมูล</span
+        >
+        <span v-else-if="currentPage == 'staff' && staffListLength < 25"
+          >แสดงผล {{ beforePage }} ถึง {{ staffListLength }} จาก
+          {{ staffListLength }} ข้อมูล</span
+        >
       </h1>
     </div>
     <div id="pagination-section">
@@ -243,7 +255,6 @@ export default {
     if (this.currentPage == "user") {
       this.$store.dispatch("admin/updateUserPageLimit", this.perPage);
       this.$store.dispatch("admin/updateUserSelectPage", this.page);
-      this.afterPage = this.pagination.page * this.pagination.perPage;
     } else if (this.currentPage == "staff") {
       this.$store.dispatch("admin/updateStaffPageLimit", this.perPage);
       this.$store.dispatch("admin/updateStaffSelectPage", this.page);
@@ -260,7 +271,6 @@ export default {
       this.pagination.page * this.pagination.perPage -
       (this.pagination.perPage - 1);
   },
-  mounted() {},
   destroyed() {
     window.removeEventListener("resize", this.detectScreenChange);
   },
