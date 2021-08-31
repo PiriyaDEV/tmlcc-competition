@@ -135,7 +135,7 @@ export default {
   border-radius: 30px;
   padding: 15px 32px 15px 32px;
   width: calc(100% - 60px);
-  height: calc(100% - 30px);
+  /* height: calc(100% - 30px); */
   position: relative;
 }
 
@@ -156,7 +156,7 @@ export default {
 
 #file-box {
   overflow-y: scroll;
-  height: 360px;
+  max-height: 360px;
   margin-top: 20px;
 }
 
@@ -259,7 +259,7 @@ export default {
   padding: 0px 20px;
   margin-top: 14px;
   overflow-y: scroll;
-  height: 360px;
+  max-height: 360px;
 }
 
 .video-container {
@@ -340,11 +340,11 @@ div::-webkit-scrollbar-thumb {
   }
 
   #file-box {
-    height: 260px;
+    max-height: 260px;
   }
 
   #video-box {
-    height: 260px;
+    max-height: 260px;
   }
 
   .join-btn,

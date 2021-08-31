@@ -4,7 +4,7 @@
       <img id="tmlcc-logo" src="../../assets/TMLCC_Logo.png" alt="" />
     </div>
 
-    <div id="countdown-section" class="section">
+    <!-- <div id="countdown-section" class="section">
       <div class="countdown-container">
         <div class="countdown-number">
           <div class="number-box">
@@ -58,15 +58,24 @@
         </div>
         <h1 class="number-label">SECONDS</h1>
       </div>
-    </div>
+    </div> -->
 
     <div id="register-date-section" class="section">
       <div>
         <hr class="purple-line" />
       </div>
-      <div>
+      <!-- <div>
         <p class="header-m register-text">สมัครเข้าแข่งขันพร้อมกัน</p>
         <h1 class="header-c register-date purple-d-text">1 กันยายน 2564</h1>
+      </div> -->
+      <div>
+        <p class="header-m register-text">
+          สมัครเข้าร่วมโครงการได้แล้ว<span class="mobile-regis">วันนี้</span>
+        </p>
+        <!-- <h1 class="header-c register-date purple-d-text">1 กันยายน 2564</h1> -->
+        <div class="center">
+          <button @click="goToRegister()" class="btn-white">ลงทะเบียน</button>
+        </div>
       </div>
       <div>
         <hr class="purple-line" />
@@ -163,10 +172,15 @@ export default {
       }
     }, 1000);
   },
+  methods: {
+    goToRegister() {
+      this.$router.push("/register");
+    },
+  },
 };
 </script>
 
-<style scopedd>
+<style scoped>
 #tmlcc-logo {
   width: 651px;
 }
@@ -179,6 +193,10 @@ export default {
   display: flex;
   align-items: center;
 }
+
+/* .btn-white{
+  width: 370px;
+} */
 
 .countdown-number > div:nth-child(1) {
   margin-right: 15px;
@@ -276,9 +294,19 @@ export default {
   }
 }
 
+@media screen and (max-width: 768px) {
+  .mobile-regis {
+    display: none;
+  }
+}
+
 @media screen and (max-width: 767px) {
   .purple-line {
-    width: 120px;
+    width: 100px;
+  }
+
+  .btn-white {
+    margin-top: 10px;
   }
 
   .seconds {
@@ -295,6 +323,10 @@ export default {
 
   #tmlcc-logo {
     width: 350px;
+  }
+
+  .header-m {
+    font-size: 2.25em;
   }
 }
 
@@ -344,6 +376,12 @@ export default {
   .colon {
     font-size: 4em;
     padding: 0px 5px 50px 5px;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  #tmlcc-logo {
+    width: 290px;
   }
 }
 </style>

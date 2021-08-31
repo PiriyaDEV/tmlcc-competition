@@ -15,6 +15,7 @@ export default {
   state: {
     userList: [],
     staffList: [],
+    dataToExport: [],
     currentPage: "",
     updateStatus: {
       readyToUpdate: true,
@@ -191,6 +192,9 @@ export default {
 
       return list.slice(from, to);
     },
+    getDataToExport(state) {
+      return state.dataToExport;
+    },
     getUserSelect(state) {
       return state.user.select;
     },
@@ -272,6 +276,9 @@ export default {
     },
     setStaffList(state, list) {
       state.staffList = list;
+    },
+    setDataToExport(state, list) {
+      state.dataToExport = list;
     },
     setUserSelect(state, user) {
       state.user.select = user;
@@ -390,6 +397,17 @@ export default {
         .then((res) => {
           if (res.status == 200) {
             commit("setStaffList", res.data);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    async getDataToExport({ commit }) {
+      await UserService.getDataToExport()
+        .then((res) => {
+          if (res.status == 200) {
+            commit("setDataToExport", res.data);
           }
         })
         .catch((err) => {

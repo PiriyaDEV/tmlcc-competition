@@ -80,7 +80,7 @@
         <ul class="text-medium second-tab flex-tab">
           <li>1 กันยายน - 14 กันยายน 2564</li>
           <li>15 กันยายน 2564</li>
-          <li>16 - 19 กันยายน 2564</li>
+          <li>17 - 19 กันยายน 2564</li>
           <li>20 กันยายน - 2 ตุลาคม 2564</li>
           <li>3 ตุลาคม 2564 (ให้คำปรึกษาแต่ละทีม)</li>
           <li>4 - 16 ตุลาคม 2564</li>
@@ -237,7 +237,10 @@
             <div>
               <p class="text-medium">
                 คุณวารินทร์ ระงับพิศม์ <br />
-                E-mail : <span class="blue-text">tmlcc.th@gmail.com</span>
+                E-mail :
+                <span class="blue-text mail-link" @click="mailTo"
+                  >tmlcc.th@gmail.com</span
+                >
               </p>
             </div>
           </div>
@@ -330,6 +333,9 @@ export default {
         this.$router.push("/register");
       }
     },
+    mailTo() {
+      window.location.href = "mailto:tmlcc.th@gmail.com";
+    },
     subscribeClick() {
       this.validateEmail();
       if (!this.subscribe.isInvalid && this.subscribe.email) {
@@ -396,9 +402,17 @@ export default {
   margin: 0px;
 }
 
+.mail-link {
+  cursor: pointer;
+}
+
 .download-link {
   text-decoration: underline;
   color: #2f65af !important;
+  cursor: pointer;
+}
+
+.subscribe-btn {
   cursor: pointer;
 }
 

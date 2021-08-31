@@ -45,9 +45,12 @@
               </p>
             </div>
 
-            <!-- <h1 class="text-normal purple-text forgot-pass">
+            <h1
+              @click="goToForgot()"
+              class="text-normal purple-text forgot-pass"
+            >
               <span>ลืมรหัสผ่าน</span>
-            </h1> -->
+            </h1>
 
             <div class="center">
               <button @click="login()" id="login-button" class="btn-color">
@@ -148,6 +151,11 @@ export default {
         if (this.$route.path != "/dashboard") {
           this.$router.push("/dashboard");
         }
+      }
+    },
+    goToForgot() {
+      if (this.$route.path != "/reset-password") {
+        this.$router.push("/reset-password");
       }
     },
   },

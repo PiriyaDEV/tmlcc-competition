@@ -27,6 +27,32 @@ class AuthService {
         return error.response;
       });
   }
+
+  async checkResetPassword(user) {
+    return await http
+      .post("/auth/checkResetPassword", user, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return error.response;
+      });
+  }
+
+  async resetPassword(user) {
+    return await http
+      .post("/auth/resetPassword", user, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return error.response;
+      });
+  }
 }
 
 export default new AuthService();

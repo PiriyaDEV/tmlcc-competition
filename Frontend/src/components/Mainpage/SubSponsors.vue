@@ -9,28 +9,28 @@
       </div>
 
       <div id="second-logo-section" class="center logo-section">
-        <div>
+        <div @click="linkClick('https://thinkingmachin.es/')">
           <img
             id="tm-logo"
             src="../../assets/sponsors/tm-standart-logo-red.png"
             alt=""
           />
         </div>
-        <div>
+        <div @click="linkClick('https://www.jetbrains.com/')">
           <img
             id="jb-logo"
             src="../../assets/sponsors/jetbrains 1.png"
             alt=""
           />
         </div>
-        <div>
+        <div @click="linkClick('https://www.thoughtworks.com/')">
           <img
             id="tw-logo"
             src="../../assets/sponsors/thoughtworks 1.png"
             alt=""
           />
         </div>
-        <div>
+        <div @click="linkClick('https://www.careervisathailand.com/')">
           <img id="cv-logo" src="../../assets/sponsors/careervisa.png" alt="" />
         </div>
       </div>
@@ -39,7 +39,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    linkClick(value) {
+      window.open(value);
+    },
+  },
+};
 </script>
 
 <style scoped>

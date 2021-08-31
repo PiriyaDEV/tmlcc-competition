@@ -306,8 +306,6 @@ export default {
         );
         if (match_index == -1) {
           files.append("material-files", file);
-        } else {
-          alert("ไฟล์ซ้ำ");
         }
       });
       await this.$store.dispatch("material/addMaterial", {

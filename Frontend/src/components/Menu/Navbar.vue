@@ -79,27 +79,27 @@
           </div>
           <div v-else class="center">
             <button
-              v-if="page != `agreement` && endCountdown == false"
+              v-if="pathRegister == false && endCountdown == false"
               class="btn-white blocked"
             >
               ลงทะเบียน
             </button>
             <button
-              v-if="page != `agreement` && endCountdown == true"
+              v-if="pathRegister == false && endCountdown == true"
               @click="registerClick()"
               class="btn-white"
             >
               ลงทะเบียน
             </button>
             <button
-              v-if="page == `agreement` && endCountdown == true"
+              v-if="pathRegister == true && endCountdown == true"
               @click="loginClick()"
               class="btn-color"
             >
               เข้าสู่ระบบ
             </button>
             <button
-              v-if="page == `agreement` && endCountdown == false"
+              v-if="pathRegister == true && endCountdown == false"
               class="btn-white blocked"
             >
               เข้าสู่ระบบ
@@ -128,7 +128,13 @@ export default {
     return {
       showMenu: false,
       showLogout: false,
+      pathRegister: false,
     };
+  },
+  created() {
+    if (this.$route.path == "/register") {
+      this.pathRegister = true;
+    }
   },
   methods: {
     mainpage() {

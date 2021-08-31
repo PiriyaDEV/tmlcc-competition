@@ -46,6 +46,14 @@
         </select>
       </div>
     </div>
+    <div id="export-grid">
+      <div></div>
+      <div>
+        <download-csv :data="memberList" name="รายชื่อผู้ลงทะเบียน.csv">
+          <button class="add-btn">Export รายชื่อทั้งหมด</button>
+        </download-csv>
+      </div>
+    </div>
     <div id="table-section">
       <table id="member-table">
         <tr>
@@ -117,6 +125,10 @@ import Pagination from "../Admin/Menu/Pagination.vue";
 import { mapGetters } from "vuex";
 import pdfMake from "pdfmake";
 import pdfFonts from "../../assets/custom-fonts.js";
+import Vue from "vue";
+import JsonCSV from "vue-json-csv";
+
+Vue.component("downloadCsv", JsonCSV);
 
 export default {
   data() {
@@ -134,6 +146,7 @@ export default {
   mounted() {
     this.keyword = this.userSearch;
     this.$store.dispatch("admin/updateUserSort", this.sort);
+    this.$store.dispatch("admin/getDataToExport");
   },
   computed: {
     ...mapGetters({
@@ -141,6 +154,7 @@ export default {
       userInfo: "admin/getUserSelect",
       userSearch: "admin/getUserSearch",
       userListLength: "admin/getUserListLength",
+      memberList: "admin/getDataToExport",
     }),
   },
   watch: {
@@ -243,7 +257,7 @@ export default {
             bold: true,
           },
           {
-            text: "Thailand Machine learning for Chemistry (TMLCC)",
+            text: "Thailand Machine learning for Chemistry Competition (TMLCC)",
             alignment: "center",
             fontSize: 15,
             margin: [0, 0, 0, 8],
@@ -359,7 +373,7 @@ export default {
             margin: [0, 5, 0, 8],
           },
           {
-            text: "ประเมิณตนเอง",
+            text: "ประเมินตนเอง",
             fontSize: 12,
             margin: [0, 15, 0, 8],
             bold: true,
@@ -468,6 +482,25 @@ export default {
   /* height: 522px; */
   /* overflow-y: auto; */
   padding-right: 10px;
+}
+
+.add-btn {
+  font-size: 1.75em;
+  font-family: "IBM-PLEX-THAI-SEMIBOLD";
+  color: #764a97;
+  margin-bottom: 15px;
+  background-color: transparent;
+  border: 2px solid #764a97;
+  box-sizing: border-box;
+  border-radius: 12px;
+  padding: 6px 15px;
+  width: 100%;
+  cursor: pointer;
+}
+
+#export-grid {
+  display: grid;
+  grid-template-columns: 5fr 1.15fr;
 }
 
 #member-table {
@@ -589,6 +622,27 @@ div::-webkit-scrollbar-thumb {
 @media screen and (max-width: 980px) {
   #manage-member {
     padding: 80px 30px 30px 30px;
+  }
+
+  .add-btn {
+    font-size: 1.5em;
+    padding: 1.5px 10px;
+    margin-top: 10px;
+  }
+
+  #export-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0px;
+  }
+
+  #export-grid > div {
+    width: 100%;
+  }
+
+  #export-grid > div:first-child {
+    display: none;
   }
 
   td:nth-child(1),

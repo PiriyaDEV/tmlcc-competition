@@ -21,6 +21,14 @@ export default {
       },
       isAuthenticated: !!localStorage.getItem("accessToken"),
     },
+    resetPasswordInfo: {
+      isFound: false,
+      user_id: "",
+      email: "",
+      firstName: "",
+      lastName: "",
+      phone: "",
+    },
   },
   getters: {
     getUserId(state) {
@@ -41,6 +49,9 @@ export default {
     getStatusCode(state) {
       return state.statusCode;
     },
+    getResetPasswordInfo(state) {
+      return state.resetPasswordInfo;
+    },
   },
   mutations: {
     resetStatus(state) {
@@ -51,6 +62,14 @@ export default {
       state.loginStatus.password.isInvalid = false;
       state.loginStatus.password.message = "";
       state.loginStatus.isAuthenticated = false;
+    },
+    resetResetPasswordInfo(state) {
+      state.resetPasswordInfo.isFound = false;
+      state.resetPasswordInfo.user_id = "";
+      state.resetPasswordInfo.email = "";
+      state.resetPasswordInfo.firstName = "";
+      state.resetPasswordInfo.lastName = "";
+      state.resetPasswordInfo.phone = "";
     },
     setAuth(state, user) {
       state.user = user;
@@ -76,10 +95,19 @@ export default {
     setStatusCode(state, code) {
       state.statusCode = code;
     },
+    setResetPasswordInfo(state, info) {
+      state.resetPasswordInfo = info;
+    },
   },
   actions: {
     resetStatus({ commit }) {
       commit("resetStatus");
+    },
+    resetResetPasswordInfo({ commit }) {
+      commit("resetResetPasswordInfo");
+    },
+    setResetPasswordInfo({ commit }, info) {
+      commit("setResetPasswordInfo", info);
     },
     async login({ commit }, user) {
       commit("resetStatus");

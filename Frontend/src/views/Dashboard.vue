@@ -22,6 +22,7 @@
               <LinkFlex />
             </div>
             <div id="material-flex">
+              <CourseFlex />
               <MaterialFlex />
             </div>
           </div>
@@ -36,6 +37,7 @@ import DashboardNavbar from "../components/Menu/DashboardNavbar.vue";
 import Teamflex from "../components/Dashboard/TeamFlex.vue";
 import LinkFlex from "../components/Dashboard/LinkFlex.vue";
 import MaterialFlex from "../components/Dashboard/MaterialFlex.vue";
+import CourseFlex from "../components/Dashboard/CourseFlex.vue";
 import { mapGetters } from "vuex";
 
 export default {
@@ -44,6 +46,7 @@ export default {
     Teamflex,
     LinkFlex,
     MaterialFlex,
+    CourseFlex,
   },
   computed: {
     ...mapGetters({
