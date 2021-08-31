@@ -25,7 +25,14 @@ exports.register = (req, res) => {
 
     let user = req.body;
 
-    if (!user.email || !user.displayName || !user.password || !user.firstName || !user.lastName || !user.organization) {
+    if (
+      !user.email ||
+      !user.displayName ||
+      !user.password ||
+      !user.firstName ||
+      !user.lastName ||
+      !user.organization
+    ) {
       return res.status(400).send({
         message: "Content can not be empty!",
       });
@@ -49,7 +56,7 @@ exports.register = (req, res) => {
             err.message || "Some error occurred while creating the new user!",
         });
       }
-      
+
       return res.status(201).send({
         user_id: result.user_id,
         message: "Registered successfully!",
@@ -124,5 +131,112 @@ exports.login = (req, res) => {
         message: "Invalid password!",
       });
     }
+  });
+};
+
+exports.checkResetPassword = (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Content can not be empty!",
+    });
+  }
+
+  let user = req.body;
+
+  User.find(user, (err, result) => {
+    if (err) {
+      return res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while checking user for reset password!",
+      });
+    }
+
+    if (!result.isFound) {
+      return res.status(200).send({
+        isFound: result.isFound,
+        message: "User not found!",
+      });
+    }
+
+    if (
+      user.email != result.email ||
+      user.firstName != result.firstName ||
+      user.lastName != result.lastName ||
+      user.phone != result.phone
+    ) {
+      return res.status(200).send({
+        isFound: false,
+        message: "User not found!",
+      });
+    } else {
+      return res.status(200).send({
+        isFound: result.isFound,
+        user_id: result.user_id,
+        email: result.email,
+        firstName: result.firstName,
+        lastName: result.lastName,
+        phone: result.phone,
+      });
+    }
+  });
+};
+
+exports.resetPassword = (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Content can not be empty!",
+    });
+  }
+
+  let user = req.body;
+
+  User.find(user, (err, result) => {
+    if (err) {
+      return res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while checking user for reset password!",
+      });
+    }
+
+    if (!result.isFound) {
+      return res.status(200).send({
+        isFound: result.isFound,
+        isSuccess: false,
+        message: "User not found!",
+      });
+    }
+
+    if (
+      user.email != result.email ||
+      user.firstName != result.firstName ||
+      user.lastName != result.lastName ||
+      user.phone != result.phone
+    ) {
+      return res.status(200).send({
+        isFound: false,
+        isSuccess: false,
+        message: "User not found!",
+      });
+    }
+
+    user.password = bcrypt.hashSync(user.password, 8);
+
+    User.update(user, (err, result) => {
+      if (err) {
+        return res.status(500).send({
+          message:
+            err.message ||
+            "Some error occurred while updating new user's password!",
+        });
+      }
+
+      return res.status(200).send({
+        user_id: result.user_id,
+        isSuccess: true,
+        message: "Password reset!",
+      });
+    });
   });
 };

@@ -97,6 +97,18 @@ exports.getAllStaffs = (req, res) => {
   });
 };
 
+exports.getDataToExport = (req, res) => {
+  User.getDataToExport((err, result) => {
+    if (err) {
+      return res.status(500).send({
+        message: err.message || "Some error occurred while getting all users!",
+      });
+    }
+
+    return res.status(200).send(result);
+  });
+};
+
 exports.getInfo = (req, res) => {
   if (!req.query.user_id) {
     return res.status(400).send({
