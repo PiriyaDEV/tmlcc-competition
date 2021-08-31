@@ -177,6 +177,70 @@ User.getAllStaffs = (result) => {
   );
 };
 
+User.getDataToExport = (result) => {
+  sql.query(
+    `SELECT
+      U.user_id AS 'id',
+      U.email AS 'อีเมล',
+      U.displayName AS 'ชื่อผู้ใช้',
+      U.titleName AS 'คำนำหน้า',
+      U.firstName AS 'ชื่อ',
+      U.lastName AS 'นามสกุล',
+      U.phone AS 'เบอร์โทรศัพท์',
+      U.education AS 'ระดับการศึกษาสูงสุด',
+      U.institution AS 'สถานศึกษา',
+      U.organization AS 'สังกัด',
+      U.address AS 'ที่อยู่',
+      U.country AS 'ประเทศ',
+      U.works AS 'ผลงานที่เคยทำ',
+      IF(U.isWorkInterest, 'Yes', 'No') AS 'หากมีข้อเสนอโครงการให้เข้าร่วมทำงาน/ฝึกงานกับบริษัท หรือ องค์กร',
+      U.interestField AS 'สาขาที่สนใจ',
+      IF(U.hasProgSkill, 'Yes', 'No') AS 'มีทักษะ Programming',
+      U.progSkillLevel AS 'ระดับทักษะ Programming',
+      U.progSkillList AS 'เรื่องที่เชี่ยวชาญ Programming',
+      IF(U.hasChemSkill, 'Yes', 'No') AS 'มีทักษะ Chemistry',
+      U.chemSkillLevel AS 'ระดับทักษะ Chemistry',
+      U.chemSkillList AS 'เรื่องที่เชี่ยวชาญ Chemistry',
+      IF(U.hasMachineLSkill, 'Yes', 'No') AS 'มีทักษะ Machine Learning',
+      U.machineLSkillLevel AS 'ระดับทักษะ Machine Learning',
+      U.machineLSkillList AS 'เรื่องที่เชี่ยวชาญ Machine Learning',
+      IF(U.hasOtherSkill, 'Yes', 'No') AS 'มีทักษะอื่นๆ',
+      U.otherSkillList AS 'เรื่องที่เชี่ยวชาญอื่นๆ',
+      U.registerFor AS 'ผู้สมัครสนใจเข้าร่วมเพื่อ',
+      IFNULL(
+          (
+              SELECT
+                  T.teamName
+              FROM
+                  TeamMembers TM
+                  LEFT JOIN Teams T ON TM.team_id = T.team_id
+              WHERE
+                  TM.member_id = U.user_id
+                  AND TM.status = 'approved'
+          ),
+          '-'
+      ) AS 'ทีม',
+      FROM_UNIXTIME(FLOOR(U.lastLogin/1000)) AS 'เข้าสู่ระบบครั้งล่าสุด',
+      FROM_UNIXTIME(FLOOR(U.createdAt/1000)) AS 'เวลาที่ลงสมัคร',
+      FROM_UNIXTIME(FLOOR(U.updatedAt/1000)) AS 'เวลาที่อัพเดทครั้งล่าสุด'
+     FROM
+        Users U
+     WHERE
+        U.role = 'user'`,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      console.log(`Result: ${res.length} user(s)`);
+      result(null, res);
+      return;
+    }
+  );
+};
+
 User.getInfo = (user, result) => {
   sql.query(
     `SELECT email,

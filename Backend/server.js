@@ -10,7 +10,7 @@ const authConfig = require("./app/config/auth.config");
 const app = express();
 
 let corsOptions = {
-  origin: "*"
+  origin: ["http://localhost:8081", "https://tmlcc.cseathai.org", "http://tmlcc.cseathai.org",]
 };
 
 app.use(cors(corsOptions));
