@@ -2,24 +2,24 @@
   <div id="sponsors" class="section">
     <div>
       <div class="center logo-section">
-        <div>
+        <div @click="linkClick('http://bigdataexperience.org/')">
           <img id="bx-logo" src="../../assets/sponsors/BX-logo 1.png" alt="" />
         </div>
-        <div>
+        <div @click="linkClick('http://bigdataexperience.org/')">
           <img
             id="kmutt-logo"
             src="../../assets/sponsors/KMUTT_CI_Semi_Logo_en-full 1.png"
             alt=""
           />
         </div>
-        <div>
+        <div @click="linkClick('http://cseathai.org/')">
           <img
             id="csea-logo"
             src="../../assets/sponsors/CSEA_vertical 1.png"
             alt=""
           />
         </div>
-        <div>
+        <div @click="linkClick('https://www.vistec.ac.th/')">
           <img
             id="vistec-logo"
             src="../../assets/sponsors/vistec_logo 1.png"
@@ -34,10 +34,10 @@
       </div>
 
       <div class="center logo-section">
-        <div>
+        <div @click="linkClick('https://www.hpe.com/')">
           <img id="hmm-logo" src="../../assets/sponsors/hmm-logo.png" alt="" />
         </div>
-        <div>
+        <div @click="linkClick('https://deepnote.com/')">
           <img
             id="deepnote-logo"
             src="../../assets/sponsors/dnlogo 1.png"
@@ -50,7 +50,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    linkClick(value) {
+      window.open(value);
+    },
+  },
+};
 </script>
 
 <style scoped>

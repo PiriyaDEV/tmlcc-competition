@@ -20,7 +20,7 @@
               หน้าหลักการแข่งขัน
             </p> -->
             <p class="text-normal nav-text" @click="dashboard()">
-              กลับหน้าแดชบอร์ด
+              <span v-if="!pathDasboard">กลับ</span>หน้าแดชบอร์ด
             </p>
           </div>
         </div>
@@ -91,7 +91,13 @@ export default {
   data() {
     return {
       showMenu: false,
+      pathDasboard: false,
     };
+  },
+  created() {
+    if (this.$route.path == "/dashboard") {
+      this.pathDasboard = true;
+    }
   },
   methods: {
     mainpage() {

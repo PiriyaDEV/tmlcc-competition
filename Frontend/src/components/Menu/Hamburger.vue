@@ -234,20 +234,23 @@
         <!-- อันใหม่ที่มีปุ่มlogout -->
 
         <a
-          class="text-normal register-text"
-          v-if="page != `agreement` && loginStatus.isAuthenticated == false"
+          class="text-normal register-text click-text"
+          v-if="pathRegister == false && loginStatus.isAuthenticated == false"
           @click="registerClick()"
           >ลงทะเบียน</a
         >
         <a
-          class="text-normal"
-          v-if="page == `agreement` && loginStatus.isAuthenticated == false"
+          class="text-normal click-text"
+          v-if="pathRegister == true && loginStatus.isAuthenticated == false"
           @click="loginClick()"
           >เข้าสู่ระบบ</a
         >
         <a
-          class="text-normal"
-          v-if="page == `mainpage` && loginStatus.isAuthenticated == true"
+          class="text-normal click-text"
+          v-if="
+            (page == `mainpage` || page == 'about') &&
+            loginStatus.isAuthenticated == true
+          "
           @click="logout"
           >ออกจากระบบ</a
         >
@@ -257,15 +260,18 @@
 
       <div
         v-if="page != `dashBoard` && endCountdown == false"
-        class="nav-head nav-link register-btn blocked"
+        class="nav-head nav-link register-btn blocked click-text"
       >
-        <a class="text-normal register-text" v-if="page != `agreement`"
+        <a class="text-normal register-text" v-if="pathRegister == false"
           >ลงทะเบียน</a
         >
         <a class="text-normal" v-if="page == `agreement`">เข้าสู่ระบบ</a>
       </div>
 
-      <div v-if="page == `dashBoard`" class="nav-head nav-link register-btn">
+      <div
+        v-if="page == `dashBoard`"
+        class="nav-head nav-link register-btn click-text"
+      >
         <a class="text-normal" @click="logout">ออกจากระบบ</a>
       </div>
     </Slide>
@@ -280,10 +286,16 @@ export default {
   data() {
     return {
       dropdown: true,
+      pathRegister: false,
     };
   },
   components: {
     Slide, // Register your component
+  },
+  created() {
+    if (this.$route.path == "/register") {
+      this.pathRegister = true;
+    }
   },
   methods: {
     toggleDropdown() {
@@ -388,6 +400,10 @@ export default {
 
 .display-name-box {
   border-top: 1px solid #764a97 !important;
+}
+
+.click-text {
+  cursor: pointer;
 }
 
 .dropdown-down {

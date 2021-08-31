@@ -243,7 +243,7 @@ export default {
             bold: true,
           },
           {
-            text: "Thailand Machine learning for Chemistry (TMLCC)",
+            text: "Thailand Machine learning for Chemistry Competition (TMLCC)",
             alignment: "center",
             fontSize: 15,
             margin: [0, 0, 0, 8],
@@ -359,7 +359,7 @@ export default {
             margin: [0, 5, 0, 8],
           },
           {
-            text: "ประเมิณตนเอง",
+            text: "ประเมินตนเอง",
             fontSize: 12,
             margin: [0, 15, 0, 8],
             bold: true,

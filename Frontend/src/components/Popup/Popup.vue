@@ -13,7 +13,7 @@
           </h1>
         </div>
         <button @click="clickTo('login')" class="btn-white">
-          คลิ้กที่นี่เพื่อเข้าสู่ระบบ
+          คลิกที่นี่เพื่อเข้าสู่ระบบ
         </button>
       </div>
 

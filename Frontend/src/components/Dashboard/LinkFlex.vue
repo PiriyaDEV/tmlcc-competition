@@ -29,7 +29,9 @@
       <div
         class="icon-box"
         @click="
-          linkClick('https://deepnote.com/dashboard/TMLCC-workshop/projects')
+          linkClick(
+            'https://deepnote.com/sign-in?redirect_to=/dashboard/TMLCC-workshop/projects'
+          )
         "
       >
         <img
@@ -42,7 +44,7 @@
       <div
         class="icon-box"
         @click="
-          linkClick('https://deepnote.com/dashboard/TMLCC-workshop/projects')
+          linkClick('https://drive.switch.ch/index.php/s/7HGmi48B5LTzNT0')
         "
       >
         <img
