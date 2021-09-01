@@ -114,7 +114,7 @@
     <div id="course-descript" class="center">
       <p class="course-text">
         หมายเหตุ : ผู้เข้าร่วมโครงการที่ต้องการรับ E-certificate จาก Learn AI
-        ด้วย โปรด
+        <span class="hide-mobile">ด้วย</span> โปรด
         <span
           class="link-click"
           @click="
@@ -265,6 +265,10 @@ ul li {
 
   #courseflex {
     margin-top: 30px;
+  }
+
+  .hide-mobile {
+    display: none;
   }
 }
 

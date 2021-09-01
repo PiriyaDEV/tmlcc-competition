@@ -35,6 +35,7 @@ const routes = [
     meta: {
       hideForAuth: true,
       endCountdown: true,
+      countdownClose: true,
     },
   },
   {
@@ -81,10 +82,17 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   let loginStatus = store.getters["auth/getLoginStatus"];
-  let countdown = store.getters["page/getCountdownStatus"];
+  // let countdown = store.getters["page/getCountdownStatus"];
+  let countdownClose = store.getters["page/getCloseCountdownStatus"];
 
-  if (to.matched.some((record) => record.meta.endCountdown)) {
-    if (!countdown) {
+  // if (to.matched.some((record) => record.meta.endCountdown)) {
+  //   if (!countdown) {
+  //     next({ name: "Mainpage" });
+  //   }
+  // }
+
+  if (to.matched.some((record) => record.meta.countdownClose)) {
+    if (countdownClose) {
       next({ name: "Mainpage" });
     }
   }

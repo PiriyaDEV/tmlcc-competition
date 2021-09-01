@@ -82,6 +82,76 @@
       </div>
     </div>
 
+    <div id="countdown-section" class="section">
+      <div class="countdown-container">
+        <div class="countdown-number">
+          <div class="number-box">
+            <h1>{{ this.days1 }}</h1>
+          </div>
+          <div class="number-box">
+            <h1>{{ this.days2 }}</h1>
+          </div>
+        </div>
+        <h1 class="number-label">DAYS</h1>
+      </div>
+
+      <h1 class="colon">:</h1>
+
+      <div class="countdown-container">
+        <div class="countdown-number">
+          <div class="number-box">
+            <h1>{{ this.hours1 }}</h1>
+          </div>
+          <div class="number-box">
+            <h1>{{ this.hours2 }}</h1>
+          </div>
+        </div>
+        <h1 class="number-label">HOURS</h1>
+      </div>
+
+      <h1 class="colon">:</h1>
+
+      <div class="countdown-container">
+        <div class="countdown-number">
+          <div class="number-box">
+            <h1>{{ this.minutes1 }}</h1>
+          </div>
+          <div class="number-box">
+            <h1>{{ this.minutes2 }}</h1>
+          </div>
+        </div>
+        <h1 class="number-label">MINUTES</h1>
+      </div>
+
+      <h1 class="colon seconds">:</h1>
+
+      <div class="countdown-container seconds">
+        <div class="countdown-number">
+          <div class="number-box">
+            <h1>{{ this.seconds1 }}</h1>
+          </div>
+          <div class="number-box">
+            <h1>{{ this.seconds2 }}</h1>
+          </div>
+        </div>
+        <h1 class="number-label">SECONDS</h1>
+      </div>
+    </div>
+
+    <div id="register-date-section" class="section">
+      <div>
+        <hr class="purple-line" />
+      </div>
+      <div>
+        <h1 class="header-c register-date purple-d-text end-date">
+          ถึง 14 กันยายน 2564
+        </h1>
+      </div>
+      <div>
+        <hr class="purple-line" />
+      </div>
+    </div>
+
     <div id="sponsors-section">
       <MainSponsors />
     </div>
@@ -120,7 +190,7 @@ export default {
     setInterval(() => {
       // var countDownDate = new Date("September 1, 2021 00:00:00").getTime();
       var now = new Date().getTime();
-      var distance = this.countdown.end - now;
+      var distance = this.countdown.close - now;
       this.days = Math.floor(distance / (1000 * 60 * 60 * 24));
       this.hours = Math.floor(
         (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
@@ -186,7 +256,7 @@ export default {
 }
 
 #countdown-section {
-  margin-top: 45px;
+  margin-top: 30px;
 }
 
 .countdown-number {
@@ -224,6 +294,10 @@ export default {
   margin: 15px 0px 0px 0px;
   color: #303030;
   text-align: center;
+}
+
+.end-date {
+  padding: 0px 40px;
 }
 
 .colon {
@@ -285,6 +359,10 @@ export default {
     width: 170px;
   }
 
+  .header-c {
+    font-size: 3.25em;
+  }
+
   .number-box > h1 {
     line-height: 60px;
   }
@@ -297,6 +375,14 @@ export default {
 @media screen and (max-width: 768px) {
   .mobile-regis {
     display: none;
+  }
+
+  .header-c {
+    font-size: 3em;
+  }
+
+  .end-date {
+    padding: 0px 0px;
   }
 }
 
@@ -335,6 +421,10 @@ export default {
     width: 80px;
   }
 
+  .header-c {
+    font-size: 2.75em;
+  }
+
   #register-date-section > div:nth-child(2) {
     padding: 0px 15px;
   }
@@ -351,6 +441,10 @@ export default {
 @media screen and (max-width: 450px) {
   .number-box {
     padding: 10px;
+  }
+
+  .header-c {
+    font-size: 2.65em;
   }
 
   #tmlcc-logo {
@@ -382,6 +476,10 @@ export default {
 @media screen and (max-width: 380px) {
   #tmlcc-logo {
     width: 290px;
+  }
+
+  .header-c {
+    font-size: 2.6em;
   }
 }
 </style>

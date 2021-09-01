@@ -99,7 +99,9 @@
             >
               รออนุญาต
             </button>
-            <button v-if="team.members == 5" class="full-btn">เต็ม</button>
+            <button v-if="team.members == 5 && role == `user`" class="full-btn">
+              เต็ม
+            </button>
             <button
               class="join-btn"
               @click="showMember(team.teamName)"

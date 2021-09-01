@@ -48,7 +48,7 @@
           class="input-box text-normal addon-btn"
         >
           <!-- <option value="1">1 รายการ</option> -->
-          <!--  <option value="5">5 รายการ</option> -->
+          <!-- <option value="5">5 รายการ</option> -->
           <option value="25">25 รายการ</option>
           <option value="50" v-if="staffListLength > 25">50 รายการ</option>
           <option value="100" v-if="staffListLength > 50">100 รายการ</option>
@@ -354,6 +354,7 @@ export default {
       this.$emit("statusAdd", true);
     },
     checkCase() {
+      this.activeCheck = !this.activeCheck;
       if (this.editorCheck == true && this.adminCheck == true) {
         this.role = "";
       } else if (this.editorCheck == true) {

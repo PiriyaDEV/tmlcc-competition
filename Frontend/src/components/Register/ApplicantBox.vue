@@ -75,6 +75,7 @@
           :class="cssEducation"
         >
           <option value="มัธยมศึกษา">มัธยมศึกษา</option>
+          <option value="อาชีวศึกษา">อาชีวศึกษา</option>
           <option value="ปริญญาตรี">ปริญญาตรี</option>
           <option value="ปริญญาโท">ปริญญาโท</option>
           <option value="ปริญญาเอก">ปริญญาเอก</option>
