@@ -114,7 +114,7 @@
     <div id="course-descript" class="center">
       <p class="course-text">
         หมายเหตุ : ผู้เข้าร่วมโครงการที่ต้องการรับ E-certificate จาก Learn AI
-        <span class="hide-mobile">ด้วย</span> โปรด
+        ด้วย โปรด
         <span
           class="link-click"
           @click="
@@ -122,7 +122,7 @@
               'https://learn-ai.in.th/register?next=%2Fcourses%2Fcourse-v1%3ALearn-AI%2BAI203%2B2020_AI203%2Fabout'
             )
           "
-          >ลงทะเบียนที่นี่</span
+          >ลงทะเบียน<span class="hide-mobile">ที่นี่</span></span
         >
       </p>
     </div>
@@ -270,6 +270,10 @@ ul li {
   .hide-mobile {
     display: none;
   }
+
+  /* #course-descript {
+    justify-content: flex-start;
+  } */
 }
 
 @media screen and (max-width: 767px) {

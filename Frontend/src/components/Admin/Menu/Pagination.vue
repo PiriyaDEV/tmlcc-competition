@@ -216,6 +216,9 @@ export default {
       this.$store.dispatch("admin/updateStaffSelectPage", this.page);
     }
     this.getNumberPage();
+    if (this.afterPage == 0) {
+      this.afterPage = 25;
+    }
   },
   destroyed() {
     window.removeEventListener("resize", this.detectScreenChange);

@@ -235,13 +235,20 @@
 
         <a
           class="text-normal register-text click-text"
-          v-if="pathRegister == false && loginStatus.isAuthenticated == false"
+          v-if="
+            pathRegister == false &&
+            loginStatus.isAuthenticated == false &&
+            closeCountdown == false
+          "
           @click="registerClick()"
           >ลงทะเบียน</a
         >
         <a
           class="text-normal click-text"
-          v-if="pathRegister == true && loginStatus.isAuthenticated == false"
+          v-if="
+            (pathRegister == true || closeCountdown == true) &&
+            loginStatus.isAuthenticated == false
+          "
           @click="loginClick()"
           >เข้าสู่ระบบ</a
         >
@@ -262,10 +269,16 @@
         v-if="page != `dashBoard` && endCountdown == false"
         class="nav-head nav-link register-btn blocked click-text"
       >
-        <a class="text-normal register-text" v-if="pathRegister == false"
+        <a
+          class="text-normal register-text"
+          v-if="pathRegister == false && closeCountdown == false"
           >ลงทะเบียน</a
         >
-        <a class="text-normal" v-if="page == `agreement`">เข้าสู่ระบบ</a>
+        <a
+          class="text-normal"
+          v-if="page == `agreement` || closeCountdown == true"
+          >เข้าสู่ระบบ</a
+        >
       </div>
 
       <div
@@ -360,6 +373,7 @@ export default {
       loginStatus: "auth/getLoginStatus",
       roleStatus: "auth/getRole",
       endCountdown: "page/getCountdownStatus",
+      closeCountdown: "page/getCloseCountdownStatus",
     }),
   },
 };

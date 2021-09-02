@@ -60,7 +60,11 @@
       </div>
     </div> -->
 
-    <div id="register-date-section" class="section">
+    <div
+      id="register-date-section"
+      class="section"
+      v-if="closeCountdown == false"
+    >
       <div>
         <hr class="purple-line" />
       </div>
@@ -184,6 +188,7 @@ export default {
   computed: {
     ...mapGetters({
       countdown: "page/getCountdown",
+      closeCountdown: "page/getCloseCountdownStatus",
     }),
   },
   mounted() {
