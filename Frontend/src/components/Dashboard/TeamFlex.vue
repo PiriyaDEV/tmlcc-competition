@@ -478,7 +478,7 @@ button {
   font-family: "IBM-PLEX-THAI-SEMIBOLD";
   font-weight: 400;
   background-color: #f07821;
-  padding: 3px 13px 2px 13px;
+  padding: 3px 23px 2px 23px;
   line-height: 20.8px;
 }
 
