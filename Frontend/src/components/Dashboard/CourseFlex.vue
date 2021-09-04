@@ -122,7 +122,7 @@
               'https://learn-ai.in.th/register?next=%2Fcourses%2Fcourse-v1%3ALearn-AI%2BAI203%2B2020_AI203%2Fabout'
             )
           "
-          >ลงทะเบียนที่นี่</span
+          >ลงทะเบียน<span class="hide-mobile">ที่นี่</span></span
         >
       </p>
     </div>
@@ -266,6 +266,14 @@ ul li {
   #courseflex {
     margin-top: 30px;
   }
+
+  .hide-mobile {
+    display: none;
+  }
+
+  /* #course-descript {
+    justify-content: flex-start;
+  } */
 }
 
 @media screen and (max-width: 767px) {

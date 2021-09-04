@@ -79,20 +79,31 @@
           </div>
           <div v-else class="center">
             <button
-              v-if="pathRegister == false && endCountdown == false"
+              v-if="
+                pathRegister == false &&
+                endCountdown == false &&
+                closeCountdown == false
+              "
               class="btn-white blocked"
             >
               ลงทะเบียน
             </button>
             <button
-              v-if="pathRegister == false && endCountdown == true"
+              v-if="
+                pathRegister == false &&
+                endCountdown == true &&
+                closeCountdown == false
+              "
               @click="registerClick()"
               class="btn-white"
             >
               ลงทะเบียน
             </button>
             <button
-              v-if="pathRegister == true && endCountdown == true"
+              v-if="
+                (pathRegister == true && endCountdown == true) ||
+                closeCountdown == true
+              "
               @click="loginClick()"
               class="btn-color"
             >
@@ -186,6 +197,7 @@ export default {
     ...mapGetters({
       page: "page/getPage",
       endCountdown: "page/getCountdownStatus",
+      closeCountdown: "page/getCloseCountdownStatus",
       displayName: "auth/getDisplayName",
       loginStatus: "auth/getLoginStatus",
       roleStatus: "auth/getRole",

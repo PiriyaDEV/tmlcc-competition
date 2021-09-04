@@ -3,8 +3,9 @@ export default {
   state: {
     page: "",
     countdown: {
-      end: new Date("September 1, 2020 00:00:00").getTime(),
+      end: new Date("September 1, 2021 00:00:00").getTime(),
       now: new Date().getTime(),
+      close: new Date("September 15, 2021 00:00:00").getTime(),
     },
   },
   getters: {
@@ -16,6 +17,9 @@ export default {
     },
     getCountdownStatus(state) {
       return state.countdown.now >= state.countdown.end ? true : false;
+    },
+    getCloseCountdownStatus(state) {
+      return state.countdown.now >= state.countdown.close ? true : false;
     },
   },
   mutations: {

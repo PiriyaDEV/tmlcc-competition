@@ -3,7 +3,9 @@
   <div id="sponsors" class="section">
     <div>
       <div class="center logo-section">
-        <div>
+        <div
+          @click="linkClick('https://www.scb.co.th/th/personal-banking.html')"
+        >
           <img id="scb-logo" src="../../assets/sponsors/scb2.png" alt="" />
         </div>
       </div>

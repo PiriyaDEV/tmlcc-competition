@@ -58,9 +58,9 @@
               </button>
             </div>
 
-            <hr class="bar-color" />
+            <hr class="bar-color" v-if="closeCountdown == false" />
 
-            <div class="login-below-text">
+            <div class="login-below-text" v-if="closeCountdown == false">
               <h1 class="text-normal gray-text">หรือ หากยังไม่ได้สมัคร</h1>
               <h1 class="text-normal purple-text">
                 <span @click="registerClick()"
@@ -121,6 +121,7 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: "auth/getLoginStatus",
+      closeCountdown: "page/getCloseCountdownStatus",
     }),
     cssInvalidEmail() {
       let valid = "input-box text-normal";

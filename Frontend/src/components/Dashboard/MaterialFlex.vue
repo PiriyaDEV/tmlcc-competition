@@ -77,13 +77,20 @@
         >
           ไม่มีวิดีโอในระบบ
         </h1>
-        <div class="video-container" v-for="(video, i) in videoList" :key="i">
+
+        <div
+          class="video-container"
+          v-for="(video, i) in videoList.slice().reverse()"
+          :key="i"
+        >
           <div class="video-image-container" @click="clickLink(video)">
             <img class="video-image" :src="video.thumbnail" alt="" />
             <img class="play-btn" src="../../assets/icon/play-btn.png" alt="" />
           </div>
           <div>
-            <h1 class="file-name">{{ video.videoName }}</h1>
+            <h1 class="file-name" @click="clickLink(video)">
+              {{ video.videoName }}
+            </h1>
             <p class="file-description">{{ video.description }}</p>
             <p class="file-date">{{ video.publicTime }}</p>
           </div>

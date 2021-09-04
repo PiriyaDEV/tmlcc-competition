@@ -2,17 +2,17 @@
   <div id="pagination">
     <div id="show-text">
       <h1 class="text-normal">
-        <span v-if="currentPage == 'user' && userListLength >= 25"
+        <span v-if="pagination.resultLength >= this.pagination.perPage"
           >แสดงผล {{ beforePage }} ถึง {{ afterPage }} จาก
-          {{ userListLength }} ข้อมูล</span
+          {{ pagination.resultLength }} ข้อมูล</span
         >
-        <span v-else-if="currentPage == 'user' && userListLength < 25"
-          >แสดงผล {{ beforePage }} ถึง {{ userListLength }} จาก
-          {{ userListLength }} ข้อมูล</span
+        <span v-else-if="pagination.resultLength < this.pagination.perPage"
+          >แสดงผล {{ beforePage }} ถึง {{ pagination.resultLength }} จาก
+          {{ pagination.resultLength }} ข้อมูล</span
         >
       </h1>
-      <h1 class="text-normal">
-        <span v-if="currentPage == 'staff' && staffListLength >= 25"
+      <!-- <h1 class="text-normal">
+        <span v-if="currentPage == 'staff' && pagination.resultLength >= 25"
           >แสดงผล {{ beforePage }} ถึง {{ afterPage }} จาก
           {{ staffListLength }} ข้อมูล</span
         >
@@ -20,7 +20,7 @@
           >แสดงผล {{ beforePage }} ถึง {{ staffListLength }} จาก
           {{ staffListLength }} ข้อมูล</span
         >
-      </h1>
+      </h1> -->
     </div>
     <div id="pagination-section">
       <div class="section">
@@ -155,35 +155,25 @@ export default {
     page: function () {
       if (this.currentPage == "user") {
         this.$store.dispatch("admin/updateUserSelectPage", this.page);
-        if (
-          this.pagination.page * this.pagination.perPage >=
-          this.userListLength
-        ) {
-          this.afterPage = this.userListLength;
-        } else {
-          this.afterPage = this.pagination.page * this.pagination.perPage;
-        }
       } else if (this.currentPage == "staff") {
         this.$store.dispatch("admin/updateStaffSelectPage", this.page);
-        if (
-          this.pagination.page * this.pagination.perPage >=
-          this.staffListLength
-        ) {
-          this.afterPage = this.staffListLength;
-        } else {
-          this.afterPage = this.pagination.page * this.pagination.perPage;
-        }
       }
-      this.beforePage =
-        this.pagination.page * this.pagination.perPage -
-        (this.pagination.perPage - 1);
+      this.getNumberPage();
     },
     active: function () {
       this.beforePage = 0;
       this.afterPage = 0;
+      this.page = 1;
       this.perPage = this.pagination.perPage;
+      this.getNumberPage();
     },
     keywordClear: function () {
+      if (this.pagination.resultLength == 0) {
+        this.beforePage = 0;
+        this.afterPage = 0;
+      } else {
+        this.getNumberPage();
+      }
       this.page = 1;
     },
     perPage: function () {
@@ -193,58 +183,24 @@ export default {
             "admin/updateUserPageLimit",
             this.userListLength
           );
-          if (
-            this.pagination.page * this.pagination.perPage >=
-            this.userListLength
-          ) {
-            this.afterPage = this.userListLength;
-          } else {
-            this.afterPage = this.pagination.page * this.pagination.perPage;
-          }
         } else if (this.currentPage == "staff") {
           this.$store.dispatch(
             "admin/updateStaffPageLimit",
             this.staffListLength
           );
-          if (
-            this.pagination.page * this.pagination.perPage >=
-            this.staffListLength
-          ) {
-            this.afterPage = this.staffListLength;
-          } else {
-            this.afterPage = this.pagination.page * this.pagination.perPage;
-          }
         }
       } else {
         if (this.currentPage == "user") {
           this.$store.dispatch("admin/updateUserPageLimit", this.perPage);
           this.page = 1;
           this.$store.dispatch("admin/updateUserSelectPage", 1);
-          if (
-            this.pagination.page * this.pagination.perPage >=
-            this.userListLength
-          ) {
-            this.afterPage = this.userListLength;
-          } else {
-            this.afterPage = this.pagination.page * this.pagination.perPage;
-          }
         } else if (this.currentPage == "staff") {
           this.$store.dispatch("admin/updateStaffPageLimit", this.perPage);
           this.page = 1;
           this.$store.dispatch("admin/updateStaffSelectPage", 1);
-          if (
-            this.pagination.page * this.pagination.perPage >=
-            this.staffListLength
-          ) {
-            this.afterPage = this.staffListLength;
-          } else {
-            this.afterPage = this.pagination.page * this.pagination.perPage;
-          }
         }
       }
-      this.beforePage =
-        this.pagination.page * this.pagination.perPage -
-        (this.pagination.perPage - 1);
+      this.getNumberPage();
     },
   },
   created() {
@@ -258,18 +214,11 @@ export default {
     } else if (this.currentPage == "staff") {
       this.$store.dispatch("admin/updateStaffPageLimit", this.perPage);
       this.$store.dispatch("admin/updateStaffSelectPage", this.page);
-      if (
-        this.pagination.page * this.pagination.perPage >=
-        this.staffListLength
-      ) {
-        this.afterPage = this.staffListLength;
-      } else {
-        this.afterPage = this.pagination.page * this.pagination.perPage;
-      }
     }
-    this.beforePage =
-      this.pagination.page * this.pagination.perPage -
-      (this.pagination.perPage - 1);
+    this.getNumberPage();
+    if (this.afterPage == 0) {
+      this.afterPage = 25;
+    }
   },
   destroyed() {
     window.removeEventListener("resize", this.detectScreenChange);
@@ -298,6 +247,19 @@ export default {
         this.pagesLimit = 7;
         this.perPage = 25;
       }
+    },
+    getNumberPage() {
+      if (
+        this.pagination.page * this.pagination.perPage >=
+        this.pagination.resultLength
+      ) {
+        this.afterPage = this.pagination.resultLength;
+      } else {
+        this.afterPage = this.pagination.page * this.pagination.perPage;
+      }
+      this.beforePage =
+        this.pagination.page * this.pagination.perPage -
+        (this.pagination.perPage - 1);
     },
   },
 };

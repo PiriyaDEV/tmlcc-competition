@@ -120,7 +120,7 @@ export default {
   border-radius: 30px;
   padding: 15px 32px 30px 32px;
   width: 270px;
-  margin-top: 45px;
+  margin-top: 35px;
 }
 
 .bar-color {

@@ -140,10 +140,15 @@ export default {
     setVideoList(state, list) {
       list.forEach((video) => {
         let thumbnail1 = "https://img.youtube.com/vi/";
-        let thumbnail2 = "/maxresdefault.jpg";
+        // let rowQuality = "/sddefault.jpg";
+        let mediumQuality = "/mqdefault.jpg";
+        // let highQuality = "/hqdefault.jpg";
+        // let maxQuality = "/maxresdefault.jpg";
 
         video.thumbnail =
-          thumbnail1 + video.link.split("v=").pop().split("&")[0] + thumbnail2;
+          thumbnail1 +
+          video.link.split("v=").pop().split("&")[0] +
+          mediumQuality;
 
         // 16 กันยายน 2564 เวลา 14.00 น.
         let publicTime = new Date(video.time);

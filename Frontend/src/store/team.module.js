@@ -120,6 +120,9 @@ export default {
               console.log(res.data.message);
               dispatch("checkTeam");
               commit("resetCreateStatus");
+            } else if (res.status == 200) {
+              console.log(res.data.message);
+              window.location.href = "/dashboard";
             }
           })
           .catch((err) => {

@@ -53,6 +53,7 @@ export default {
         page: 1,
         perPage: 25,
         pages: [],
+        resultLength: 0,
       },
     },
     staff: {
@@ -63,6 +64,7 @@ export default {
         page: 1,
         perPage: 25,
         pages: [],
+        resultLength: 0,
       },
     },
     editing: false,
@@ -123,6 +125,8 @@ export default {
       let perPage = state.user.pagination.perPage;
       let from = page * perPage - perPage;
       let to = page * perPage;
+
+      state.user.pagination.resultLength = list.length;
 
       return list.slice(from, to);
     },
@@ -189,6 +193,8 @@ export default {
       let perPage = state.staff.pagination.perPage;
       let from = page * perPage - perPage;
       let to = page * perPage;
+
+      state.staff.pagination.resultLength = list.length;
 
       return list.slice(from, to);
     },

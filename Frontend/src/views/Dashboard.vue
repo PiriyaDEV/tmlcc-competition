@@ -90,7 +90,7 @@ export default {
 
 #material-flex {
   width: 100%;
-  margin-left: 50px;
+  margin-left: 30px;
 }
 
 .display-name {
