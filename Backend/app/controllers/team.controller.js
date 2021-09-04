@@ -9,79 +9,116 @@ exports.create = (req, res) => {
     });
   }
 
-  Team.getCount((err, count) => {
-    if (err) {
-      return res.status(500).send({
-        message:
-          err.message ||
-          "Some error occurred while getting the number of teams!",
-      });
-    }
-
-    count++;
-    count = count.toString();
-
-    let team = req.body;
-
-    if (!team.teamName) {
-      return res.status(400).send({
-        message: "Content can not be empty!",
-      });
-    }
-
-    team.team_id = "TE" + count.padStart(6, "0");
-    team.teamName = team.teamName.toLowerCase();
-    team.status = "active";
-    team.createdAt = Date.now();
-    team.updatedAt = Date.now();
-
-    Team.create(team, (err, result) => {
+  TeamMember.findTeam(
+    {
+      user_id: req.body.leader_id,
+    },
+    (err, find_result) => {
       if (err) {
         return res.status(500).send({
           message:
-            err.message || "Some error occurred while creating the new team!",
+            err.message || "Some error occurred while finding team for user",
         });
       }
 
-      let teamMember = new TeamMember({});
+      if (find_result.isFound) {
+        return res.status(200).send({
+          message: "User already has team!",
+        });
+      }
 
-      teamMember.team_id = result.team_id;
-      teamMember.member_id = result.leader_id;
-      teamMember.status = "approved";
-      teamMember.createdAt = Date.now();
-      teamMember.updatedAt = Date.now();
+      console.log("Continue");
 
-      TeamMember.create(teamMember, (err, result) => {
+      Team.getCount((err, count) => {
         if (err) {
           return res.status(500).send({
             message:
               err.message ||
-              "Some error occurred while adding new member to the team!",
+              "Some error occurred while getting the number of teams!",
           });
         }
 
-        let user = {
-          user_id: teamMember.member_id,
-          hasTeam: true,
-        };
+        count++;
+        count = count.toString();
 
-        User.update(user, (err, update_result) => {
+        let team = req.body;
+
+        if (!team.teamName) {
+          return res.status(400).send({
+            message: "Content can not be empty!",
+          });
+        }
+
+        team.team_id = "TE" + count.padStart(6, "0");
+        team.teamName = team.teamName.toLowerCase();
+        team.status = "active";
+        team.createdAt = Date.now();
+        team.updatedAt = Date.now();
+
+        Team.create(team, (err, result) => {
           if (err) {
             return res.status(500).send({
               message:
-                err.message || "Some error occurred while updating user data!",
+                err.message ||
+                "Some error occurred while creating the new team!",
             });
           }
 
-          return res.status(201).send({
-            team_id: result.team_id,
-            status: result.status,
-            message: "Team created!",
+          let teamMember = new TeamMember({});
+
+          teamMember.team_id = result.team_id;
+          teamMember.member_id = result.leader_id;
+          teamMember.status = "approved";
+          teamMember.createdAt = Date.now();
+          teamMember.updatedAt = Date.now();
+
+          TeamMember.create(teamMember, (err, result) => {
+            if (err) {
+              return res.status(500).send({
+                message:
+                  err.message ||
+                  "Some error occurred while adding new member to the team!",
+              });
+            }
+
+            TeamMember.clearOtherPending(
+              { team_id: teamMember.team_id, member_id: teamMember.member_id },
+              (err, clear_result) => {
+                if (err) {
+                  return res.status(500).send({
+                    message:
+                      err.message ||
+                      "Some error occurred while clearing other pending to the team!",
+                  });
+                }
+
+                let user = {
+                  user_id: teamMember.member_id,
+                  hasTeam: true,
+                };
+
+                User.update(user, (err, update_result) => {
+                  if (err) {
+                    return res.status(500).send({
+                      message:
+                        err.message ||
+                        "Some error occurred while updating user data!",
+                    });
+                  }
+
+                  return res.status(201).send({
+                    team_id: result.team_id,
+                    status: result.status,
+                    message: "Team created!",
+                  });
+                });
+              }
+            );
           });
         });
       });
-    });
-  });
+    }
+  );
 };
 
 exports.checkDuplicated = (req, res) => {
@@ -188,69 +225,89 @@ exports.approve = (req, res) => {
     });
   }
 
-  let teamMember = req.body;
-
-  TeamMember.countMember(teamMember.team_id, (err, count) => {
-    if (err) {
-      return res.status(500).send({
-        message:
-          err.message ||
-          "Some error occurred while getting the number of members in the team!",
-      });
-    }
-
-    if (count == 5) {
-      return res.status(200).send({
-        message: "Team is fulled!",
-      });
-    }
-
-    teamMember.status = "approved";
-
-    TeamMember.update(teamMember, (err, result) => {
+  TeamMember.findTeam(
+    {
+      user_id: req.body.member_id,
+    },
+    (err, find_result) => {
       if (err) {
         return res.status(500).send({
           message:
-            err.message ||
-            "Some error occurred while approving member to the team!",
+            err.message || "Some error occurred while finding team for user",
         });
       }
 
-      TeamMember.clearOtherPending(
-        { team_id: teamMember.team_id, member_id: teamMember.member_id },
-        (err, update_result) => {
+      if (find_result.isFound) {
+        return res.status(200).send({
+          message: "User already has team!",
+        });
+      }
+
+      let teamMember = req.body;
+
+      TeamMember.countMember(teamMember.team_id, (err, count) => {
+        if (err) {
+          return res.status(500).send({
+            message:
+              err.message ||
+              "Some error occurred while getting the number of members in the team!",
+          });
+        }
+
+        if (count == 5) {
+          return res.status(200).send({
+            message: "Team is fulled!",
+          });
+        }
+
+        teamMember.status = "approved";
+
+        TeamMember.update(teamMember, (err, result) => {
           if (err) {
             return res.status(500).send({
               message:
                 err.message ||
-                "Some error occurred while clearing other pending to the team!",
+                "Some error occurred while approving member to the team!",
             });
           }
 
-          let user = {
-            user_id: teamMember.member_id,
-            hasTeam: true,
-          };
+          TeamMember.clearOtherPending(
+            { team_id: teamMember.team_id, member_id: teamMember.member_id },
+            (err, update_result) => {
+              if (err) {
+                return res.status(500).send({
+                  message:
+                    err.message ||
+                    "Some error occurred while clearing other pending to the team!",
+                });
+              }
 
-          User.update(user, (err, update_result) => {
-            if (err) {
-              return res.status(500).send({
-                message:
-                  err.message ||
-                  "Some error occurred while updating user data!",
+              let user = {
+                user_id: teamMember.member_id,
+                hasTeam: true,
+              };
+
+              User.update(user, (err, update_result) => {
+                if (err) {
+                  return res.status(500).send({
+                    message:
+                      err.message ||
+                      "Some error occurred while updating user data!",
+                  });
+                }
+
+                return res.status(200).send({
+                  team_id: result.team_id,
+                  member_id: result.member_id,
+                  message: "Approved to the team!",
+                });
               });
             }
-
-            return res.status(200).send({
-              team_id: result.team_id,
-              member_id: result.member_id,
-              message: "Approved to the team!",
-            });
-          });
-        }
-      );
-    });
-  });
+          );
+        });
+      });
+    }
+  );
 };
 
 exports.reject = (req, res) => {
