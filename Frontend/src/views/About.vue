@@ -96,10 +96,92 @@
               </li>
             </ul>
 
-            <h1 class="header-s">คณะผู้จัดงาน</h1>
+            <h1 class="header-s">ที่ปรึกษาคณะกรรมการจัดงาน</h1>
             <hr class="bar-color bar-color-s" />
 
             <table id="ogn-table" cellpadding="20">
+              <tr>
+                <th class="text-normal">ที่</th>
+                <th class="text-normal">ชื่อ - สกุล (ตำแหน่ง)</th>
+                <th class="text-normal">สังกัด</th>
+              </tr>
+              <tr>
+                <td class="text-normal">1</td>
+                <td class="text-normal">ศ. ดร. สุภา หารหนองบัว</td>
+                <td class="text-normal">
+                  อาจารย์ประจำภาควิชาเคมี<br />คณบดีคณะวิทยาศาสตร์<br />มหาวิทยาลัยเกษตรศาสตร์<br />นายกสมาคมเคมีแห่งประเทศไทยในพระอุปถัมภ์
+                </td>
+              </tr>
+              <tr>
+                <td class="text-normal">2</td>
+                <td class="text-normal">ดร. ภุชงค์ อุทโยภาศ</td>
+                <td class="text-normal">
+                  อาจารย์ประจำภาควิชาวิศวกรรมคอมพิวเตอร์<br />คณะวิศวกรรมศาสตร์<br />มหาวิทยาลัยเกษตรศาสตร์
+                  วิทยาเขตบางเขน
+                </td>
+              </tr>
+              <tr>
+                <td class="text-normal">3</td>
+                <td class="text-normal">ดร. สุภาวดี นาเมืองรักษ์</td>
+                <td class="text-normal">
+                  นายกสมาคมวิทยาการและวิศวกรรมเชิงคอมพิวเตอร์<br />
+                  หัวหน้าทีมวิจัยห้องปฏิบัติการคำนวณระดับนาโน<br />
+                  ศูนย์เทคโนโลยีอิเล็กทรอนิกส์และคอมพิวเตอร์แห่งชาติ<br />
+                </td>
+              </tr>
+              <tr>
+                <td class="text-normal">4</td>
+                <td class="text-normal">มนัสชัย คุณาเศรษฐ</td>
+                <td class="text-normal">
+                  หัวหน้าทีมวิจัย ThaiSC<br />ศูนย์เทคโนโลยีอิเล็กทรอนิกส์และคอมพิวเตอร์แห่งชาติ
+                </td>
+              </tr>
+            </table>
+
+            <h1 class="header-s">กรรมการฝ่ายวิชาการ</h1>
+            <hr class="bar-color bar-color-s" />
+
+            <table id="ogn-table" cellpadding="20">
+              <tr>
+                <th class="text-normal">ที่</th>
+                <th class="text-normal">ชื่อ - สกุล (ตำแหน่ง)</th>
+                <th class="text-normal">สังกัด</th>
+              </tr>
+              <tr>
+                <td class="text-normal">1</td>
+                <td class="text-normal">รศ. ดร. สรณะ นุชอนงค์</td>
+                <td class="text-normal">
+                  คณบดีสำนักวิชาวิทยาศาสตร์และเทคโนโลยีสารสนเทศ<br />สถาบันวิทยสิริเมธี
+                  (VISTEC)
+                </td>
+              </tr>
+              <tr>
+                <td class="text-normal">2</td>
+                <td class="text-normal">ผศ.ดร. นงค์นุช อาจฤทธิ์</td>
+                <td class="text-normal">
+                  อาจารย์ประจำภาควิชาเคมี<br />มหาวิทยาลัยอูเทรคต์ เนเธอร์แลนด์
+                </td>
+              </tr>
+              <tr>
+                <td class="text-normal">3</td>
+                <td class="text-normal">รศ.ดร. ยุทธนา ตันติรุ่งโรจน์ชัย</td>
+                <td class="text-normal">
+                  อาจารย์ประจำภาควิชาเคมี<br />มหาวิทยาลัยธรรมศาสตร์
+                </td>
+              </tr>
+              <tr>
+                <td class="text-normal">4</td>
+                <td class="text-normal">ผศ. ราชวิชช์ สโรชวิกสิต</td>
+                <td class="text-normal">
+                  อาจารย์ประจำภาควิชาวิศวกรรมคอมพิวเตอร์<br />มหาวิทยาลัยพระจอมเกล้าธนบุรี
+                </td>
+              </tr>
+            </table>
+
+            <h1 class="header-s">คณะผู้จัดงาน</h1>
+            <hr class="bar-color bar-color-s" />
+
+            <table id="ogn-table-last" cellpadding="20">
               <tr>
                 <th class="text-normal">ที่</th>
                 <th class="text-normal">ชื่อ - สกุล (ตำแหน่ง)</th>
@@ -317,6 +399,12 @@ li {
 #ogn-table {
   width: 100%;
   margin-top: 25px;
+  margin-bottom: 35px;
+}
+
+#ogn-table-last {
+  width: 100%;
+  margin-top: 25px;
   margin-bottom: 65px;
 }
 
@@ -387,6 +475,10 @@ td {
   }
 
   #ogn-table {
+    margin-bottom: 15px;
+  }
+
+  #ogn-table-last {
     margin-bottom: 45px;
   }
 }

@@ -275,7 +275,7 @@
           >ลงทะเบียน</a
         >
         <a
-          class="text-normal"
+          class="text-normal register-text"
           v-if="page == `agreement` || closeCountdown == true"
           >เข้าสู่ระบบ</a
         >
