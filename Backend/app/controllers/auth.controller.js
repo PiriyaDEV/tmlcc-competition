@@ -95,6 +95,12 @@ exports.login = (req, res) => {
       });
     }
 
+    if (result.role == "deleted") {
+      return res.status(403).send({
+        message: "User not found!",
+      });
+    }
+
     if (bcrypt.compareSync(user.password, result.password)) {
       User.update(
         { user_id: result.user_id, lastLogin: Date.now() },
@@ -159,6 +165,13 @@ exports.checkResetPassword = (req, res) => {
       });
     }
 
+    if (result.role == "deleted") {
+      return res.status(200).send({
+        isFound: false,
+        message: "User not found!",
+      });
+    }
+
     if (
       user.email != result.email ||
       user.firstName != result.firstName ||
@@ -203,6 +216,14 @@ exports.resetPassword = (req, res) => {
     if (!result.isFound) {
       return res.status(200).send({
         isFound: result.isFound,
+        isSuccess: false,
+        message: "User not found!",
+      });
+    }
+
+    if (result.role == "deleted") {
+      return res.status(200).send({
+        isFound: false,
         isSuccess: false,
         message: "User not found!",
       });
