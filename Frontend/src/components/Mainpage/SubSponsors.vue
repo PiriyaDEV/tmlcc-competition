@@ -8,6 +8,13 @@
         >
           <img id="scb-logo" src="../../assets/sponsors/scb2.png" alt="" />
         </div>
+        <div @click="linkClick('https://www.nanotec.or.th/en/')">
+          <img
+            id="nano-logo"
+            src="../../assets/sponsors/Logo_NANOTEC-2020 1.png"
+            alt=""
+          />
+        </div>
       </div>
 
       <div id="second-logo-section" class="center logo-section">
@@ -29,6 +36,13 @@
           <img
             id="tw-logo"
             src="../../assets/sponsors/thoughtworks 1.png"
+            alt=""
+          />
+        </div>
+        <div @click="linkClick('https://www.webex.com/')">
+          <img
+            id="ws-logo"
+            src="../../assets/sponsors/webex-seeklogo.com 1.png"
             alt=""
           />
         </div>
@@ -76,8 +90,14 @@ img {
 #scb-logo {
   width: 141px;
 }
+#nano-logo {
+  width: 200px;
+}
+#ws-logo {
+  width: 195px;
+}
 #tm-logo {
-  width: 180px;
+  width: 150px;
 }
 #cv-logo {
   width: 80px;
@@ -86,6 +106,12 @@ img {
 @media screen and (max-width: 1750px) {
   #jb-logo {
     width: calc(102px - 30px);
+  }
+  #nano-logo {
+    width: calc(200px - 30px);
+  }
+  #ws-logo {
+    width: calc(150px - 30px);
   }
   #tw-logo {
     width: calc(200px - 30px);
@@ -108,6 +134,12 @@ img {
   #tw-logo {
     width: calc(200px - 40px);
   }
+  #nano-logo {
+    width: calc(200px - 40px);
+  }
+  #ws-logo {
+    width: calc(150px - 40px);
+  }
   #scb-logo {
     width: calc(141px - 40px);
   }
@@ -127,8 +159,14 @@ img {
   #jb-logo {
     width: calc(102px - 40px);
   }
+  #nano-logo {
+    width: calc(200px - 40px);
+  }
   #tw-logo {
     width: calc(200px - 50px);
+  }
+  #ws-logo {
+    width: calc(150px - 50px);
   }
   #scb-logo {
     width: calc(141px - 30px);

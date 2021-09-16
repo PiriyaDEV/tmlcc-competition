@@ -53,27 +53,27 @@
             <li>การแข่งขัน รอบที่ 1</li>
             <li class="second-tab block-tab">20 กันยายน - 2 ตุลาคม 2564</li>
           </div>
-          <div class="two-column">
+          <!-- <div class="two-column">
             <li>Competition clinic</li>
             <li class="second-tab block-tab">
               3 ตุลาคม 2564 (ให้คำปรึกษาแต่ละทีม)
             </li>
-          </div>
+          </div> -->
           <div class="two-column">
             <li>การแข่งขัน รอบที่ 2</li>
-            <li class="second-tab block-tab">4 - 16 ตุลาคม 2564</li>
+            <li class="second-tab block-tab">3 - 16 ตุลาคม 2564</li>
           </div>
           <div class="two-column">
             <li>การแข่งขัน รอบที่ 3</li>
             <li class="second-tab block-tab">17 ตุลาคม 2564</li>
           </div>
           <div class="two-column">
-            <li>นำเสนอผลงาน</li>
-            <li class="second-tab block-tab">23 ตุลาคม 2564</li>
+            <li>ส่งคลิปวิดีโอนำเสนอผลงาน</li>
+            <li class="second-tab block-tab">16 - 19 ตุลาคม 2564</li>
           </div>
           <div class="two-column">
-            <li>ประกาศผลผู้ได้รับรางวัล</li>
-            <li class="second-tab block-tab">24 ตุลาคม 2564</li>
+            <li>นำเสนอผลงานและประกาศผลผู้ได้รับรางวัล</li>
+            <li class="second-tab block-tab">23 ตุลาคม 2564</li>
           </div>
         </ul>
 
@@ -82,11 +82,11 @@
           <li>15 กันยายน 2564</li>
           <li>17 - 19 กันยายน 2564</li>
           <li>20 กันยายน - 2 ตุลาคม 2564</li>
-          <li>3 ตุลาคม 2564 (ให้คำปรึกษาแต่ละทีม)</li>
-          <li>4 - 16 ตุลาคม 2564</li>
+          <!-- <li>3 ตุลาคม 2564 (ให้คำปรึกษาแต่ละทีม)</li> -->
+          <li>3 - 16 ตุลาคม 2564</li>
           <li>17 ตุลาคม 2564</li>
+          <li>16 - 19 ตุลาคม 2564</li>
           <li>23 ตุลาคม 2564</li>
-          <li>24 ตุลาคม 2564</li>
         </ul>
       </div>
 
@@ -98,7 +98,7 @@
       <hr class="bar-color bar-color-s" />
 
       <div class="center">
-        <img id="timeline" src="../../assets/mainpage/Timeline-3.png" alt="" />
+        <img id="timeline" src="../../assets/mainpage/Timeline-4.png" alt="" />
       </div>
 
       <h1 id="users-info" class="header-s">คุณสมบัติผู้เข้าแข่งขัน</h1>
@@ -149,40 +149,74 @@
       <div class="two-column">
         <ul class="text-medium donut-bullet">
           <div class="two-column">
-            <li>รางวัลชนะเลิศ</li>
+            <li>รางวัลชนะเลิศอันดับ 1</li>
             <li class="second-tab block-tab">
-              1 รางวัล พร้อม โล่รางวัล เกียรติบัตร
+              30,000 บาท จำนวน 1 รางวัล พร้อมโล่เกียรติยศ<sup class="sup-number"
+                >1,2</sup
+              >
             </li>
           </div>
           <div class="two-column">
-            <li>รางวัลรองชนะเลิศ อันดับ 1</li>
+            <li>รางวัลชนะเลิศอันดับ 2</li>
             <li class="second-tab block-tab">
-              1 รางวัล พร้อม โล่รางวัล เกียรติบัตร
+              20,000 บาท จำนวน 2 รางวัล พร้อมโล่เกียรติยศ
             </li>
           </div>
           <div class="two-column">
-            <li>รางวัลรองชนะเลิศ อันดับ 2</li>
+            <li>รางวัลชนะเลิศอันดับ 3</li>
             <li class="second-tab block-tab">
-              1 รางวัล พร้อม โล่รางวัล เกียรติบัตร
+              10,000 บาท จำนวน 2 รางวัล พร้อมโล่เกียรติยศ
             </li>
           </div>
           <div class="two-column">
             <li>รางวัลความคิดสร้างสรรค์ยอดเยี่ยม</li>
+            <li class="second-tab block-tab">6,000 บาท จำนวน 1 รางวัล</li>
+          </div>
+          <div class="two-column">
+            <li>รางวัล Popular vote</li>
+            <li class="second-tab block-tab">5,000 บาท จำนวน 1 รางวัล</li>
           </div>
           <div class="two-column">
             <li>รางวัลการมีส่วนร่วมดีเด่น</li>
+            <li class="second-tab block-tab">
+              3,000 บาท จำนวน 3 รางวัล<sup class="sup-number">1</sup>
+            </li>
           </div>
         </ul>
 
         <ul class="text-medium second-tab flex-tab">
-          <li>รางวัลพร้อม โล่รางวัล เกียรติบัตร</li>
-          <li>รางวัลพร้อม โล่รางวัล เกียรติบัตร</li>
-          <li>รางวัลพร้อม โล่รางวัล เกียรติบัตร</li>
+          <li>
+            30,000 บาท จำนวน 1 รางวัล พร้อมโล่เกียรติยศ<sup class="sup-number"
+              >1,2</sup
+            >
+          </li>
+          <li>20,000 บาท จำนวน 2 รางวัล พร้อมโล่เกียรติยศ</li>
+          <li>10,000 บาท จำนวน 2 รางวัล พร้อมโล่เกียรติยศ</li>
+          <li>6,000 บาท จำนวน 1 รางวัล</li>
+          <li>5,000 บาท จำนวน 1 รางวัล</li>
+          <li>3,000 บาท จำนวน 3 รางวัล<sup class="sup-number">1</sup></li>
         </ul>
       </div>
 
+      <div class="text-medium no-bullet-list">
+        <li>1 Year Software Subscription</li>
+        <ul>
+          <li>
+            &bull; <sup class="sup-number">1</sup>Deepnote มูลค่า 5,000 บาท
+            จำนวน 4 รางวัล
+          </li>
+          <li>&bull; JetBrains มูลค่า 4,900 บาท จำนวน 2 รางวัล</li>
+        </ul>
+      </div>
+
+      <li class="text-medium no-bullet-list extra">
+        <sup class="sup-number">2</sup>สิทธิพิเศษในการสัมภาษณ์งานกับบริษัทด้าน
+        Data Science ชั้นนำระดับสากล
+      </li>
+
       <p class="text-medium reward-note blue-text">
-        ชิงรางวัลมูลค่ารวมกว่า 100,000 บาท !
+        ผู้เข้าร่วมการแข่งขันและผู้เข้าอบรมจะได้รับเกียรติบัตรแบบอิเล็กทรอนิกส์
+        (e-Certificate)
       </p>
 
       <!-- <div class="center">
@@ -406,6 +440,26 @@ export default {
   cursor: pointer;
 }
 
+.no-bullet-list li:before {
+  display: none;
+  padding-left: 20px;
+}
+
+.no-bullet-list > ul {
+  margin: 0px;
+  list-style-type: none;
+}
+
+.no-bullet-list {
+  margin-top: 5px !important;
+  padding-left: 40px;
+  list-style-type: none;
+}
+
+.no-bullet-list > ul > li:before {
+  padding-left: 40px;
+}
+
 .download-link {
   text-decoration: underline;
   color: #2f65af !important;
@@ -428,6 +482,15 @@ export default {
 .bar-color-s {
   width: 60px;
   margin-left: 0px;
+}
+
+.extra {
+  margin-top: 5px !important;
+}
+
+.extra {
+  list-style-type: none;
+  padding-left: 20px;
 }
 
 .header-s {
@@ -478,6 +541,11 @@ export default {
 
 .frn-line {
   display: none;
+}
+
+.sup-number {
+  font-size: 12px;
+  padding: 0px 5px;
 }
 
 #contact-section {
@@ -646,6 +714,41 @@ export default {
     margin-right: 0px;
     width: calc(100% - 50px);
   }
+
+  .no-bullet-list > ul {
+    padding-left: 30px;
+  }
+
+  .block-tab {
+    display: inherit;
+  }
+
+  .flex-tab {
+    display: none;
+  }
+
+  .two-column {
+    display: block;
+  }
+
+  .second-tab {
+    padding: 3px 0px 3px 35px !important;
+  }
+
+  #information {
+    margin-top: 50px;
+  }
+  .no-bullet-list > ul {
+    padding-left: 15px;
+  }
+
+  #contact-box {
+    display: block;
+  }
+
+  #contact-box > div:nth-child(2) {
+    margin-left: 0px;
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -662,6 +765,9 @@ export default {
     width: 20px;
   }
 
+  .no-bullet-list > ul {
+    padding-left: 20px;
+  }
   .frn-line {
     display: initial;
   }
@@ -684,7 +790,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 660px) {
+/* @media screen and (max-width: 660px) {
   .block-tab {
     display: inherit;
   }
@@ -704,6 +810,9 @@ export default {
   #information {
     margin-top: 50px;
   }
+  .no-bullet-list > ul {
+    padding-left: 15px;
+  }
 
   #contact-box {
     display: block;
@@ -712,11 +821,15 @@ export default {
   #contact-box > div:nth-child(2) {
     margin-left: 0px;
   }
-}
+} */
 
 @media screen and (max-width: 414px) {
   .rg-btn {
     font-size: 1.75em;
+  }
+
+  .no-bullet-list > ul {
+    padding-left: 10px;
   }
 }
 </style>

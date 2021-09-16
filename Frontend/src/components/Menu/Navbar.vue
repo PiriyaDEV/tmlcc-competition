@@ -35,7 +35,13 @@
           >
           <a class="text-normal nav-text" href="/about">เกี่ยวกับโครงการ</a>
           <!-- <p v-if="page == `login`" class="text-normal nav-text">Q&A</p> -->
-          <!-- <p v-if="page != `login`" class="text-normal nav-text">Workshops</p> -->
+          <p
+            v-if="page != `login`"
+            @click="workshopClick"
+            class="text-normal nav-text"
+          >
+            Workshops
+          </p>
           <a
             v-if="page == `mainpage`"
             class="text-normal nav-text"
@@ -175,6 +181,11 @@ export default {
     logout() {
       this.$store.dispatch("auth/logout");
       window.location.href = "/";
+    },
+    workshopClick() {
+      if (this.$route.path != "/workshop") {
+        this.$router.push("/workshop");
+      }
     },
   },
   computed: {

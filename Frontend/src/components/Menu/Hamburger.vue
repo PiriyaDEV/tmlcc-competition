@@ -171,9 +171,9 @@
         >
       </div>
 
-      <!-- <div class="nav-head nav-link">
-        <a class="text-normal" @click="hideNav">Workshop</a>
-      </div> -->
+      <div @click="workshopClick" class="nav-head nav-link">
+        <a class="text-normal" @click="hideNav">Workshops</a>
+      </div>
       <!-- <div v-if="page == `login`" class="nav-head nav-link">
         <p class="text-normal nav-text">Q&A</p>
       </div> -->
@@ -255,7 +255,7 @@
         <a
           class="text-normal click-text"
           v-if="
-            (page == `mainpage` || page == 'about') &&
+            (page == `mainpage` || page == 'about' || page == 'workshop') &&
             loginStatus.isAuthenticated == true
           "
           @click="logout"
@@ -348,6 +348,11 @@ export default {
     logoutMainpage() {
       this.$store.dispatch("auth/logout");
       window.location.href = "/";
+    },
+    workshopClick() {
+      if (this.$route.path != "/workshop") {
+        this.$router.push("/workshop");
+      }
     },
   },
   computed: {

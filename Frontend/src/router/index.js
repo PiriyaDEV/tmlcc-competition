@@ -89,6 +89,15 @@ const routes = [
       title: "About | Thailand Machine Learning for Chemistry Competition 2021",
     },
   },
+  {
+    path: "/workshop",
+    name: "Workshop",
+    component: () => import("../views/Workshop.vue"),
+    meta: {
+      title:
+        "Workshop | Thailand Machine Learning for Chemistry Competition 2021",
+    },
+  },
 ];
 
 const router = new VueRouter({
