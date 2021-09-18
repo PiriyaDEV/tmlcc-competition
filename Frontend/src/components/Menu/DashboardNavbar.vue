@@ -46,6 +46,9 @@
           </div>
         </div>
         <div id="nav-right">
+          <div class="text-normal nav-text" @click="workshopClick">
+            Workshops
+          </div>
           <router-link
             v-if="roleStatus == `user`"
             to="/#contact-box"
@@ -140,6 +143,11 @@ export default {
       this.$store.dispatch("auth/logout");
       window.location.href = "/login";
     },
+    workshopClick() {
+      if (this.$route.path != "/workshop") {
+        this.$router.push("/workshop");
+      }
+    },
   },
   computed: {
     ...mapGetters({
@@ -185,6 +193,10 @@ a {
 #nav-center {
   display: flex;
   align-items: center;
+}
+
+.text-normal {
+  font-size: 2em;
 }
 
 .nav-text {

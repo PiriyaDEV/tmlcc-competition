@@ -90,7 +90,7 @@
                 style="visibility: hidden"
                 @change="fileUpload"
                 multiple
-                accept="application/pdf"
+                accept="application/pdf,application/zip,application/x-zip,application/x-zip-compressed,application/octet-stream"
               />
               <button
                 class="delete-btn"
