@@ -80,7 +80,9 @@
               :class="SlideLogout"
               @click="toggleShowLogout()"
             >
-              <button @click="logout()" class="btn-white">ออกจากระบบ</button>
+              <button @click="logout()" class="text-normal btn-white">
+                ออกจากระบบ
+              </button>
             </div>
           </div>
           <div v-else class="center">
@@ -90,7 +92,7 @@
                 endCountdown == false &&
                 closeCountdown == false
               "
-              class="btn-white blocked"
+              class="text-normal btn-white blocked"
             >
               ลงทะเบียน
             </button>
@@ -101,7 +103,7 @@
                 closeCountdown == false
               "
               @click="registerClick()"
-              class="btn-white"
+              class="text-normal btn-white"
             >
               ลงทะเบียน
             </button>
@@ -111,13 +113,13 @@
                 closeCountdown == true
               "
               @click="loginClick()"
-              class="btn-color"
+              class="text-normal btn-color"
             >
               เข้าสู่ระบบ
             </button>
             <button
               v-if="pathRegister == true && endCountdown == false"
-              class="btn-white blocked"
+              class="text-normal btn-white blocked"
             >
               เข้าสู่ระบบ
             </button>
@@ -242,6 +244,10 @@ a {
 #nav-right {
   display: flex;
   align-items: center;
+}
+
+.text-normal {
+  font-size: 2em;
 }
 
 .nav-text {

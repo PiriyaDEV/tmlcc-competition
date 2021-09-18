@@ -498,7 +498,7 @@ export default {
   .nav-link > div > a,
   .nav-link > p {
     text-decoration: none;
-    color: #303030;
+    /* color: #303030; */
     font-size: 14px;
   }
 

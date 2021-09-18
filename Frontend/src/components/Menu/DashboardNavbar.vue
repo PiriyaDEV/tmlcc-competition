@@ -195,6 +195,10 @@ a {
   align-items: center;
 }
 
+.text-normal {
+  font-size: 2em;
+}
+
 .nav-text {
   padding: 0px 16px;
   cursor: pointer;
