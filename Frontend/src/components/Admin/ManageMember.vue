@@ -127,6 +127,7 @@ import pdfMake from "pdfmake";
 import pdfFonts from "../../assets/custom-fonts.js";
 import Vue from "vue";
 import JsonCSV from "vue-json-csv";
+import url from "../../api-url";
 
 Vue.component("downloadCsv", JsonCSV);
 
@@ -443,8 +444,7 @@ export default {
           },
         ],
         images: {
-          photo:
-            "https://scontent.fubp1-1.fna.fbcdn.net/v/t1.6435-9/239874070_4761197243913069_1109602868497192659_n.jpg?_nc_cat=105&ccb=1-5&_nc_sid=730e14&_nc_eui2=AeEZNqxzgIHQXdC7jTumKWNfsLnp63Qlay2wuenrdCVrLfqAiRKrMSDhXQF_Atl_lz1A29345Me63siJKjnXN_bi&_nc_ohc=mR7brVKxq8YAX8PeVcE&tn=02SmQdQFY_dqYu2v&_nc_ht=scontent.fubp1-1.fna&oh=cedd7400a90aba6c90e6a6ad3d288155&oe=6143FDE3",
+          photo: url.replace("/api", `/file/logo/tmlcc_logo_OG.png`),
         },
         defaultStyle: {
           font: "Sarabun",

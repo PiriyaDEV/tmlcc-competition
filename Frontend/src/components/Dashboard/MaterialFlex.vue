@@ -335,6 +335,12 @@ div::-webkit-scrollbar-thumb {
   /* box-shadow: 0 0 1px rgba(255, 255, 255, 1); */
 }
 
+@media screen and (max-width: 1440px) {
+  .file-name {
+    max-width: 370px;
+  }
+}
+
 @media screen and (max-width: 1100px) {
   #materialflex {
     margin-top: 30px;
