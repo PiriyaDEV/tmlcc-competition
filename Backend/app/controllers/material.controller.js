@@ -12,10 +12,16 @@ const storage = multer.diskStorage({
     callback(null, materials_dir + "/" + req.query.folderName);
   },
   filename: function (req, files, callback) {
-    const match = ["application/pdf"];
+    const match = [
+      "application/pdf",
+      "application/zip",
+      "application/x-zip",
+      "application/x-zip-compressed",
+      "application/octet-stream",
+    ];
 
     if (match.indexOf(files.mimetype) === -1) {
-      let message = `${files.originalname} is invalid. Only accept pdf.`;
+      let message = `${files.originalname} is invalid. Only accept pdf or zip.`;
       return callback(message, null);
     }
 
@@ -361,7 +367,7 @@ exports.deleteFolder = (req, res) => {
             return res.status(200).send({
               folder_id: result.folder_id,
               message: "Folder deleted!",
-            }); 
+            });
           }
         } else {
           return res.status(500).send({
