@@ -4,10 +4,16 @@
     <hr class="bar-color-p" />
 
     <div>
-      <h1 v-if="role == `user` && !teamStatus.hasTeam" class="text-normal">
+      <h1
+        v-if="role == `user` && !teamStatus.hasTeam && !isClose"
+        class="text-normal"
+      >
         สร้างทีม
       </h1>
-      <div v-if="role == `user` && !teamStatus.hasTeam" id="team-input">
+      <div
+        v-if="role == `user` && !teamStatus.hasTeam && !isClose"
+        id="team-input"
+      >
         <input
           type="text"
           class="input-box text-normal"
@@ -19,7 +25,7 @@
         <h1 @click="createTeam()" class="add-btn">+</h1>
       </div>
       <p
-        v-if="createStatus.isInvalid && !teamStatus.hasTeam"
+        v-if="createStatus.isInvalid && !teamStatus.hasTeam && !isClose"
         class="text-normal orange-text error-message"
       >
         * {{ createStatus.message }}
@@ -29,7 +35,7 @@
       <div v-if="teamStatus.hasTeam && !edit" id="team-input">
         <h1 class="teamname-text-l">{{ currentTeam.teamName }}</h1>
         <button
-          v-if="currentTeam.isLeader"
+          v-if="currentTeam.isLeader && !isClose"
           @click="editTeamName"
           class="edit-btn"
         >
@@ -42,7 +48,7 @@
         </button>
       </div>
 
-      <div v-if="teamStatus.hasTeam && edit" id="team-input">
+      <div v-if="teamStatus.hasTeam && edit && !isClose" id="team-input">
         <input
           class="teamname-text-l input-box"
           type="text"
@@ -56,14 +62,15 @@
       </div>
 
       <p
-        v-if="createStatus.isInvalid && teamStatus.hasTeam"
+        v-if="createStatus.isInvalid && teamStatus.hasTeam && !isClose"
         class="text-normal orange-text error-message"
       >
         * {{ createStatus.message }}
       </p>
 
       <h1 class="text-normal" v-if="role == `user` && !teamStatus.hasTeam">
-        เลือกทีมของคุณ
+        <span v-if="!isClose">เลือกทีมของคุณ</span>
+        <span v-else>รายการทีมทั้งหมด</span>
       </h1>
       <h1 class="text-normal" v-if="role == `user` && teamStatus.hasTeam">
         เพื่อนร่วมทีม
@@ -84,7 +91,10 @@
             <button
               class="join-btn"
               v-if="
-                role == `user` && team.status != 'pending' && team.members < 5
+                role == `user` &&
+                team.status != 'pending' &&
+                team.members < 5 &&
+                !isClose
               "
               @click="joinTeam(team.team_id)"
             >
@@ -93,7 +103,10 @@
             <button
               class="approve-btn"
               v-if="
-                role == `user` && team.status == 'pending' && team.members < 5
+                role == `user` &&
+                team.status == 'pending' &&
+                team.members < 5 &&
+                !isClose
               "
               @click="cancelTeam(team.team_id)"
             >
@@ -129,14 +142,18 @@
               {{ member.fullName }}
             </h1>
             <button
-              v-if="currentTeam.isLeader && member.status == 'pending'"
+              v-if="
+                currentTeam.isLeader && member.status == 'pending' && !isClose
+              "
               @click="approveMember(member.member_id)"
               class="join-btn"
             >
               อนุญาต
             </button>
             <button
-              v-if="currentTeam.isLeader && member.status == 'approved'"
+              v-if="
+                currentTeam.isLeader && member.status == 'approved' && !isClose
+              "
               @click="rejectMember(member.member_id)"
               class="join-btn leave-btn"
             >
@@ -156,17 +173,22 @@
           v-if="currentTeam.isLeader && currentTeam.members.length == 1"
           class="text-normal gray-text"
         >
-          คุณยังไม่มีเพื่อนร่วมทีม
+          คุณ<span v-if="!isClose">ยัง</span>ไม่มีเพื่อนร่วมทีม
         </h1>
       </div>
 
-      <p class="note" v-if="role == `user` && !teamStatus.hasTeam">
+      <p class="note" v-if="role == `user` && !teamStatus.hasTeam && !isClose">
         เมื่อเลือกทีมแล้ว กรุณารอหัวหน้าทีม Approve
       </p>
 
       <p
         class="note"
-        v-if="role == `user` && currentTeam.isLeader && teamStatus.hasTeam"
+        v-if="
+          role == `user` &&
+          currentTeam.isLeader &&
+          teamStatus.hasTeam &&
+          !isClose
+        "
       >
         <span v-if="!deleteCheck"
           >ต้องการที่จะลบทีมนี้ กดที่นี่เพื่อ
@@ -189,7 +211,12 @@
 
       <p
         class="note"
-        v-if="role == `user` && !currentTeam.isLeader && teamStatus.hasTeam"
+        v-if="
+          role == `user` &&
+          !currentTeam.isLeader &&
+          teamStatus.hasTeam &&
+          !isClose
+        "
       >
         <span v-if="!leaveCheck"
           >ต้องการออกจากกลุ่ม กดที่นี่เพื่อ
@@ -243,6 +270,7 @@ export default {
       role: ["auth/getRole"],
       user_id: ["auth/getUserId"],
       teamList: ["team/getTeamList"],
+      isClose: ["team/getTeamClose"],
       currentTeam: ["team/getCurrentTeam"],
       memberCount: ["team/getCurrentTeamMemberCount"],
       teamMember: ["team/getCurrentTeamMember"],

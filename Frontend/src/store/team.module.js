@@ -3,6 +3,8 @@ import TeamService from "../services/team.service";
 export default {
   namespaced: true,
   state: {
+    closeTime: new Date("October 3, 2021 00:00:00").getTime(),
+    now: new Date().getTime(),
     teamList: [],
     currentTeam: {
       isLeader: false,
@@ -20,6 +22,9 @@ export default {
     },
   },
   getters: {
+    getTeamClose(state) {
+      return state.now >= state.closeTime ? true : false;
+    },
     getTeamList(state) {
       return state.teamList;
     },
@@ -81,6 +86,11 @@ export default {
     },
     setCurrentTeam(state, team) {
       if (team.isLeader) {
+        if (state.now >= state.closeTime) {
+          team.members = team.members.filter(
+            (member) => member.status == "approved"
+          );
+        }
         team.members = team.members.sort((a, b) => {
           let memberA = a.status;
           let memberB = b.status;
