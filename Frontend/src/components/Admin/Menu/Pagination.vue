@@ -28,7 +28,9 @@
           <h1 class="text-normal">หน้าแรก</h1>
         </div> -->
         <div class="pagenum-box previous-page" @click="previousPage">
-          <h1 class="text-normal">ก่อนหน้า</h1>
+          <h1 class="text-normal">
+            <span class="sl-nm">ก่อนหน้า</span><span class="sl-mb">&#x3c;</span>
+          </h1>
         </div>
       </div>
 
@@ -74,7 +76,10 @@
       </div>
       <div class="section">
         <div class="pagenum-box next-page" @click="nextPage">
-          <h1 class="text-normal">หน้าถัดไป</h1>
+          <h1 class="text-normal">
+            <span class="sl-nm">หน้าถัดไป</span
+            ><span class="sl-mb">&#x3e;</span>
+          </h1>
         </div>
 
         <!-- <div>
@@ -216,9 +221,6 @@ export default {
       this.$store.dispatch("admin/updateStaffSelectPage", this.page);
     }
     this.getNumberPage();
-    if (this.afterPage == 0) {
-      this.afterPage = 25;
-    }
   },
   destroyed() {
     window.removeEventListener("resize", this.detectScreenChange);
@@ -239,7 +241,6 @@ export default {
     },
     detectScreenChange() {
       this.window = window.innerWidth;
-
       if (this.window < 800) {
         this.pagesLimit = 5;
         this.perPage = 5;
@@ -260,6 +261,13 @@ export default {
       this.beforePage =
         this.pagination.page * this.pagination.perPage -
         (this.pagination.perPage - 1);
+      if (this.afterPage == 0) {
+        if (this.window < 800) {
+          this.afterPage = 5;
+        } else {
+          this.afterPage = 25;
+        }
+      }
     },
   },
 };
@@ -279,6 +287,10 @@ export default {
 
 .text-normal {
   font-size: 2em;
+}
+
+.sl-mb {
+  display: none;
 }
 
 #pagination-section {
@@ -398,6 +410,16 @@ option {
   .pagenum-box,
   .pagenum-box-clicked {
     padding: 3px 5px;
+  }
+}
+
+@media screen and (max-width: 410px) {
+  .sl-nm {
+    display: none;
+  }
+
+  .sl-mb {
+    display: inherit;
   }
 }
 </style>
